@@ -19,6 +19,34 @@ En plus : XP, niveaux, série de jours, et 6 devoirs à faire sur sa machine (VS
 
 Le fil rouge des exemples : **Peer-Learning**, une plateforme de tutorat entre étudiants.
 
+## Organisation des fichiers
+
+```
+index.html                  page d'entrée : structure HTML et chargement des scripts
+css/style.css               tous les styles (thème clair et sombre)
+js/core/utils.js            petites fonctions partagées
+js/core/cours.js            registre des cours et ordre des onglets
+js/cours/python.js          leçons et exercices Python
+js/cours/javascript.js      leçons et exercices JavaScript
+js/cours/css.js             leçons et exercices CSS
+js/cours/sql.js             leçons et exercices SQL
+js/cours/php.js             leçons et exercices PHP
+js/cours/machine-learning.js leçons et exercices Machine Learning
+js/cours/devoirs.js         les 6 devoirs et leurs critères
+js/moteurs/python.js        exécution de Python (Skulpt)
+js/moteurs/javascript.js    exécution de JavaScript
+js/moteurs/sql.js           base de démonstration et exécution SQL (AlaSQL)
+js/moteurs/css.js           aperçu CSS en direct
+js/ml/videos.js             les 6 vidéos animées du module ML
+js/ml/labos.js              labos interactifs (régression, plus proches voisins)
+js/app/etat.js              progression, XP, niveaux, sauvegarde
+js/app/rendu.js             affichage des pages et correction des exercices
+js/app/effets.js            notifications et confettis
+js/app/main.js              démarrage
+```
+
+Pour ajouter une leçon, il suffit de modifier le fichier du langage dans `js/cours/`.
+
 ## Lancer le site
 
 Un seul fichier, aucune installation. Ouvre `index.html` dans un navigateur, ou utilise la version en ligne (GitHub Pages). Une connexion internet est nécessaire pour charger les polices et les moteurs Python ([Skulpt](https://skulpt.org)) et SQL ([AlaSQL](https://github.com/AlaSQL/alasql)).
