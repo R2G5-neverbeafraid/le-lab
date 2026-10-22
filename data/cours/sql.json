@@ -1,0 +1,133 @@
+{
+ "id": "sql",
+ "nom": "SQL",
+ "accroche": "Interroger des données",
+ "lecons": [
+  {
+   "titre": "SELECT et WHERE",
+   "theorie": "cours/sql/01-select-et-where.md",
+   "exemple": {
+    "langage": "sql",
+    "code": "SELECT nom, matiere FROM tuteurs WHERE etoiles > 4.5"
+   },
+   "exercices": [
+    {
+     "id": "sql1a",
+     "type": "sql",
+     "titre": "Les étudiants de L1",
+     "xp": 15,
+     "consigne": "Affiche le `nom` et les `credits` de tous les étudiants de la promo `L1`.",
+     "depart": "SELECT \n",
+     "indice": "SELECT nom, credits FROM etudiants WHERE ...",
+     "solution": "SELECT nom, credits FROM etudiants WHERE promo = 'L1'"
+    },
+    {
+     "id": "sql1b",
+     "type": "sql",
+     "titre": "Deux conditions",
+     "xp": 15,
+     "consigne": "Affiche le `nom` des étudiants qui ont **60 crédits** **et** qui ne sont pas en L1 (`<>` veut dire « différent de »).",
+     "depart": "SELECT \n",
+     "indice": "WHERE credits = 60 AND promo <> 'L1'",
+     "solution": "SELECT nom FROM etudiants WHERE credits = 60 AND promo <> 'L1'"
+    }
+   ]
+  },
+  {
+   "titre": "Trier et limiter",
+   "theorie": "cours/sql/02-trier-et-limiter.md",
+   "exemple": {
+    "langage": "sql",
+    "code": "SELECT nom, credits FROM etudiants ORDER BY credits DESC"
+   },
+   "exercices": [
+    {
+     "id": "sql2a",
+     "type": "sql",
+     "titre": "Le podium des tuteurs",
+     "xp": 20,
+     "consigne": "Affiche le `nom` et les `etoiles` des **3 tuteurs les mieux notés**, du meilleur au moins bon.",
+     "depart": "SELECT \n",
+     "ordonne": true,
+     "indice": "ORDER BY etoiles DESC LIMIT 3",
+     "solution": "SELECT nom, etoiles FROM tuteurs ORDER BY etoiles DESC LIMIT 3"
+    }
+   ]
+  },
+  {
+   "titre": "Compter et regrouper",
+   "theorie": "cours/sql/03-compter-et-regrouper.md",
+   "exemple": {
+    "langage": "sql",
+    "code": "SELECT AVG(etoiles) AS moyenne FROM tuteurs"
+   },
+   "exercices": [
+    {
+     "id": "sql3a",
+     "type": "sql",
+     "titre": "Effectif par promo",
+     "xp": 20,
+     "consigne": "Affiche chaque `promo` avec le **nombre d'étudiants** qu'elle contient.",
+     "depart": "SELECT \n",
+     "indice": "SELECT promo, COUNT(*) ... GROUP BY promo",
+     "solution": "SELECT promo, COUNT(*) AS nb FROM etudiants GROUP BY promo"
+    },
+    {
+     "id": "sql3b",
+     "type": "sql",
+     "titre": "Moyenne de crédits en L1",
+     "xp": 20,
+     "consigne": "Affiche la **moyenne des crédits** des étudiants de L1 (une seule valeur).",
+     "depart": "SELECT \n",
+     "indice": "AVG(credits) avec un WHERE.",
+     "solution": "SELECT AVG(credits) AS moyenne FROM etudiants WHERE promo = 'L1'"
+    }
+   ]
+  },
+  {
+   "titre": "Jointures",
+   "theorie": "cours/sql/04-jointures.md",
+   "exemple": {
+    "langage": "sql",
+    "code": "SELECT e.nom, s.duree\nFROM seances s\nJOIN etudiants e ON e.id = s.etudiant_id"
+   },
+   "exercices": [
+    {
+     "id": "sql4a",
+     "type": "sql",
+     "titre": "Qui a vu qui ?",
+     "xp": 25,
+     "consigne": "Pour chaque séance, affiche le **nom de l'étudiant**, le **nom du tuteur** et la `duree`. Il faut deux `JOIN`. Les deux colonnes s'appellent `nom` : renomme-les avec `AS` pour ne pas les confondre.",
+     "depart": "SELECT e.nom AS etudiant, t.nom AS tuteur, s.duree\nFROM seances s\n",
+     "indice": "JOIN etudiants e ON e.id = s.etudiant_id puis JOIN tuteurs t ON t.id = s.tuteur_id",
+     "solution": "SELECT e.nom AS etudiant, t.nom AS tuteur, s.duree FROM seances s JOIN etudiants e ON e.id = s.etudiant_id JOIN tuteurs t ON t.id = s.tuteur_id"
+    },
+    {
+     "id": "sql4b",
+     "type": "sql",
+     "titre": "Temps de tutorat par étudiant",
+     "xp": 30,
+     "consigne": "Affiche le **nom de chaque étudiant** qui a eu des séances, avec le **total de minutes** (`SUM(s.duree)`).",
+     "depart": "SELECT e.nom, SUM(s.duree) AS total\nFROM seances s\n",
+     "indice": "Un JOIN vers etudiants, puis GROUP BY e.nom.",
+     "solution": "SELECT e.nom, SUM(s.duree) AS total FROM seances s JOIN etudiants e ON e.id = s.etudiant_id GROUP BY e.nom"
+    },
+    {
+     "id": "sql4c",
+     "type": "qcm",
+     "titre": "Modifier des données",
+     "xp": 10,
+     "consigne": "Rahel vient de valider une UE de 6 crédits. Quelle requête met sa ligne à jour ?",
+     "options": [
+      "UPDATE etudiants SET credits = credits + 6 WHERE nom = 'Rahel'",
+      "UPDATE etudiants SET credits = credits + 6",
+      "INSERT INTO etudiants (credits) VALUES (6)",
+      "SELECT credits + 6 FROM etudiants WHERE nom = 'Rahel'"
+     ],
+     "bonne": 0,
+     "explication": "UPDATE … SET modifie. Sans WHERE, la modification touche toutes les lignes de la table : c'est l'erreur la plus dangereuse en SQL."
+    }
+   ]
+  }
+ ]
+}
