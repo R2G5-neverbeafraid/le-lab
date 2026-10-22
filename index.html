@@ -444,8 +444,8 @@ JOIN etudiants e ON e.id = s.etudiant_id</pre>
 FROM seances s
 JOIN etudiants e ON e.id = s.etudiant_id`,
  exos:[
-  {id:"sql4a",type:"sql",title:"Qui a vu qui ?",xp:25,p:`Pour chaque séance, affiche le <b>nom de l'étudiant</b>, le <b>nom du tuteur</b> et la <code>duree</code>. Il faut deux <code>JOIN</code>.`,
-   start:`SELECT e.nom, t.nom, s.duree\nFROM seances s\n`,sol:`SELECT e.nom AS etudiant, t.nom AS tuteur, s.duree FROM seances s JOIN etudiants e ON e.id = s.etudiant_id JOIN tuteurs t ON t.id = s.tuteur_id`,
+  {id:"sql4a",type:"sql",title:"Qui a vu qui ?",xp:25,p:`Pour chaque séance, affiche le <b>nom de l'étudiant</b>, le <b>nom du tuteur</b> et la <code>duree</code>. Il faut deux <code>JOIN</code>. Les deux colonnes s'appellent <code>nom</code> : renomme-les avec <code>AS</code> pour ne pas les confondre.`,
+   start:`SELECT e.nom AS etudiant, t.nom AS tuteur, s.duree\nFROM seances s\n`,sol:`SELECT e.nom AS etudiant, t.nom AS tuteur, s.duree FROM seances s JOIN etudiants e ON e.id = s.etudiant_id JOIN tuteurs t ON t.id = s.tuteur_id`,
    hint:"JOIN etudiants e ON e.id = s.etudiant_id puis JOIN tuteurs t ON t.id = s.tuteur_id"},
   {id:"sql4b",type:"sql",title:"Temps de tutorat par étudiant",xp:30,p:`Affiche le <b>nom de chaque étudiant</b> qui a eu des séances, avec le <b>total de minutes</b> (<code>SUM(s.duree)</code>).`,
    start:`SELECT e.nom, SUM(s.duree) AS total\nFROM seances s\n`,sol:`SELECT e.nom, SUM(s.duree) AS total FROM seances s JOIN etudiants e ON e.id = s.etudiant_id GROUP BY e.nom`,
