@@ -167,3 +167,38 @@ footer.foot{margin-top:48px;padding-block:24px 8px;border-top:1px solid var(--li
 @media (max-width:900px){.langs{grid-template-columns:repeat(2,1fr)}.hero,.two{grid-template-columns:1fr}.lview{grid-template-columns:1fr}.side{position:static}.cssgrid{grid-template-columns:1fr}}
 @media (max-width:560px){.langs{grid-template-columns:1fr}.sliders{grid-template-columns:1fr}.dcard{grid-template-columns:1fr;gap:10px}.date{flex-direction:row;align-items:baseline;gap:8px}.date .left{margin:0}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---------- Ajouts : chargement, théorie, sauvegarde, accueil ---------- */
+.chargement{color:var(--mute);padding-block:40px;text-align:center}
+.theory h3,.theory h4{font-size:17px;margin:16px 0 8px}
+.theory a{color:var(--accent)}
+.example{margin-top:14px}
+.example .eyebrow{margin:0}
+details.schema{margin-top:14px}
+.h-dv{font-size:19px;margin-bottom:6px}
+.p-dv{margin:0 0 12px}
+.p-sv{margin:0 0 12px}
+.sv-panneau{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.sv-texte{width:100%;box-sizing:border-box;min-height:90px;font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--sunk);color:var(--ink);resize:vertical;word-break:break-all}
+.sv-panneau input[type=file]{font-size:13px;color:var(--mute);max-width:100%}
+.card.how{margin-top:18px}
+.card.how p{margin:0;max-width:72ch}
+.dv-intro{margin-bottom:16px}
+.dv-intro h2{font-size:24px;margin-bottom:6px}
+.dv-intro p{margin:0;max-width:70ch}
+.hint .code{margin-top:8px}
+.vctl{flex-wrap:wrap}
+
+/* ---------- Téléphone ---------- */
+@media (max-width:900px){
+  /* les leçons deviennent une rangée qu'on fait défiler du doigt */
+  .side{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;gap:8px;padding-bottom:6px;scrollbar-width:thin;min-width:0}
+  .side .head{flex:none;min-width:150px}
+  .lesson-btn{flex:none;max-width:230px}
+}
+@media (max-width:560px){
+  pre.code,textarea.ed{font-size:12.5px}
+  .actions .kbd{display:none}
+  .card{padding:18px}
+  .ex{padding:16px}
+}
