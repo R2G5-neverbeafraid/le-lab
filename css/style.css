@@ -1,10 +1,10 @@
 /* Le Lab — styles
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 /* Layout : barre d'onglets par langage en haut, puis colonne leçons + zone de travail ; chaque langage a sa couleur */
 :root{
   --bg:#f3f5fb; --surface:#ffffff; --sunk:#eaedf6; --ink:#161a2c; --mute:#5a6180; --line:#dce1ee;
   --accent:#3646e0; --ok:#178a57; --bad:#d03b45;
-  --py:#2f6fd0; --js:#c48a00; --css:#8a46d6; --sql:#0e8f7d; --php:#5b5fc7; --dev:#e0484f; --ml:#d9601f; --vbg:#eef1f9;
+  --py:#2f6fd0; --js:#c48a00; --css:#8a46d6; --sql:#0e8f7d; --php:#5b5fc7; --dev:#e0484f; --ml:#d9601f; --vbg:#eef1f9; --l25-ink:#1B314B; --l25-line:#1B314B; --l25-core:#22D3EE;
   --code-bg:#151a2e; --code-ink:#e6e9f5; --code-mute:#8c93b3;
   --display:"Unbounded","Arial Rounded MT Bold",system-ui,sans-serif;
   --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -13,12 +13,12 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#0f121d; --surface:#171b2a; --sunk:#1f2436; --ink:#e8ebf6; --mute:#a0a7c4; --line:#2b3148;
   --accent:#8e99ff; --ok:#3fcf8e; --bad:#ff6b74;
-  --py:#6ea4ff; --js:#f2c14e; --css:#bf8cff; --sql:#3fd3bd; --php:#9da1ff; --dev:#ff7a80; --ml:#ff9a5c; --vbg:#121628;
+  --py:#6ea4ff; --js:#f2c14e; --css:#bf8cff; --sql:#3fd3bd; --php:#9da1ff; --dev:#ff7a80; --ml:#ff9a5c; --vbg:#121628; --l25-ink:#FFFFFF; --l25-line:#EAF2FB; --l25-core:#22D3EE;
   --code-bg:#0b0e18; --code-ink:#e6e9f5; --code-mute:#8c93b3; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0f121d; --surface:#171b2a; --sunk:#1f2436; --ink:#e8ebf6; --mute:#a0a7c4; --line:#2b3148;
   --accent:#8e99ff; --ok:#3fcf8e; --bad:#ff6b74;
-  --py:#6ea4ff; --js:#f2c14e; --css:#bf8cff; --sql:#3fd3bd; --php:#9da1ff; --dev:#ff7a80; --ml:#ff9a5c; --vbg:#121628;
+  --py:#6ea4ff; --js:#f2c14e; --css:#bf8cff; --sql:#3fd3bd; --php:#9da1ff; --dev:#ff7a80; --ml:#ff9a5c; --vbg:#121628; --l25-ink:#FFFFFF; --l25-line:#EAF2FB; --l25-core:#22D3EE;
   --code-bg:#0b0e18; --code-ink:#e6e9f5; --code-mute:#8c93b3; color-scheme:dark}
 body{margin:0}
 [hidden]{display:none!important}
@@ -52,8 +52,8 @@ nav.tabs button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)
 .hero h1{font-size:clamp(26px,4vw,40px);font-weight:800}
 .hero p{color:var(--mute);max-width:56ch;margin:10px 0 18px}
 .btn{border:0;border-radius:11px;padding:10px 16px;font-weight:700;font-size:14px;background:var(--accent);color:#fff}
-:root[data-theme="dark"] .btn{color:#0f121d}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#0f121d}}
+:root[data-theme="dark"] .btn:not(.ghost){color:#0f121d}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn:not(.ghost){color:#0f121d}}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
 .btn.small{padding:7px 12px;font-size:13px}
 .level{display:flex;flex-direction:column;gap:10px}
@@ -156,8 +156,14 @@ canvas.pg{display:block;width:100%;max-width:100%;aspect-ratio:16/9;border-radiu
 .sliders label{display:flex;flex-direction:column;gap:6px;font-size:14px}
 .sliders input{accent-color:var(--ml);width:100%}
 .info{font-size:14px;font-weight:600;min-height:1.4em}
-footer.foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--mute)}
-footer.foot b{color:var(--ink)}
+footer.foot{margin-top:48px;padding-block:24px 8px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--mute)}
+.foot-brand{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.foot-by{font-size:13px;color:var(--mute)}
+.logo25{display:block;height:52px;width:auto;max-width:100%}
+.foot-tag{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--mute)}
+.foot-meta{font-family:var(--mono);font-size:12px}
+.logo small.by{display:flex;align-items:center;gap:5px}
+.sym25{width:15px;height:15px;flex:none}
 @media (max-width:900px){.langs{grid-template-columns:repeat(2,1fr)}.hero,.two{grid-template-columns:1fr}.lview{grid-template-columns:1fr}.side{position:static}.cssgrid{grid-template-columns:1fr}}
 @media (max-width:560px){.langs{grid-template-columns:1fr}.sliders{grid-template-columns:1fr}.dcard{grid-template-columns:1fr;gap:10px}.date{flex-direction:row;align-items:baseline;gap:8px}.date .left{margin:0}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}

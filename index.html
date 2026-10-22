@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Le Lab</title>
-<meta name="description" content="Le Lab : apprendre Python, JavaScript, CSS, SQL, PHP et le machine learning. Développé par 25 (TwentyFive) Labs.">
+<meta name="description" content="Le Lab : apprendre Python, JavaScript, CSS, SQL, PHP et le machine learning. Développé par 25 Labs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Figtree:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/alasql/4.17.3/alasql.min.js"></script>
@@ -15,12 +15,15 @@
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="logo"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M15 5h10M16.5 5v11L7.5 31.5A3.5 3.5 0 0 0 10.5 37h19a3.5 3.5 0 0 0 3-5.5L23.5 16V5" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.2 25h17.6l3.4 6.2a2 2 0 0 1-1.8 3H9.6a2 2 0 0 1-1.8-3z" fill="var(--ml)"/><circle cx="17" cy="29.5" r="1.6" fill="var(--surface)"/><circle cx="22.5" cy="27.8" r="1.1" fill="var(--surface)"/><circle cx="27" cy="11" r="2" fill="var(--py)"/><circle cx="31" cy="6" r="1.4" fill="var(--sql)"/></svg><div><b>Le Lab</b><small>by 25 (TwentyFive) Labs</small></div></div>
+    <div class="logo"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M15 5h10M16.5 5v11L7.5 31.5A3.5 3.5 0 0 0 10.5 37h19a3.5 3.5 0 0 0 3-5.5L23.5 16V5" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.2 25h17.6l3.4 6.2a2 2 0 0 1-1.8 3H9.6a2 2 0 0 1-1.8-3z" fill="var(--ml)"/><circle cx="17" cy="29.5" r="1.6" fill="var(--surface)"/><circle cx="22.5" cy="27.8" r="1.1" fill="var(--surface)"/><circle cx="27" cy="11" r="2" fill="var(--py)"/><circle cx="31" cy="6" r="1.4" fill="var(--sql)"/></svg><div><b>Le Lab</b><small class="by">by 25 Labs<svg class="sym25" viewBox="0 0 100 100" role="img" aria-label="Symbole 25 Labs"><defs><filter id="g25a" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4"/></filter></defs><g stroke="var(--l25-line)" stroke-width="3" stroke-linecap="round"><line x1="50" y1="50" x2="50" y2="10"/><line x1="50" y1="50" x2="88" y2="38"/><line x1="50" y1="50" x2="74" y2="83"/><line x1="50" y1="50" x2="26" y2="83"/><line x1="50" y1="50" x2="12" y2="38"/></g><g fill="var(--bg)" stroke="var(--l25-line)" stroke-width="3"><circle cx="50" cy="10" r="5"/><circle cx="88" cy="38" r="5"/><circle cx="74" cy="83" r="5"/><circle cx="26" cy="83" r="5"/><circle cx="12" cy="38" r="5"/></g><circle cx="50" cy="50" r="13" fill="var(--l25-core)" filter="url(#g25a)"/><circle cx="50" cy="50" r="9" fill="var(--l25-core)"/></svg></small></div></div>
     <div class="stats" id="stats"></div>
   </header>
   <nav class="tabs" id="tabs" aria-label="Sections"></nav>
   <main id="view"></main>
-  <footer class="foot"><span>Le Lab · Développé par <b>25 (TwentyFive) Labs</b></span><span>Kinshasa · 2026</span></footer>
+  <footer class="foot">
+    <div class="foot-brand"><span class="foot-by">Le Lab est développé par</span><svg class="logo25" viewBox="0 0 330 120" role="img" aria-label="25 Labs"><g transform="translate(10,10)"><defs><filter id="g25b" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4"/></filter></defs><g stroke="var(--l25-line)" stroke-width="3" stroke-linecap="round"><line x1="50" y1="50" x2="50" y2="10"/><line x1="50" y1="50" x2="88" y2="38"/><line x1="50" y1="50" x2="74" y2="83"/><line x1="50" y1="50" x2="26" y2="83"/><line x1="50" y1="50" x2="12" y2="38"/></g><g fill="var(--bg)" stroke="var(--l25-line)" stroke-width="3"><circle cx="50" cy="10" r="5"/><circle cx="88" cy="38" r="5"/><circle cx="74" cy="83" r="5"/><circle cx="26" cy="83" r="5"/><circle cx="12" cy="38" r="5"/></g><circle cx="50" cy="50" r="13" fill="var(--l25-core)" filter="url(#g25b)"/><circle cx="50" cy="50" r="9" fill="var(--l25-core)"/></g><text x="124" y="74" font-family="Figtree, Outfit, 'Helvetica Neue', Arial, sans-serif" font-size="46" letter-spacing="-0.5" fill="var(--l25-ink)"><tspan font-weight="300">25</tspan><tspan font-weight="600">LABS</tspan></text></svg><span class="foot-tag">Tout part d'ici. Tout est connecté.</span></div>
+    <span class="foot-meta">Kinshasa · 2026</span>
+  </footer>
 </div>
 <div class="toast" id="toast" role="status"></div>
 <canvas id="confetti"></canvas>
