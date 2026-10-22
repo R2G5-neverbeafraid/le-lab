@@ -1,4 +1,4 @@
-/* Le Lab — vidéos animées du module Machine Learning
+/* Le Lab — vidéos animées du module Machine Learning (images + sous-titres ; le son est dans son.js)
    Développé par 25 Labs */
 "use strict";
 
@@ -126,24 +126,44 @@ function table(g,C,p){
 function errBox(g,C,e,a,n){if(a<=0)return;box(g,C,600,20,320,n?96:64,"",{a});T(g,C,"Erreur moyenne : "+Math.round(e).toLocaleString("fr-FR")+" FC",620,52,{s:21,w:800,c:e<200?C.ok:C.bad,a});if(n)T(g,C,"Essai n° "+n.toLocaleString("fr-FR"),620,88,{s:18,c:C.mute,a,f:MONO});}
 function mystery(g,C,P,q,a,s=1){if(a<=0)return;g.save();g.globalAlpha=a;g.beginPath();g.arc(P.px(q[0]),P.py(q[1]),22*s,0,7);g.fillStyle=C.mute;g.fill();g.restore();T(g,C,"?",P.px(q[0]),P.py(q[1])+1,{al:"center",s:24,w:800,c:"#ffffff",a});}
 function sizeCanvas(cv){const d=devicePixelRatio||1,w=cv.clientWidth||600;cv.width=Math.round(w*d);cv.height=Math.round(w*9/16*d);const g=cv.getContext("2d");g.setTransform(cv.width/VW,0,0,cv.width/VW,0,0);return g;}
+/* Lecteur vidéo : anime les scènes, affiche les sous-titres et joue la bande-son. */
 function mountVideo(el,id){
-  const V=VIDEOS[id],total=V.scenes.reduce((s,x)=>s+x.d,0);
-  el.innerHTML=`<canvas aria-label="Animation : ${esc(V.title)}"></canvas><p class="vcap"></p><div class="vctl"><button type="button" class="btn small">▶ Regarder</button><div class="vbar" role="slider" tabindex="0" aria-label="Position de la vidéo" aria-valuemin="0" aria-valuemax="${total}"><i></i></div><span class="vtime">0:00 / 0:${String(total).padStart(2,"0")}</span></div>`;
-  const cv=el.querySelector("canvas"),cap=el.querySelector(".vcap"),btn=el.querySelector("button"),bar=el.querySelector(".vbar"),fillEl=bar.querySelector("i"),tm=el.querySelector(".vtime");
-  let g=sizeCanvas(cv),t=0,playing=false,last=0;
+  const V=VIDEOS[id],debuts=[];let total=0;V.scenes.forEach(s=>{debuts.push(total);total+=s.d;});
+  el.innerHTML=`<canvas aria-label="Animation : ${esc(V.title)}"></canvas><p class="vcap"></p><div class="vctl"><button type="button" class="btn small" data-play>▶ Regarder</button><div class="vbar" role="slider" tabindex="0" aria-label="Position de la vidéo" aria-valuemin="0" aria-valuemax="${total}"><i></i></div><span class="vtime"></span><button type="button" class="btn small ghost" data-son aria-pressed="true">Son activé</button></div>`;
+  const cv=el.querySelector("canvas"),cap=el.querySelector(".vcap"),btn=el.querySelector("[data-play]"),btnSon=el.querySelector("[data-son]"),bar=el.querySelector(".vbar"),fillEl=bar.querySelector("i"),tm=el.querySelector(".vtime");
+  const son=creerBandeSon();
+  let g=sizeCanvas(cv),t=0,playing=false,last=0,sceneJouee=-1;
   const fmt=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,"0")}`;
+  const sceneA=at=>{let i=0;while(i<V.scenes.length-1&&at>=debuts[i+1])i++;return i;};
   function frame(at){
-    let acc=0,i=0;while(i<V.scenes.length-1&&at>=acc+V.scenes[i].d){acc+=V.scenes[i].d;i++;}
-    const sc=V.scenes[i],p=at-acc,C=CV();
+    const i=sceneA(at),sc=V.scenes[i],p=at-debuts[i],C=CV();
     g.setTransform(cv.width/VW,0,0,cv.width/VW,0,0);g.fillStyle=C.bg;g.fillRect(0,0,VW,VH);
     try{sc.draw(g,C,p);}catch(e){console.error(e);}
     T(g,C,`${i+1} / ${V.scenes.length}`,VW-24,VH-22,{al:"right",s:15,c:C.mute,f:MONO,w:500});
     cap.textContent=sc.cap;fillEl.style.width=(at/total*100)+"%";tm.textContent=`${fmt(at)} / ${fmt(total)}`;bar.setAttribute("aria-valuenow",Math.round(at));
   }
-  function rest(){const d0=V.scenes[0].d;frame(t>0?t:d0-.01);if(t===0){fillEl.style.width="0%";tm.textContent=`0:00 / ${fmt(total)}`;}}
-  function loop(now){if(!playing||!el.isConnected){playing=false;return;}t+=Math.min(.1,(now-last)/1000);last=now;if(t>=total){t=total;playing=false;btn.textContent="↺ Revoir";frame(total-.001);return;}frame(t);requestAnimationFrame(loop);}
-  btn.onclick=()=>{if(playing){playing=false;btn.textContent="▶ Reprendre";return;}if(t>=total)t=0;playing=true;btn.textContent="❚❚ Pause";last=performance.now();requestAnimationFrame(loop);};
-  const seek=x=>{t=Math.max(0,Math.min(total-.01,x));frame(t);};
+  function rest(){frame(t>0?t:V.scenes[0].d-.01);if(t===0){fillEl.style.width="0%";tm.textContent=`0:00 / ${fmt(total)}`;}}
+  function loop(now){
+    if(!el.isConnected){playing=false;son.arreter();return;}
+    if(!playing)return;
+    const dt=Math.min(.1,(now-last)/1000);last=now;
+    const i=sceneA(t),fin=i<V.scenes.length-1?debuts[i+1]:total;
+    // Si la voix n'a pas fini sa phrase, l'image attend juste avant la scène suivante.
+    t=(t+dt>=fin-.02&&son.parle())?Math.max(t,fin-.02):t+dt;
+    if(t>=total){t=total;playing=false;btn.textContent="↺ Revoir";son.arreter();sceneJouee=-1;frame(total-.001);return;}
+    const j=sceneA(t);if(j!==sceneJouee){sceneJouee=j;son.scene(j,V.scenes[j].cap);}
+    frame(t);requestAnimationFrame(loop);
+  }
+  btn.onclick=()=>{
+    if(playing){playing=false;btn.textContent="▶ Reprendre";son.pause();return;}
+    if(t>=total)t=0;
+    playing=true;btn.textContent="❚❚ Pause";last=performance.now();
+    const j=sceneA(t);
+    if(sceneJouee===j)son.reprendre(j,V.scenes[j].cap);else{sceneJouee=j;son.scene(j,V.scenes[j].cap);}
+    requestAnimationFrame(loop);
+  };
+  btnSon.onclick=()=>{const a=son.basculer();btnSon.textContent=a?"Son activé":"Son coupé";btnSon.setAttribute("aria-pressed",String(a));};
+  const seek=x=>{t=Math.max(0,Math.min(total-.01,x));const j=sceneA(t);if(playing&&j!==sceneJouee){sceneJouee=j;son.scene(j,V.scenes[j].cap);}else if(!playing)sceneJouee=-1;frame(t);};
   bar.onclick=e=>{const r=bar.getBoundingClientRect();seek((e.clientX-r.left)/r.width*total);};
   bar.onkeydown=e=>{if(e.key==="ArrowRight")seek(t+3);if(e.key==="ArrowLeft")seek(t-3);};
   new ResizeObserver(()=>{g=sizeCanvas(cv);playing?frame(t):rest();}).observe(cv);
