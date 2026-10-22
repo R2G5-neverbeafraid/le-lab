@@ -1,0 +1,122 @@
+{
+ "id": "javascript",
+ "nom": "JavaScript",
+ "accroche": "Rendre une page vivante",
+ "lecons": [
+  {
+   "titre": "Variables et affichage",
+   "theorie": "cours/javascript/01-variables-et-affichage.md",
+   "exemple": {
+    "langage": "javascript",
+    "code": "const prenom = \"RG\";\nlet xp = 10;\nxp += 5;\nconsole.log(`${prenom} a ${xp} XP`);\nconsole.log(typeof xp, typeof prenom);\nconsole.log(\"2\" + 2, \"2\" * 2);"
+   },
+   "exercices": [
+    {
+     "id": "js1a",
+     "type": "code",
+     "titre": "Message de bienvenue",
+     "xp": 15,
+     "consigne": "Déclare `const prenom = \"RG\"` et `let xp = 0`. Ajoute 25 à `xp`, puis affiche exactement : `Bienvenue RG, tu as 25 XP`.",
+     "depart": "// Écris ton code ici\n",
+     "attendu": "Bienvenue RG, tu as 25 XP",
+     "indice": "xp += 25; puis console.log(`Bienvenue ${prenom}, tu as ${xp} XP`);",
+     "solution": "const prenom = \"RG\";\nlet xp = 0;\nxp += 25;\nconsole.log(`Bienvenue ${prenom}, tu as ${xp} XP`);"
+    },
+    {
+     "id": "js1b",
+     "type": "predict",
+     "titre": "Le piège du +",
+     "xp": 10,
+     "consigne": "Qu'affiche cette ligne ?",
+     "code": "console.log(\"5\" + 3, \"5\" * 3);",
+     "reponses": [
+      "53 15"
+     ],
+     "indice": "+ avec une chaîne colle ; * convertit en nombre.",
+     "explication": "+ avec une chaîne colle ; * convertit en nombre."
+    }
+   ]
+  },
+  {
+   "titre": "Fonctions et conditions",
+   "theorie": "cours/javascript/02-fonctions-et-conditions.md",
+   "exemple": {
+    "langage": "javascript",
+    "code": "function estAdmis(note) {\n  if (note >= 10) {\n    return \"Admis\";\n  } else {\n    return \"Ajourné\";\n  }\n}\nconsole.log(estAdmis(12), estAdmis(7));\nconsole.log(\"0\" == 0, \"0\" === 0);"
+   },
+   "exercices": [
+    {
+     "id": "js2a",
+     "type": "code",
+     "titre": "Mention du quiz",
+     "xp": 20,
+     "consigne": "Écris `mention(note)` sur 20 : 16 et plus → `\"Très bien\"`, 14 et plus → `\"Bien\"`, 12 et plus → `\"Assez bien\"`, 10 et plus → `\"Passable\"`, sinon `\"Échec\"`.",
+     "depart": "function mention(note) {\n  // à toi\n}\n",
+     "tests": "console.log(mention(17));\nconsole.log(mention(14));\nconsole.log(mention(12.5));\nconsole.log(mention(10));\nconsole.log(mention(3));",
+     "attendu": "Très bien\nBien\nAssez bien\nPassable\nÉchec",
+     "indice": "Teste du plus grand au plus petit avec if / else if.",
+     "solution": "function mention(note) {\n  if (note >= 16) return \"Très bien\";\n  else if (note >= 14) return \"Bien\";\n  else if (note >= 12) return \"Assez bien\";\n  else if (note >= 10) return \"Passable\";\n  return \"Échec\";\n}"
+    }
+   ]
+  },
+  {
+   "titre": "Tableaux et méthodes",
+   "theorie": "cours/javascript/03-tableaux-et-methodes.md",
+   "exemple": {
+    "langage": "javascript",
+    "code": "const tuteurs = [\n  { nom: \"Prisca\", matiere: \"Python\", etoiles: 4.8 },\n  { nom: \"Joël\", matiere: \"CSS\", etoiles: 4.5 },\n];\nvar top = tuteurs.filter(t => t.etoiles >= 4.6).map(t => t.nom);\nconsole.log(top);\nconsole.log(tuteurs.find(t => t.matiere === \"CSS\").nom);"
+   },
+   "exercices": [
+    {
+     "id": "js3a",
+     "type": "code",
+     "titre": "Tuteurs disponibles",
+     "xp": 20,
+     "consigne": "Écris `nomsDisponibles(tuteurs)` qui renvoie un tableau contenant seulement les **noms** des tuteurs dont `dispo` vaut `true`.",
+     "depart": "function nomsDisponibles(tuteurs) {\n  // utilise filter puis map\n}\n",
+     "tests": "console.log(nomsDisponibles([{nom:\"Grace\",dispo:true},{nom:\"Jonathan\",dispo:false},{nom:\"Merveille\",dispo:true}]).join(\", \"));\nconsole.log(nomsDisponibles([]).length);",
+     "attendu": "Grace, Merveille\n0",
+     "indice": "return tuteurs.filter(t => t.dispo).map(t => t.nom);",
+     "solution": "function nomsDisponibles(tuteurs) {\n  return tuteurs.filter(t => t.dispo).map(t => t.nom);\n}"
+    }
+   ]
+  },
+  {
+   "titre": "Objets et DOM",
+   "theorie": "cours/javascript/04-objets-et-dom.md",
+   "exemple": {
+    "langage": "javascript",
+    "code": "const question = { texte: \"CSS veut dire ?\", choix: [\"a\", \"b\"], bonne: \"b\" };\nconsole.log(question.texte, question.choix.length);\n\n// Dans une vraie page :\n// const btn = document.querySelector(\"#valider\");\n// btn.addEventListener(\"click\", () => { ... });"
+   },
+   "exercices": [
+    {
+     "id": "js4a",
+     "type": "code",
+     "titre": "Le score du quiz",
+     "xp": 20,
+     "consigne": "Écris `calculerScore(reponses, corrige)` : deux tableaux de même longueur, renvoie le nombre de positions où la réponse est identique au corrigé.",
+     "depart": "function calculerScore(reponses, corrige) {\n  let score = 0;\n  // une boucle for avec un index i\n  return score;\n}\n",
+     "tests": "console.log(calculerScore([\"a\",\"c\",\"b\"], [\"a\",\"b\",\"b\"]));\nconsole.log(calculerScore([], []));\nconsole.log(calculerScore([\"d\",\"d\"], [\"d\",\"d\"]));",
+     "attendu": "2\n0\n2",
+     "indice": "for (let i = 0; i < reponses.length; i++) { if (reponses[i] === corrige[i]) score++; }",
+     "solution": "function calculerScore(reponses, corrige) {\n  let score = 0;\n  for (let i = 0; i < reponses.length; i++) {\n    if (reponses[i] === corrige[i]) score++;\n  }\n  return score;\n}"
+    },
+    {
+     "id": "js4b",
+     "type": "qcm",
+     "titre": "Écrire dans la page",
+     "xp": 10,
+     "consigne": "Quelle ligne affiche « Bravo » dans `<p id=\"msg\"></p>` ?",
+     "options": [
+      "document.querySelector(\"#msg\").textContent = \"Bravo\";",
+      "document.msg = \"Bravo\";",
+      "console.log(\"#msg\", \"Bravo\");",
+      "document.querySelector(\"msg\").value = \"Bravo\";"
+     ],
+     "bonne": 0,
+     "explication": "querySelector a besoin du # pour un id, et textContent change le texte affiché d'un paragraphe (value sert aux champs de formulaire)."
+    }
+   ]
+  }
+ ]
+}
