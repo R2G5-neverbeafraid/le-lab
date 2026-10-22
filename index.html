@@ -1,4 +1,4 @@
-<title>Le Labo de RG</title>
+<title>Le Lab</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -10,7 +10,7 @@
 :root{
   --bg:#f3f5fb; --surface:#ffffff; --sunk:#eaedf6; --ink:#161a2c; --mute:#5a6180; --line:#dce1ee;
   --accent:#3646e0; --ok:#178a57; --bad:#d03b45;
-  --py:#2f6fd0; --js:#c48a00; --css:#8a46d6; --sql:#0e8f7d; --php:#5b5fc7; --dev:#e0484f;
+  --py:#2f6fd0; --js:#c48a00; --css:#8a46d6; --sql:#0e8f7d; --php:#5b5fc7; --dev:#e0484f; --ml:#d9601f; --vbg:#eef1f9;
   --code-bg:#151a2e; --code-ink:#e6e9f5; --code-mute:#8c93b3;
   --display:"Unbounded","Arial Rounded MT Bold",system-ui,sans-serif;
   --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -19,12 +19,12 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#0f121d; --surface:#171b2a; --sunk:#1f2436; --ink:#e8ebf6; --mute:#a0a7c4; --line:#2b3148;
   --accent:#8e99ff; --ok:#3fcf8e; --bad:#ff6b74;
-  --py:#6ea4ff; --js:#f2c14e; --css:#bf8cff; --sql:#3fd3bd; --php:#9da1ff; --dev:#ff7a80;
+  --py:#6ea4ff; --js:#f2c14e; --css:#bf8cff; --sql:#3fd3bd; --php:#9da1ff; --dev:#ff7a80; --ml:#ff9a5c; --vbg:#121628;
   --code-bg:#0b0e18; --code-ink:#e6e9f5; --code-mute:#8c93b3; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0f121d; --surface:#171b2a; --sunk:#1f2436; --ink:#e8ebf6; --mute:#a0a7c4; --line:#2b3148;
   --accent:#8e99ff; --ok:#3fcf8e; --bad:#ff6b74;
-  --py:#6ea4ff; --js:#f2c14e; --css:#bf8cff; --sql:#3fd3bd; --php:#9da1ff; --dev:#ff7a80;
+  --py:#6ea4ff; --js:#f2c14e; --css:#bf8cff; --sql:#3fd3bd; --php:#9da1ff; --dev:#ff7a80; --ml:#ff9a5c; --vbg:#121628;
   --code-bg:#0b0e18; --code-ink:#e6e9f5; --code-mute:#8c93b3; color-scheme:dark}
 html,body{background:var(--bg);color:var(--ink)}
 body{font-family:var(--body);font-size:15px;line-height:1.55;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
@@ -37,8 +37,9 @@ button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible{
 /* en-tête */
 header.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:20px 14px}
 .logo{display:flex;align-items:center;gap:10px}
-.logo b{font-family:var(--display);font-size:20px;font-weight:800}
-.logo .dot{width:30px;height:30px;border-radius:9px;background:conic-gradient(var(--py) 0 20%,var(--js) 0 40%,var(--css) 0 60%,var(--sql) 0 80%,var(--php) 0);flex:none}
+.logo b{font-family:var(--display);font-size:20px;font-weight:800;display:block;line-height:1.1}
+.logo small{display:block;font-family:var(--mono);font-size:11px;color:var(--mute);letter-spacing:.03em}
+.logo svg{width:34px;height:34px;flex:none}
 .stats{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .pill{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
 .pill .lv{font-family:var(--display);font-size:12px;color:var(--accent)}
@@ -65,7 +66,7 @@ nav.tabs button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)
 .meter{height:10px;background:var(--sunk);border-radius:9px;overflow:hidden}
 .meter i{display:block;height:100%;background:var(--c,var(--accent));border-radius:9px;transition:width .5s}
 .muted{color:var(--mute);font-size:13.5px}
-.langs{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.langs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
 .lang{background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:14px;padding:16px;text-align:left;color:var(--ink);display:flex;flex-direction:column;gap:8px}
 .lang h3{font-size:15px}
 .lang .n{font-family:var(--mono);font-size:12px;color:var(--mute)}
@@ -147,18 +148,33 @@ details.schema summary{cursor:pointer;font-weight:600}
 .toast.on{opacity:1;transform:translateX(-50%)}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:40;width:100%;height:100%}
 
-@media (max-width:900px){.langs{grid-template-columns:repeat(3,1fr)}.hero,.two{grid-template-columns:1fr}.lview{grid-template-columns:1fr}.side{position:static}.cssgrid{grid-template-columns:1fr}}
-@media (max-width:560px){.langs{grid-template-columns:1fr 1fr}.dcard{grid-template-columns:1fr;gap:10px}.date{flex-direction:row;align-items:baseline;gap:8px}.date .left{margin:0}}
+.vid{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);margin:4px 0 16px}
+.vid canvas{display:block;width:100%;max-width:100%;aspect-ratio:16/9;background:var(--vbg)}
+.vcap{margin:0;padding:12px 16px;font-size:15px;min-height:3.2em;border-top:1px solid var(--line)}
+.vctl{display:flex;gap:12px;align-items:center;padding:0 16px 14px}
+.vbar{flex:1;height:7px;background:var(--sunk);border-radius:9px;cursor:pointer;position:relative;min-width:60px}
+.vbar i{position:absolute;inset:0 auto 0 0;width:0;background:var(--ml);border-radius:9px}
+.vtime{font-family:var(--mono);font-size:12.5px;color:var(--mute);font-variant-numeric:tabular-nums}
+canvas.pg{display:block;width:100%;max-width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--line);background:var(--vbg);cursor:crosshair}
+.sliders{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sliders label{display:flex;flex-direction:column;gap:6px;font-size:14px}
+.sliders input{accent-color:var(--ml);width:100%}
+.info{font-size:14px;font-weight:600;min-height:1.4em}
+footer.foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--mute)}
+footer.foot b{color:var(--ink)}
+@media (max-width:900px){.langs{grid-template-columns:repeat(2,1fr)}.hero,.two{grid-template-columns:1fr}.lview{grid-template-columns:1fr}.side{position:static}.cssgrid{grid-template-columns:1fr}}
+@media (max-width:560px){.langs{grid-template-columns:1fr}.sliders{grid-template-columns:1fr}.dcard{grid-template-columns:1fr;gap:10px}.date{flex-direction:row;align-items:baseline;gap:8px}.date .left{margin:0}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
 <div class="wrap">
   <header class="top">
-    <div class="logo"><span class="dot"></span><b>Le Labo de RG</b></div>
+    <div class="logo"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M15 5h10M16.5 5v11L7.5 31.5A3.5 3.5 0 0 0 10.5 37h19a3.5 3.5 0 0 0 3-5.5L23.5 16V5" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.2 25h17.6l3.4 6.2a2 2 0 0 1-1.8 3H9.6a2 2 0 0 1-1.8-3z" fill="var(--ml)"/><circle cx="17" cy="29.5" r="1.6" fill="var(--surface)"/><circle cx="22.5" cy="27.8" r="1.1" fill="var(--surface)"/><circle cx="27" cy="11" r="2" fill="var(--py)"/><circle cx="31" cy="6" r="1.4" fill="var(--sql)"/></svg><div><b>Le Lab</b><small>by 25 (TwentyFive) Labs</small></div></div>
     <div class="stats" id="stats"></div>
   </header>
   <nav class="tabs" id="tabs" aria-label="Sections"></nav>
   <main id="view"></main>
+  <footer class="foot"><span>Le Lab · Développé par <b>25 (TwentyFive) Labs</b></span><span>Kinshasa · 2026</span></footer>
 </div>
 <div class="toast" id="toast" role="status"></div>
 <canvas id="confetti"></canvas>
@@ -236,7 +252,7 @@ for i in range(3):
    sol:`def nb_reussites(notes):\n    compteur = 0\n    for n in notes:\n        if n >= 10:\n            compteur += 1\n    return compteur`}
  ]},
  {t:"Dictionnaires",th:`<p>Un <b>dictionnaire</b> associe des clés à des valeurs : <code>{"Python": "Prisca", "CSS": "Joël"}</code>. On lit avec <code>d["Python"]</code>, mais si la clé n'existe pas, c'est une erreur. <code>d.get(cle, defaut)</code> renvoie une valeur par défaut à la place.</p>
-<p><code>cle in d</code> teste si une clé existe. <code>for cle, valeur in d.items():</code> parcourt les paires. Une liste de dictionnaires, c'est exactement la forme de tes données dans <code>data.js</code> sur Peer-Learning.</p>`,
+<p><code>cle in d</code> teste si une clé existe. <code>for cle, valeur in d.items():</code> parcourt les paires. Une liste de dictionnaires, c'est la forme typique des données d'un site web : un fichier <code>data.js</code>, une réponse d'API…</p>`,
  ex:`tuteurs = {"Python": "Prisca", "CSS": "Joël", "SQL": "Naomie"}
 print(tuteurs["SQL"])
 print(tuteurs.get("PHP", "personne"))
@@ -320,7 +336,7 @@ console.log(tuteurs.find(t => t.matiere === "CSS").nom);`,
  {t:"Objets et DOM",th:`<p>Un <b>objet</b> regroupe des propriétés : <code>const q = { texte: "…", bonne: "b" }</code>. On lit <code>q.texte</code>.</p>
 <p>Le <b>DOM</b>, c'est la page HTML vue par JavaScript. Les quatre gestes de base :</p>
 <ul><li><code>document.querySelector("#score")</code> trouve un élément</li><li><code>el.textContent = "…"</code> change son texte</li><li><code>el.classList.add("actif")</code> change son style via une classe</li><li><code>el.addEventListener("click", fn)</code> réagit à un clic</li></ul>
-<p>C'est exactement ce que tu as fait en remplaçant les <code>onclick</code> de ton quiz Peer-Learning par des <code>addEventListener</code>.</p>`,
+<p>C'est la bonne pratique : on évite les attributs <code>onclick</code> dans le HTML et on branche les événements en JavaScript.</p>`,
  ex:`const question = { texte: "CSS veut dire ?", choix: ["a", "b"], bonne: "b" };
 console.log(question.texte, question.choix.length);
 
@@ -439,7 +455,7 @@ sql:{name:"SQL",color:"var(--sql)",tag:"Interroger des données",lessons:[
 <pre class="code">SELECT e.nom, s.duree
 FROM seances s
 JOIN etudiants e ON e.id = s.etudiant_id</pre>
-<p>C'est le cœur du module de matching de ton projet E-Campus.</p>`,
+<p>C'est le cœur de toute plateforme qui met en relation des étudiants et des tuteurs.</p>`,
  ex:`SELECT e.nom, s.duree
 FROM seances s
 JOIN etudiants e ON e.id = s.etudiant_id`,
@@ -516,10 +532,100 @@ echo "Merci " . htmlspecialchars($_POST["nom"]);
   {id:"php4b",type:"qcm",title:"GET ou POST ?",xp:10,p:"Ton formulaire de contact envoie un nom et un message à enregistrer. Quelle méthode choisir ?",
    opts:["POST : on modifie des données et rien ne doit apparaître dans l'URL","GET : c'est la méthode par défaut","GET : c'est plus sécurisé","Peu importe"],a:0,why:"GET sert à lire (recherche, filtres). POST sert à envoyer ou modifier des données."}
  ]}
+]},
+ml:{name:"Machine Learning",color:"var(--ml)",tag:"Expliqué simplement, de A à Z",lessons:[
+ {t:"C'est quoi le machine learning ?",video:"v1",th:`<p>Quand tu étais petit, personne ne t'a donné une liste de règles pour reconnaître un chat (« quatre pattes, des moustaches, une queue… »). On t'a montré des chats, plein de chats, en disant « ça, c'est un chat ». Et un jour, tu as su le reconnaître tout seul, même un chat que tu n'avais jamais vu.</p>
+<p>Le <b>machine learning</b> (en français : <b>apprentissage automatique</b>), c'est faire exactement pareil avec un ordinateur. Au lieu de lui écrire les règles, on lui montre des <b>exemples avec la bonne réponse</b>, et il trouve la règle tout seul.</p>
+<ul><li><b>Programmation classique</b> : tu écris les règles, l'ordinateur donne les réponses.</li><li><b>Machine learning</b> : tu donnes des exemples et leurs réponses, l'ordinateur fabrique la règle.</li></ul>
+<p>Tu t'en sers tous les jours sans le savoir : le filtre anti-spam de ta boîte mail, les vidéos qu'on te propose, le déverrouillage du téléphone avec ton visage, la traduction automatique, et les assistants comme Claude ou ChatGPT.</p>`,
+ exos:[
+  {id:"ml1a",type:"qcm",title:"Repérer le machine learning",xp:10,p:"Lequel de ces programmes utilise du machine learning ?",
+   opts:["Un filtre anti-spam qui a appris à partir de milliers d'e-mails marqués « spam » ou « pas spam »","Une calculatrice qui fait 2 + 2","Une page web qui affiche la date du jour","Un programme dont toutes les règles ont été écrites à la main"],a:0,
+   why:"Le filtre a appris à partir d'exemples étiquetés. Les autres suivent des règles écrites par un humain."},
+  {id:"ml1b",type:"qcm",title:"Ce qu'on donne à la machine",xp:10,p:"En machine learning, qu'est-ce qu'on donne à l'ordinateur pour qu'il apprenne ?",
+   opts:["Des exemples avec les bonnes réponses","La liste complète des règles","Rien, il devine tout seul","Un processeur plus rapide"],a:0,
+   why:"Des exemples et leurs réponses : c'est à partir d'eux que la machine construit sa règle."}
+ ]},
+ {t:"Les données, la nourriture de la machine",video:"v2",th:`<p>Une machine apprend avec des <b>données</b>, comme toi avec des exercices. Les données ressemblent à un tableau :</p>
+<ul><li>chaque <b>ligne</b> est un exemple (ici, un fruit) ;</li><li>chaque <b>colonne</b> est une mesure sur cet exemple.</li></ul>
+<p>Les colonnes qu'on mesure s'appellent les <b>caractéristiques</b> (en anglais <i>features</i>) : le poids, la couleur. La colonne avec la bonne réponse s'appelle l'<b>étiquette</b> (en anglais <i>label</i>) : mangue ou avocat.</p>
+<p>Deux règles d'or. Plus il y a d'exemples, et plus ils sont variés, mieux la machine apprend. Et si les exemples sont faux, la machine apprend des bêtises : les informaticiens disent <i>garbage in, garbage out</i>, « des déchets en entrée, des déchets en sortie ».</p>`,
+ exos:[
+  {id:"ml2a",type:"qcm",title:"Trouver l'étiquette",xp:10,p:"On veut prédire si un étudiant va valider son année. On a : ses heures de révision, sa présence en cours, ses notes du premier semestre, et s'il a validé ou non. Quelle colonne est l'<b>étiquette</b> ?",
+   opts:["S'il a validé ou non","Ses heures de révision","Sa présence en cours","Ses notes du premier semestre"],a:0,
+   why:"L'étiquette est la réponse qu'on veut apprendre à prédire. Les trois autres colonnes sont des caractéristiques."},
+  {id:"ml2b",type:"qcm",title:"Des déchets en entrée",xp:10,p:"Dans les exemples d'entraînement, plein d'avocats ont été étiquetés « mangue » par erreur. Que va-t-il se passer ?",
+   opts:["La machine apprend ces erreurs et va aussi confondre les avocats avec des mangues","La machine corrige toute seule les erreurs","Rien, les erreurs n'ont pas d'importance","La machine refuse d'apprendre"],a:0,
+   why:"La machine ne sait pas que les étiquettes sont fausses. Elle fait confiance aux exemples qu'on lui donne."}
+ ]},
+ {t:"Apprendre, c'est se tromper de moins en moins",video:"v3",th:`<p>Prenons un exemple concret : deviner le <b>prix d'une course en taxi-moto</b> selon la distance. On a noté plusieurs courses : 1 km, 2 km, 3 km… et leur prix.</p>
+<p>La machine cherche une droite qui passe au plus près des points : <code>prix = a × distance + b</code>. Ici, <code>a</code> est le prix de chaque kilomètre et <code>b</code> le prix de départ.</p>
+<p>Au début, elle choisit <code>a</code> et <code>b</code> un peu au hasard, et elle se trompe beaucoup. Elle calcule son <b>erreur moyenne</b> : en moyenne, de combien ses prédictions sont loin des vrais prix. Puis elle bouge un tout petit peu <code>a</code> et <code>b</code> dans le sens qui fait baisser l'erreur, et elle recommence, des milliers de fois.</p>
+<p>Cette méthode s'appelle la <b>descente de gradient</b>. Imagine que tu descends une colline dans le brouillard : tu ne vois pas le bas, mais tu sens la pente sous tes pieds et tu fais un pas vers le bas, encore et encore. Prédire un nombre (un prix, une température, une note) s'appelle une <b>régression</b>.</p>`,
+ exos:[
+  {id:"ml3a",type:"fit",title:"Entraîne le modèle toi-même",xp:25,p:"Tu es la machine. Bouge les deux curseurs pour que la droite passe au plus près des courses. Objectif : une erreur moyenne de <b>150 FC ou moins</b>."},
+  {id:"ml3b",type:"code",title:"Calculer l'erreur moyenne en Python",xp:25,
+   p:`Écris <code>erreur_moyenne(points, a, b)</code>. <code>points</code> est une liste de couples <code>(distance, prix)</code>. Pour chaque course, la prédiction vaut <code>a * distance + b</code> ; l'erreur est l'écart en valeur absolue (<code>abs()</code>) avec le vrai prix. Renvoie la moyenne des erreurs, arrondie à 1 décimale.`,
+   start:`def erreur_moyenne(points, a, b):\n    total = 0\n    for distance, prix in points:\n        # calcule la prédiction et ajoute l'écart à total\n        pass\n    return 0\n`,
+   tests:`courses = [(1, 1500), (2, 2000), (3, 2600)]\nprint(erreur_moyenne(courses, 500, 1000))\nprint(erreur_moyenne(courses, 0, 0))`,expected:`33.3\n2033.3`,
+   hint:"Dans la boucle : prediction = a * distance + b, puis total += abs(prix - prediction). À la fin : return round(total / len(points), 1).",
+   sol:`def erreur_moyenne(points, a, b):\n    total = 0\n    for distance, prix in points:\n        prediction = a * distance + b\n        total += abs(prix - prediction)\n    return round(total / len(points), 1)`}
+ ]},
+ {t:"Classer : demander aux voisins",video:"v4",th:`<p>Parfois, on ne veut pas prédire un nombre mais une <b>catégorie</b> : mangue ou avocat, spam ou pas spam, chat ou chien. Ça s'appelle la <b>classification</b>.</p>
+<p>La méthode la plus simple du monde s'appelle <b>k plus proches voisins</b> (<i>k-NN</i>). Un nouveau fruit arrive ? On le place sur le graphique, on regarde les <code>k</code> exemples les plus proches de lui, et ils votent. La majorité gagne.</p>
+<p>On prend souvent <code>k = 3</code> ou <code>k = 5</code> : un nombre impair, pour qu'il n'y ait jamais d'égalité entre deux catégories. La « proximité », c'est la distance à vol d'oiseau, calculée avec le théorème de Pythagore : <code>√(dx² + dy²)</code>.</p>
+<p>C'est la même idée que les recommandations : « les gens qui aiment ce que tu aimes ont aussi aimé… ».</p>`,
+ exos:[
+  {id:"ml4a",type:"knn",title:"Joue avec les voisins",xp:20,p:"Touche le graphique pour placer un fruit mystère : ses 3 plus proches voisins votent. Pour réussir, trouve un endroit où il est classé <b>mangue</b> et un autre où il est classé <b>avocat</b>."},
+  {id:"ml4b",type:"code",title:"Le plus proche voisin en Python",xp:25,
+   p:`Écris <code>plus_proche(point, exemples)</code>. <code>point</code> est un couple <code>(x, y)</code> ; <code>exemples</code> est une liste de <code>(x, y, etiquette)</code>. Renvoie l'étiquette de l'exemple le plus proche. Astuce : pas besoin de racine carrée pour comparer, <code>dx*dx + dy*dy</code> suffit.`,
+   start:`def plus_proche(point, exemples):\n    meilleure_distance = None\n    meilleure_etiquette = None\n    # parcours les exemples\n    return meilleure_etiquette\n`,
+   tests:`ex = [(1, 1, "avocat"), (8, 9, "mangue"), (2, 3, "avocat")]\nprint(plus_proche((7, 7), ex))\nprint(plus_proche((1, 2), ex))`,expected:`mangue\navocat`,
+   hint:"Pour chaque (x, y, etiquette) : d = (x - point[0])**2 + (y - point[1])**2 ; si meilleure_distance est None ou d < meilleure_distance, on garde d et etiquette.",
+   sol:`def plus_proche(point, exemples):\n    meilleure_distance = None\n    meilleure_etiquette = None\n    for x, y, etiquette in exemples:\n        d = (x - point[0]) ** 2 + (y - point[1]) ** 2\n        if meilleure_distance is None or d < meilleure_distance:\n            meilleure_distance = d\n            meilleure_etiquette = etiquette\n    return meilleure_etiquette`},
+  {id:"ml4c",type:"qcm",title:"Pourquoi k impair ?",xp:10,p:"Pourquoi choisit-on souvent un nombre impair de voisins, comme 3 ou 5, quand il y a deux catégories ?",
+   opts:["Pour éviter les égalités au moment du vote","Parce que les ordinateurs n'aiment pas les nombres pairs","Pour aller plus vite","Ça n'a aucune importance"],a:0,why:"Avec 4 voisins, on peut avoir 2 mangues contre 2 avocats. Avec 3, il y a toujours une majorité."}
+ ]},
+ {t:"Entraînement, test et pièges",video:"v5",th:`<p>Comment savoir si la machine a vraiment appris ? Exactement comme à l'école : avec un examen qu'elle n'a jamais vu.</p>
+<p>On coupe les données en deux. Environ 80 % servent à l'<b>entraînement</b> ; les 20 % restants sont cachés et servent au <b>test</b> à la fin. Si un prof donnait les sujets de l'examen à l'avance, une bonne note ne prouverait rien.</p>
+<p>Trois pièges à connaître :</p>
+<ul><li><b>Le surapprentissage</b> : le modèle apprend les exemples par cœur, jusqu'aux petites erreurs. Parfait à l'entraînement, nul au test.</li><li><b>Le sous-apprentissage</b> : le modèle est trop simple pour saisir la tendance. Mauvais partout.</li><li><b>Le biais</b> : si les exemples ne représentent pas tout le monde, le modèle sera injuste. Un système de reconnaissance de visages entraîné surtout sur des visages à peau claire fonctionne moins bien sur les peaux foncées. Ce problème a été mesuré sur de vrais systèmes commerciaux.</li></ul>`,
+ exos:[
+  {id:"ml5a",type:"qcm",title:"Par cœur",xp:10,p:"Un modèle a 100 % de bonnes réponses sur ses données d'entraînement, mais seulement 55 % sur le test. Que se passe-t-il ?",
+   opts:["Il a appris par cœur au lieu de comprendre : c'est du surapprentissage","Il est parfait, le test est mal fait","Il n'a pas assez de neurones, c'est tout","C'est normal, il faut toujours 100 % à l'entraînement"],a:0,
+   why:"Un grand écart entre l'entraînement et le test est le signe classique du surapprentissage."},
+  {id:"ml5b",type:"qcm",title:"Le biais",xp:10,p:"Une application de diagnostic de maladies de peau a été entraînée presque uniquement avec des photos de peaux claires. Que risque-t-il d'arriver à Kinshasa ?",
+   opts:["Elle se trompera plus souvent, car elle a peu vu de peaux foncées","Rien, la couleur de peau ne change rien pour une machine","Elle sera plus précise","Elle refusera de fonctionner"],a:0,
+   why:"Un modèle n'est bon que sur le genre d'exemples qu'il a vus. Des données variées sont une question de qualité et de justice."}
+ ]},
+ {t:"Neurones, réseaux et IA d'aujourd'hui",video:"v6",th:`<p>Un <b>neurone artificiel</b> est une toute petite calculatrice. Il reçoit des nombres, multiplie chacun par un <b>poids</b> (son importance), additionne le tout, et s'« allume » (donne 1) si la somme dépasse un <b>seuil</b>. Sinon il donne 0. Apprendre, pour un neurone, c'est régler ses poids.</p>
+<p>Un neurone seul ne sait pas faire grand-chose. Mais on en empile des milliers, puis des millions, en <b>couches</b> : c'est un <b>réseau de neurones</b>. Quand il y a beaucoup de couches, on parle de <b>deep learning</b> (apprentissage profond).</p>
+<p>Les IA qui écrivent, comme Claude, sont des réseaux géants entraînés sur d'énormes quantités de texte avec une tâche toute simple : <b>deviner le mot suivant</b>. À force de le faire sur des milliards d'exemples, le réseau finit par capter la grammaire, des faits, et des façons de raisonner.</p>
+<p><b>Et maintenant ?</b> Le chemin classique : Python solide, puis <code>numpy</code> et <code>pandas</code> pour manipuler les données, puis <code>scikit-learn</code> pour tes premiers modèles. Voici le k-NN de la leçon 4 en vrai scikit-learn (à lancer sur ton ordinateur) :</p>
+<pre class="code">from sklearn.neighbors import KNeighborsClassifier
+
+X = [[300, 9], [200, 2], [280, 8], [230, 3]]   # poids, couleur
+y = ["mangue", "avocat", "mangue", "avocat"]  # étiquettes
+
+modele = KNeighborsClassifier(n_neighbors=3)
+modele.fit(X, y)                     # l'entraînement
+print(modele.predict([[265, 6]]))    # ['mangue']</pre>
+<p>Ensuite, le site Kaggle propose des jeux de données gratuits et des compétitions pour débutants.</p>`,
+ exos:[
+  {id:"ml6a",type:"code",title:"Code ton premier neurone",xp:25,
+   p:`Écris <code>neurone(entrees, poids, seuil)</code> : multiplie chaque entrée par son poids, additionne, et renvoie <code>1</code> si la somme est supérieure ou égale au seuil, sinon <code>0</code>.`,
+   start:`def neurone(entrees, poids, seuil):\n    somme = 0\n    # utilise range(len(entrees)) pour avoir les index\n    return 0\n`,
+   tests:`print(neurone([1, 0, 1], [0.5, 0.9, 0.4], 0.8))\nprint(neurone([0, 1, 0], [0.5, 0.2, 0.4], 0.8))\nprint(neurone([2, 1], [0.25, 0.5], 1.0))`,expected:`1\n0\n1`,
+   hint:"for i in range(len(entrees)): somme += entrees[i] * poids[i] ; puis if somme >= seuil: return 1.",
+   sol:`def neurone(entrees, poids, seuil):\n    somme = 0\n    for i in range(len(entrees)):\n        somme += entrees[i] * poids[i]\n    if somme >= seuil:\n        return 1\n    return 0`},
+  {id:"ml6b",type:"qcm",title:"Comment apprend une IA qui écrit ?",xp:10,p:"Quelle est la tâche de base avec laquelle on entraîne un grand modèle de langage comme Claude ?",
+   opts:["Deviner le mot suivant d'un texte, sur des milliards d'exemples","Apprendre un dictionnaire par cœur","Copier des réponses écrites par des humains pour chaque question possible","Chercher sur Google à chaque fois"],a:0,
+   why:"La prédiction du mot suivant, répétée à une échelle énorme, est la base. D'autres étapes d'entraînement viennent ensuite affiner son comportement."}
+ ]}
 ]}
 };
-const ORDER=["py","js","css","sql","php"];
-const HASH={py:"python",js:"javascript",css:"css",sql:"sql",php:"php"};
+const ORDER=["py","js","css","sql","php","ml"];
+const HASH={py:"python",js:"javascript",css:"css",sql:"sql",php:"php",ml:"ml"};
 
 /* ================= DEVOIRS ================= */
 const DEVOIRS=[
@@ -527,16 +633,16 @@ const DEVOIRS=[
   txt:"Un script Python qui demande au clavier (input) les notes de 5 UE, puis affiche la moyenne, les crédits obtenus (6 par UE validée à 10 ou plus) et le statut du semestre.",
   checks:["Une fonction moyenne(notes) et une fonction statut(credits)","Les notes sont lues avec input() et converties avec float()","Une boucle for qui compte les UE validées","Un affichage propre avec des f-strings","Testé avec au moins 3 jeux de notes différents"]},
  {id:"d2",lang:"css",date:"2026-11-04",titre:"La grille des tuteurs, version responsive",
-  txt:"Reprends la page des tuteurs de ton site Peer-Learning et refais toute la mise en page des cartes à la main : 3 colonnes sur ordinateur, 2 sur tablette, 1 sur téléphone.",
+  txt:"Construis la page « Nos tuteurs » d'une plateforme Peer-Learning et fais toute la mise en page des cartes à la main : 3 colonnes sur ordinateur, 2 sur tablette, 1 sur téléphone.",
   checks:["box-sizing: border-box sur tous les éléments","Cartes avec padding, bordure et coins arrondis","Avatar et nom alignés avec Flexbox","Grille CSS avec repeat() et gap","Deux media queries (tablette et téléphone), testées en réduisant la fenêtre"]},
  {id:"d3",lang:"js",date:"2026-11-11",titre:"Un quiz qui se mélange à chaque partie",
-  txt:"Ajoute à ton questionnaire Peer-Learning la régénération des questions : à chaque nouvelle partie, 10 questions tirées au hasard parmi les 42, dans un ordre différent.",
+  txt:"Construis un quiz de culture web d'au moins 20 questions qui se régénère : à chaque nouvelle partie, 10 questions tirées au hasard, dans un ordre différent.",
   checks:["Les questions sont un tableau d'objets {texte, choix, bonne}","Une fonction melanger(tableau) (algorithme de Fisher-Yates)","Bouton « Rejouer » branché avec addEventListener","Score calculé avec une fonction séparée","Meilleur score gardé dans localStorage"]},
  {id:"d4",lang:"sql",date:"2026-11-18",titre:"La base de données Peer-Learning",
   txt:"Dans MySQL (XAMPP / phpMyAdmin) ou SQLite, crée la vraie base du projet : étudiants, tuteurs, séances. Remplis-la et écris les requêtes dont le site aurait besoin.",
   checks:["Trois tables avec clé primaire et clés étrangères","Au moins 8 lignes par table (INSERT)","Une requête avec WHERE et ORDER BY","Une requête avec GROUP BY et COUNT ou SUM","Une requête avec deux JOIN","Le tout enregistré dans un fichier peer_learning.sql"]},
  {id:"d5",lang:"php",date:"2026-11-25",titre:"Le formulaire de contact côté serveur",
-  txt:"Ton formulaire de contact actuel valide seulement dans le navigateur. Fais-le traiter par PHP : vérification des champs sur le serveur, puis enregistrement dans la base du devoir 4.",
+  txt:"Un formulaire de contact qui valide seulement dans le navigateur ne protège rien. Fais-le traiter par PHP : vérification des champs sur le serveur, puis enregistrement dans la base du devoir 4.",
   checks:["Formulaire en method=\"post\"","Vérification des champs vides et de l'email avec filter_var()","Enregistrement avec PDO et une requête préparée","Affichage sécurisé avec htmlspecialchars()","Une page qui liste les messages reçus"]},
  {id:"d6",lang:"dev",date:"2026-12-09",titre:"Projet final : Peer-Learning dynamique",
   txt:"Assemble tout : la liste des tuteurs vient de la base (PHP + SQL), on la filtre en direct (JavaScript), elle est mise en forme proprement (CSS), et un script Python produit un petit rapport de statistiques à partir d'un export CSV.",
@@ -623,6 +729,177 @@ const CSS_BASE=`:host{display:block;background:#ffffff;color:#1c2033;font:14px/1
 h3{margin:0;font-size:15px;font-weight:400}p{margin:4px 0}.matiere{color:#5a6180;font-size:15px}.bio{font-size:13px;color:#3c4260}`;
 const gcs=el=>getComputedStyle(el);
 
+/* ================= VIDÉOS ML ================= */
+const VW=960,VH=540,DISP="Unbounded, system-ui, sans-serif",BODY="Figtree, system-ui, sans-serif",MONO="JetBrains Mono, ui-monospace, monospace";
+function CV(){const cs=getComputedStyle(document.documentElement),v=n=>cs.getPropertyValue(n).trim();return{ink:v("--ink"),mute:v("--mute"),line:v("--line"),bg:v("--vbg"),surf:v("--surface"),ok:v("--ok"),bad:v("--bad"),acc:v("--accent"),ml:v("--ml"),sky:v("--py")};}
+const E=x=>x<=0?0:x>=1?1:1-Math.pow(1-x,3);
+const A=(p,s,d=.6)=>E((p-s)/d);
+function T(g,C,s,x,y,o={}){if((o.a??1)<=0)return;g.save();g.globalAlpha=o.a??1;g.fillStyle=o.c||C.ink;g.font=`${o.w||600} ${o.s||26}px ${o.f||BODY}`;g.textAlign=o.al||"left";g.textBaseline="middle";g.fillText(s,x,y);g.restore();}
+function rr(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();}
+function box(g,C,x,y,w,h,label,o={}){if((o.a??1)<=0)return;g.save();g.globalAlpha=o.a??1;rr(g,x,y,w,h,12);g.fillStyle=o.fill||C.surf;g.fill();g.lineWidth=2;g.strokeStyle=o.stroke||C.line;g.stroke();g.restore();T(g,C,label,x+w/2,y+h/2,{al:"center",s:o.s||20,c:o.c||C.ink,a:o.a??1,w:700});}
+function arrow(g,C,x1,y1,x2,y2,a=1,c){if(a<=0)return;g.save();g.globalAlpha=a;g.strokeStyle=c||C.mute;g.fillStyle=c||C.mute;g.lineWidth=3;g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke();const an=Math.atan2(y2-y1,x2-x1);g.beginPath();g.moveTo(x2,y2);g.lineTo(x2-14*Math.cos(an-.4),y2-14*Math.sin(an-.4));g.lineTo(x2-14*Math.cos(an+.4),y2-14*Math.sin(an+.4));g.fill();g.restore();}
+function mango(g,x,y,r,a=1,green){if(a<=0||r<=0)return;g.save();g.globalAlpha=a;g.fillStyle=green?"#86b93c":"#f29a1f";g.beginPath();g.ellipse(x,y,r*1.1,r*.85,-.4,0,7);g.fill();g.fillStyle=green?"#a6cf5a":"#f7b955";g.beginPath();g.ellipse(x-r*.3,y-r*.25,r*.35,r*.2,-.4,0,7);g.fill();g.fillStyle="#3f7a22";g.beginPath();g.ellipse(x+r*.55,y-r*.85,r*.38,r*.15,-.6,0,7);g.fill();g.restore();}
+function avocat(g,x,y,r,a=1){if(a<=0||r<=0)return;g.save();g.globalAlpha=a;g.fillStyle="#3c6a20";g.beginPath();g.arc(x,y+r*.2,r*.85,0,7);g.fill();g.beginPath();g.arc(x,y-r*.5,r*.55,0,7);g.fill();g.fillStyle="#cddc72";g.beginPath();g.arc(x,y+r*.25,r*.6,0,7);g.fill();g.fillStyle="#7a4a1c";g.beginPath();g.arc(x,y+r*.3,r*.3,0,7);g.fill();g.restore();}
+const fruit=(g,k,x,y,r,a)=>k==="M"?mango(g,x,y,r,a):avocat(g,x,y,r,a);
+function tagLbl(g,C,s,x,y,col,a=1){if(a<=0)return;g.save();g.globalAlpha=a;g.font=`700 16px ${BODY}`;const w=g.measureText(s).width+20;rr(g,x-w/2,y-14,w,28,14);g.fillStyle=col;g.fill();g.restore();T(g,C,s,x,y,{al:"center",s:16,c:"#ffffff",a,w:700});}
+function plot(g,C,o,a=1){
+  const P={...o,px:x=>o.x0+(x-o.xmin)/(o.xmax-o.xmin)*o.w,py:y=>o.y0-(y-o.ymin)/(o.ymax-o.ymin)*o.h};
+  if(a>0){g.save();g.globalAlpha=a;g.strokeStyle=C.mute;g.lineWidth=2;g.beginPath();g.moveTo(o.x0,o.y0-o.h);g.lineTo(o.x0,o.y0);g.lineTo(o.x0+o.w,o.y0);g.stroke();
+  (o.xt||[]).forEach(v=>T(g,C,String(v),P.px(v),o.y0+20,{al:"center",s:15,c:C.mute,w:500}));
+  (o.yt||[]).forEach(v=>T(g,C,typeof v==="number"&&v>=1000?v.toLocaleString("fr-FR"):String(v),o.x0-12,P.py(v),{al:"right",s:15,c:C.mute,w:500}));
+  if(o.xl)T(g,C,o.xl,o.x0+o.w,o.y0+46,{al:"right",s:17,c:C.mute});
+  if(o.yl)T(g,C,o.yl,o.x0,o.y0-o.h-24,{s:17,c:C.mute});g.restore();}
+  return P;
+}
+const FRUITS=[[300,9,"M"],[280,8,"M"],[340,9,"M"],[260,7,"M"],[320,8,"M"],[200,2,"A"],[230,3,"A"],[180,1,"A"],[250,4,"A"],[210,2,"A"]];
+const FPLOT={x0:130,y0:460,w:760,h:360,xmin:150,xmax:370,ymin:0,ymax:10,xt:[150,200,250,300,350],yt:[0,5,10],xl:"Poids (g) →",yl:"Couleur : 0 = vert, 10 = orange"};
+const TAXI=[[1,1500],[2,2000],[3,2600],[4,3000],[5,3600],[6,4000]];
+const TPLOT={x0:140,y0:470,w:740,h:360,xmin:0,xmax:8,ymin:0,ymax:5500,xt:[0,1,2,3,4,5,6,7,8],yt:[0,1000,2000,3000,4000,5000],xl:"Distance (km) →",yl:"Prix (FC)"};
+const mae=(a,b)=>TAXI.reduce((s,[d,p])=>s+Math.abs(p-(a*d+b)),0)/TAXI.length;
+function regScene(g,C,P,a,b,resA=1){
+  g.save();g.strokeStyle=C.ml;g.lineWidth=4;g.beginPath();g.moveTo(P.px(0),P.py(b));g.lineTo(P.px(8),P.py(a*8+b));g.stroke();g.restore();
+  if(resA>0){g.save();g.globalAlpha=resA;g.strokeStyle=C.bad;g.lineWidth=3;TAXI.forEach(([d,p])=>{g.beginPath();g.moveTo(P.px(d),P.py(p));g.lineTo(P.px(d),P.py(a*d+b));g.stroke();});g.restore();}
+  TAXI.forEach(([d,p])=>{g.beginPath();g.arc(P.px(d),P.py(p),9,0,7);g.fillStyle=C.sky;g.fill();});
+}
+function knn(q,k=3){return FRUITS.map(f=>({f,d:Math.hypot((f[0]-q[0])/220,(f[1]-q[1])/10)})).sort((x,y)=>x.d-y.d).slice(0,k);}
+const TRAIN=[[1,1.6],[2,2.9],[3,2.3],[4,3.8],[5,3.4],[6,4.9],[7,4.6],[8,6.1]],TEST=[[1.5,2.0],[3.5,3.2],[5.5,4.4],[7.5,5.4]];
+const OPLOT={x0:120,y0:470,w:780,h:350,xmin:0,xmax:9,ymin:0,ymax:9,xl:"→",yl:""};
+const WIG=(()=>{const pts=[];TRAIN.forEach((p,i)=>{pts.push(p);const n=TRAIN[i+1];if(n)pts.push([(p[0]+n[0])/2,(p[1]+n[1])/2+(i%2?-1.7:1.7)]);});
+  const out=[];for(let i=0;i<pts.length-1;i++){const p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2;for(let t=0;t<1;t+=.05){const t2=t*t,t3=t2*t;const f=(a,b,c,d)=>.5*((2*b)+(-a+c)*t+(2*a-5*b+4*c-d)*t2+(-a+3*b-3*c+d)*t3);out.push([f(p0[0],p1[0],p2[0],p3[0]),f(p0[1],p1[1],p2[1],p3[1])]);}}out.push(pts[pts.length-1]);return out;})();
+const wigAt=x=>{let best=WIG[0];for(const p of WIG)if(Math.abs(p[0]-x)<Math.abs(best[0]-x))best=p;return best[1];};
+function curve(g,P,pts,frac,col,w,a=1){if(a<=0)return;const n=Math.max(2,Math.floor(pts.length*frac));g.save();g.globalAlpha=a;g.strokeStyle=col;g.lineWidth=w;g.lineJoin="round";g.beginPath();pts.slice(0,n).forEach((p,i)=>i?g.lineTo(P.px(p[0]),P.py(p[1])):g.moveTo(P.px(p[0]),P.py(p[1])));g.stroke();g.restore();}
+function dots(g,P,pts,col,r=8,a=1){if(a<=0)return;g.save();g.globalAlpha=a;g.fillStyle=col;pts.forEach(([x,y])=>{g.beginPath();g.arc(P.px(x),P.py(y),r,0,7);g.fill();});g.restore();}
+function neuronBase(g,C,p,showCalc){
+  const ins=[["Couleur = 9",.5,150],["Poids = 3",.3,270],["Taches = 1",-.4,390]];
+  ins.forEach(([l,w,y],i)=>{const a=A(p,i*.5);g.save();g.globalAlpha=a;g.strokeStyle=w<0?C.bad:C.sky;g.lineWidth=2+Math.abs(w)*10;g.beginPath();g.moveTo(250,y);g.lineTo(450,270);g.stroke();g.restore();
+    g.save();g.globalAlpha=a;g.beginPath();g.arc(190,y,42,0,7);g.fillStyle=C.surf;g.fill();g.strokeStyle=C.line;g.lineWidth=2;g.stroke();g.restore();
+    T(g,C,l.split(" = ")[1],190,y,{al:"center",s:26,w:800,a,f:DISP});T(g,C,l.split(" = ")[0],190,y-60,{al:"center",s:16,c:C.mute,a});
+    T(g,C,"× "+String(w).replace(".",","),350,(y+270)/2-18,{al:"center",s:18,c:w<0?C.bad:C.sky,a:A(p,1.5+i*.4),w:700});});
+  const a=A(p,1.2);g.save();g.globalAlpha=a;g.beginPath();g.arc(520,270,70,0,7);g.fillStyle=C.surf;g.fill();g.strokeStyle=C.ml;g.lineWidth=4;g.stroke();g.restore();
+  T(g,C,"Σ",520,270,{al:"center",s:48,w:800,a,f:DISP,c:C.ml});
+  if(showCalc)T(g,C,"9 × 0,5 + 3 × 0,3 + 1 × (−0,4) = 5",480,490,{al:"center",s:24,a:showCalc,f:MONO,w:600});
+}
+const VIDEOS={
+ v1:{title:"Règles ou exemples ?",scenes:[
+  {d:6,cap:"Imagine : tu veux apprendre à un ordinateur à reconnaître une mangue.",draw(g,C,p){T(g,C,"C'est quoi le",480,150,{s:42,al:"center",f:DISP,w:800,a:A(p,0)});T(g,C,"machine learning ?",480,215,{s:52,al:"center",f:DISP,w:800,c:C.ml,a:A(p,.4)});mango(g,480,370,75*A(p,1.2,.8),A(p,1.2));}},
+  {d:8,cap:"Méthode classique : tu écris toi-même les règles. Mais une mangue peut être verte, petite ou tachée… et les règles se trompent.",draw(g,C,p){
+   T(g,C,"Méthode classique : écrire les règles",60,60,{s:28,f:DISP,w:700});box(g,C,60,110,500,260,"",{});
+   ["SI couleur = orange","ET forme = ronde","ET poids > 250 g","ALORS c'est une mangue"].forEach((l,i)=>T(g,C,l,90,160+i*55,{f:MONO,s:22,a:A(p,.5+i*.7),c:i===3?C.ml:C.ink}));
+   mango(g,770,220,75*A(p,4,.6),A(p,4),true);T(g,C,"Une mangue verte…",770,330,{al:"center",s:22,a:A(p,4.4)});T(g,C,"Les règles disent : NON",770,385,{al:"center",s:26,w:800,c:C.bad,a:A(p,5.6)});}},
+  {d:8,cap:"Machine learning : au lieu des règles, on montre plein d'exemples avec la bonne réponse.",draw(g,C,p){
+   T(g,C,"Machine learning : montrer des exemples",60,60,{s:28,f:DISP,w:700});
+   const ks=["M","A","M","M","A","A","M","A"];ks.forEach((k,i)=>{const x=150+(i%4)*220,y=190+Math.floor(i/4)*190,a=A(p,.4+i*.55);if(k==="M")mango(g,x,y,48,a,i===3);else avocat(g,x,y,48,a);tagLbl(g,C,k==="M"?"mangue":"avocat",x,y+78,k==="M"?"#d97a10":"#3c6a20",a);});}},
+  {d:9,cap:"L'ordinateur cherche tout seul ce qui différencie une mangue d'un avocat. Il fabrique la règle : c'est ça, apprendre.",draw(g,C,p){
+   T(g,C,"Programmation classique",60,90,{s:20,c:C.mute,a:A(p,0)});const a1=A(p,.2);
+   box(g,C,60,120,160,64,"Règles",{a:a1});box(g,C,240,120,160,64,"Données",{a:a1});arrow(g,C,410,152,460,152,a1);box(g,C,470,120,180,64,"Programme",{a:a1});arrow(g,C,660,152,710,152,a1);box(g,C,720,120,180,64,"Réponses",{a:a1});
+   T(g,C,"Machine learning",60,300,{s:20,c:C.ml,a:A(p,2.5),w:800});const a2=A(p,2.8);
+   box(g,C,60,330,160,64,"Données",{a:a2});box(g,C,240,330,160,64,"Réponses",{a:a2});arrow(g,C,410,362,460,362,a2,C.ml);box(g,C,470,330,180,64,"Apprentissage",{a:a2,stroke:C.ml});arrow(g,C,660,362,710,362,A(p,4),C.ml);
+   box(g,C,720,330,180,64,"La règle !",{a:A(p,4.5),fill:C.ml,stroke:C.ml,c:"#ffffff"});}}
+ ]},
+ v2:{title:"Les données",scenes:[
+  {d:7,cap:"Pour apprendre, la machine a besoin de données : un tableau où chaque ligne est un exemple.",draw(g,C,p){table(g,C,p,0);}},
+  {d:7,cap:"Les colonnes qu'on mesure s'appellent les caractéristiques. La bonne réponse s'appelle l'étiquette.",draw(g,C,p){table(g,C,99,0);
+   const a=A(p,.5);g.save();g.globalAlpha=a;g.setLineDash([10,8]);g.lineWidth=3;g.strokeStyle=C.sky;rr(g,80,55,520,410,14);g.stroke();g.strokeStyle=C.ml;rr(g,620,55,250,410,14);g.stroke();g.restore();
+   T(g,C,"Caractéristiques : ce qu'on mesure",340,500,{al:"center",s:20,c:C.sky,w:800,a});T(g,C,"Étiquette : la réponse",745,500,{al:"center",s:20,c:C.ml,w:800,a:A(p,1.8)});}},
+  {d:8,cap:"On peut dessiner chaque fruit comme un point : le poids à l'horizontale, la couleur à la verticale.",draw(g,C,p){const P=plot(g,C,FPLOT,A(p,0));FRUITS.forEach((f,i)=>fruit(g,f[2],P.px(f[0]),P.py(f[1]),18,A(p,.8+i*.4)));}},
+  {d:7,cap:"Regarde : les mangues et les avocats forment deux groupes bien séparés. C'est ce que la machine va utiliser.",draw(g,C,p){const P=plot(g,C,FPLOT);FRUITS.forEach(f=>fruit(g,f[2],P.px(f[0]),P.py(f[1]),18,1));
+   const a=A(p,.6);g.save();g.globalAlpha=a;g.setLineDash([8,7]);g.lineWidth=3;g.strokeStyle="#e08a16";g.beginPath();g.ellipse(P.px(300),P.py(8.2),180,90,0,0,7);g.stroke();g.strokeStyle="#4f8a2b";g.beginPath();g.ellipse(P.px(215),P.py(2.4),150,90,0,0,7);g.stroke();g.restore();
+   T(g,C,"les mangues",P.px(300),P.py(8.2)-115,{al:"center",s:20,w:800,c:"#d97a10",a:A(p,1.2)});T(g,C,"les avocats",P.px(215),P.py(2.4)-110,{al:"center",s:20,w:800,c:"#4f8a2b",a:A(p,1.8)});}}
+ ]},
+ v3:{title:"Apprendre en se trompant",scenes:[
+  {d:7,cap:"Exemple : on veut deviner le prix d'une course en taxi-moto selon la distance. Chaque point est une vraie course.",draw(g,C,p){T(g,C,"Prix d'une course en taxi-moto",480,40,{al:"center",s:24,f:DISP,w:700});const P=plot(g,C,TPLOT,A(p,0));TAXI.forEach(([d,pr],i)=>dots(g,P,[[d,pr]],C.sky,9,A(p,.8+i*.5)));}},
+  {d:8,cap:"La machine commence avec une droite choisie au hasard. Les traits rouges sont ses erreurs : elle est loin du compte.",draw(g,C,p){const P=plot(g,C,TPLOT);const k=A(p,.3,1.5);g.save();g.globalAlpha=k;regScene(g,C,P,150,3000,A(p,2,1));g.restore();if(k<1)dots(g,P,TAXI,C.sky,9);errBox(g,C,mae(150,3000),A(p,3.5));}},
+  {d:10,cap:"À chaque essai, elle déplace un peu la droite dans le sens qui réduit l'erreur. On répète ça des milliers de fois.",draw(g,C,p){const P=plot(g,C,TPLOT);const k=E(p/8.5),a=150+350*k,b=3000-2000*k;regScene(g,C,P,a,b);errBox(g,C,mae(a,b),1,Math.round(1+k*1999));}},
+  {d:8,cap:"L'erreur est petite : le modèle est entraîné. Il peut maintenant estimer le prix d'une course de 7 km, qu'il n'a jamais vue.",draw(g,C,p){const P=plot(g,C,TPLOT);regScene(g,C,P,500,1000,.4);const a=A(p,.8);g.save();g.globalAlpha=a;g.setLineDash([7,6]);g.strokeStyle=C.ml;g.lineWidth=2;g.beginPath();g.moveTo(P.px(7),P.py(0));g.lineTo(P.px(7),P.py(4500));g.lineTo(P.px(0),P.py(4500));g.stroke();g.restore();
+   g.save();g.globalAlpha=a;g.beginPath();g.arc(P.px(7),P.py(4500),13,0,7);g.fillStyle=C.ml;g.fill();g.restore();T(g,C,"7 km → environ 4 500 FC",P.px(7)-10,P.py(4500)-45,{al:"right",s:24,w:800,c:C.ml,a:A(p,2)});}}
+ ]},
+ v4:{title:"Les plus proches voisins",scenes:[
+  {d:7,cap:"Un nouveau fruit arrive. On connaît son poids et sa couleur, mais pas ce que c'est.",draw(g,C,p){const P=plot(g,C,FPLOT);FRUITS.forEach(f=>fruit(g,f[2],P.px(f[0]),P.py(f[1]),18,1));mystery(g,C,P,[265,5.5],A(p,1.2),1+.08*Math.sin(p*5));}},
+  {d:8,cap:"On regarde ses 3 voisins les plus proches. Ce 3, c'est le « k » de la méthode des k plus proches voisins.",draw(g,C,p){const P=plot(g,C,FPLOT);const q=[265,5.5],nb=knn(q);FRUITS.forEach(f=>fruit(g,f[2],P.px(f[0]),P.py(f[1]),18,1));
+   nb.forEach((n,i)=>{const a=A(p,1+i*1.1);g.save();g.globalAlpha=a;g.setLineDash([6,6]);g.strokeStyle=C.ink;g.lineWidth=2.5;g.beginPath();g.moveTo(P.px(q[0]),P.py(q[1]));g.lineTo(P.px(n.f[0]),P.py(n.f[1]));g.stroke();g.restore();});
+   const far=nb[2].f,R=Math.hypot(P.px(far[0])-P.px(q[0]),P.py(far[1])-P.py(q[1]))+26;g.save();g.globalAlpha=A(p,4.5);g.strokeStyle=C.ml;g.lineWidth=3;g.beginPath();g.arc(P.px(q[0]),P.py(q[1]),R*A(p,4.5,1.2),0,7);g.stroke();g.restore();mystery(g,C,P,q,1,1);}},
+  {d:7,cap:"Les voisins votent : 2 mangues contre 1 avocat. Le nouveau fruit est donc… une mangue !",draw(g,C,p){const P=plot(g,C,FPLOT);const q=[265,5.5];FRUITS.forEach(f=>fruit(g,f[2],P.px(f[0]),P.py(f[1]),18,1));
+   box(g,C,640,30,280,110,"",{a:A(p,0)});mango(g,680,62,16,A(p,.5));T(g,C,"Mangues : 2",710,62,{s:22,w:800,a:A(p,.5)});avocat(g,680,108,16,A(p,1.2));T(g,C,"Avocats : 1",710,108,{s:22,w:800,a:A(p,1.2)});
+   if(p<3.2)mystery(g,C,P,q,1,1);else{mango(g,P.px(q[0]),P.py(q[1]),26*A(p,3.2,.5)+.1,1);T(g,C,"= mangue !",P.px(q[0])+40,P.py(q[1]),{s:26,w:800,c:"#d97a10",a:A(p,3.6)});}}},
+  {d:7,cap:"Pas besoin de formule compliquée. Toute l'idée tient en une phrase.",draw(g,C,p){T(g,C,"« Dis-moi qui sont tes voisins,",480,220,{al:"center",s:34,f:DISP,w:700,a:A(p,.3)});T(g,C,"je te dirai qui tu es. »",480,280,{al:"center",s:34,f:DISP,w:700,c:C.ml,a:A(p,1.2)});T(g,C,"k-NN : k plus proches voisins",480,370,{al:"center",s:20,c:C.mute,a:A(p,2.4)});}}
+ ]},
+ v5:{title:"Par cœur ou compris ?",scenes:[
+  {d:7,cap:"Pour vérifier qu'un modèle a vraiment appris, on cache une partie des données. C'est le jeu de test, comme un examen surprise.",draw(g,C,p){const P=plot(g,C,OPLOT);dots(g,P,TRAIN,C.sky,9,A(p,.3));TEST.forEach((t,i)=>{const a=A(p,2+i*.4);g.save();g.globalAlpha=a;g.setLineDash([5,5]);g.strokeStyle=C.mute;g.lineWidth=2;g.strokeRect(P.px(t[0])-15,P.py(t[1])-15,30,30);g.restore();T(g,C,"?",P.px(t[0]),P.py(t[1]),{al:"center",s:18,c:C.mute,a,w:800});});
+   T(g,C,"● entraînement",640,60,{s:20,c:C.sky,w:800,a:A(p,.3)});T(g,C,"? test (caché)",640,95,{s:20,c:C.mute,w:800,a:A(p,2)});}},
+  {d:8,cap:"Ce premier modèle passe par TOUS les points d'entraînement. Il a appris par cœur, comme un élève qui récite sans comprendre.",draw(g,C,p){const P=plot(g,C,OPLOT);curve(g,P,WIG,A(p,.3,5),C.bad,4);dots(g,P,TRAIN,C.sky,9);T(g,C,"Modèle « par cœur »",640,60,{s:22,c:C.bad,w:800});}},
+  {d:8,cap:"Ce deuxième modèle est plus simple. Il rate un peu les points, mais il a saisi la tendance générale.",draw(g,C,p){const P=plot(g,C,OPLOT);curve(g,P,WIG,1,C.bad,3,.25);curve(g,P,Array.from({length:41},(_,j)=>[j/40*9,1+.6*j/40*9]),A(p,.3,3),C.ok,5);dots(g,P,TRAIN,C.sky,9);T(g,C,"Modèle simple",640,60,{s:22,c:C.ok,w:800});}},
+  {d:9,cap:"L'examen révèle la vérité : les nouveaux points sont loin de la courbe « par cœur » et proches de la droite. Ce piège s'appelle le surapprentissage.",draw(g,C,p){const P=plot(g,C,OPLOT);curve(g,P,WIG,1,C.bad,3,.7);g.save();g.strokeStyle=C.ok;g.lineWidth=4;g.beginPath();g.moveTo(P.px(0),P.py(1));g.lineTo(P.px(9),P.py(6.4));g.stroke();g.restore();dots(g,P,TRAIN,C.sky,7,.5);
+   TEST.forEach(t=>{const a=A(p,.5);dots(g,P,[t],C.ml,11,a);g.save();g.lineWidth=3;g.globalAlpha=A(p,2);g.strokeStyle=C.bad;g.beginPath();g.moveTo(P.px(t[0])-6,P.py(t[1]));g.lineTo(P.px(t[0])-6,P.py(wigAt(t[0])));g.stroke();g.globalAlpha=A(p,3.5);g.strokeStyle=C.ok;g.beginPath();g.moveTo(P.px(t[0])+6,P.py(t[1]));g.lineTo(P.px(t[0])+6,P.py(1+.6*t[0]));g.stroke();g.restore();});
+   T(g,C,"Par cœur : grosses erreurs au test",160,40,{s:21,c:C.bad,w:800,a:A(p,2.2)});T(g,C,"Simple : petites erreurs, il a compris",160,75,{s:21,c:C.ok,w:800,a:A(p,3.8)});}}
+ ]},
+ v6:{title:"Du neurone à Claude",scenes:[
+  {d:8,cap:"Un neurone artificiel reçoit des nombres. Il multiplie chacun par un poids, qui dit son importance, puis il additionne tout.",draw(g,C,p){neuronBase(g,C,p,A(p,4.5));}},
+  {d:7,cap:"Si la somme atteint le seuil, le neurone s'allume et répond 1. Sinon il reste éteint : 0. Apprendre, c'est régler les poids.",draw(g,C,p){neuronBase(g,C,9,1);arrow(g,C,595,270,745,270,A(p,.3),C.ml);T(g,C,"seuil = 3",670,240,{al:"center",s:18,c:C.mute,a:A(p,.6)});T(g,C,"5 ≥ 3",670,305,{al:"center",s:20,w:800,a:A(p,1.5)});
+   const on=A(p,2.5);g.save();g.beginPath();g.arc(810,270,52,0,7);g.fillStyle=on>0?C.ml:C.surf;g.globalAlpha=Math.max(.3,on);g.fill();g.strokeStyle=C.ml;g.lineWidth=4;g.stroke();g.restore();T(g,C,"1",810,270,{al:"center",s:40,w:800,f:DISP,c:"#ffffff",a:on});T(g,C,"→ mangue",810,350,{al:"center",s:22,w:800,c:C.ml,a:A(p,3.5)});}},
+  {d:8,cap:"On empile des milliers de neurones en couches : c'est un réseau de neurones. Avec beaucoup de couches, on parle de deep learning.",draw(g,C,p){const L=[3,5,5,2],X=[170,390,610,830];const pos=L.map((n,i)=>Array.from({length:n},(_,j)=>[X[i],270+(j-(n-1)/2)*80]));
+   for(let i=0;i<3;i++)pos[i].forEach(a=>pos[i+1].forEach(b=>{g.save();g.globalAlpha=.35*A(p,i*.8+.5);g.strokeStyle=C.mute;g.lineWidth=1.2;g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.stroke();g.restore();}));
+   if(p>3){for(let k=0;k<14;k++){const i=k%3,a=pos[i][k%pos[i].length],b=pos[i+1][(k*3)%pos[i+1].length],t=((p*0.6+k*.37)%1);g.beginPath();g.arc(a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,5,0,7);g.fillStyle=C.ml;g.fill();}}
+   pos.forEach((ly,i)=>ly.forEach(([x,y])=>{const a=A(p,i*.8);g.save();g.globalAlpha=a;g.beginPath();g.arc(x,y,22,0,7);g.fillStyle=C.surf;g.fill();g.strokeStyle=i===3?C.ml:C.sky;g.lineWidth=3;g.stroke();g.restore();}));
+   ["entrées","couche cachée","couche cachée","sortie"].forEach((l,i)=>T(g,C,l,X[i],500,{al:"center",s:17,c:C.mute,a:A(p,i*.8)}));}},
+  {d:10,cap:"Les IA comme Claude sont des réseaux géants, entraînés sur des milliards de phrases à deviner le mot suivant. Puis on recommence, mot après mot.",draw(g,C,p){T(g,C,"Ce soir, on mange du …",80,110,{s:36,f:DISP,w:700,a:A(p,0)});
+   [["pondu",.48],["poisson",.27],["pain",.12],["riz",.08]].forEach(([w,v],i)=>{const y=200+i*68,a=A(p,1.2+i*.4);T(g,C,w,80,y,{s:24,w:700,a});g.save();g.globalAlpha=a;rr(g,240,y-18,560*v*A(p,1.2+i*.4,1.2)+2,36,8);g.fillStyle=i===0?C.ml:C.line;g.fill();g.restore();T(g,C,Math.round(v*100)+" %",250+560*v+16,y,{s:20,c:C.mute,a,f:MONO});});
+   T(g,C,"Le modèle choisit un mot probable, l'ajoute, et recommence.",80,490,{s:21,c:C.mute,a:A(p,5.5)});}}
+ ]}
+};
+function table(g,C,p){
+  const cols=[["Poids (g)",190],["Couleur (0 à 10)",450],["Réponse",745]];cols.forEach(([h,x])=>T(g,C,h,x,90,{al:"center",s:20,w:800,c:C.mute,a:A(p,0)}));
+  g.save();g.globalAlpha=A(p,0);g.strokeStyle=C.line;g.lineWidth=2;g.beginPath();g.moveTo(90,115);g.lineTo(870,115);g.stroke();g.restore();
+  [0,5,1,6,2,7].forEach((fi,i)=>{const f=FRUITS[fi],y=155+i*52,a=A(p,.6+i*.5);T(g,C,String(f[0]),190,y,{al:"center",s:22,f:MONO,a});T(g,C,String(f[1]),450,y,{al:"center",s:22,f:MONO,a});tagLbl(g,C,f[2]==="M"?"mangue":"avocat",745,y,f[2]==="M"?"#d97a10":"#3c6a20",a);});
+}
+function errBox(g,C,e,a,n){if(a<=0)return;box(g,C,600,20,320,n?96:64,"",{a});T(g,C,"Erreur moyenne : "+Math.round(e).toLocaleString("fr-FR")+" FC",620,52,{s:21,w:800,c:e<200?C.ok:C.bad,a});if(n)T(g,C,"Essai n° "+n.toLocaleString("fr-FR"),620,88,{s:18,c:C.mute,a,f:MONO});}
+function mystery(g,C,P,q,a,s=1){if(a<=0)return;g.save();g.globalAlpha=a;g.beginPath();g.arc(P.px(q[0]),P.py(q[1]),22*s,0,7);g.fillStyle=C.mute;g.fill();g.restore();T(g,C,"?",P.px(q[0]),P.py(q[1])+1,{al:"center",s:24,w:800,c:"#ffffff",a});}
+function sizeCanvas(cv){const d=devicePixelRatio||1,w=cv.clientWidth||600;cv.width=Math.round(w*d);cv.height=Math.round(w*9/16*d);const g=cv.getContext("2d");g.setTransform(cv.width/VW,0,0,cv.width/VW,0,0);return g;}
+function mountVideo(el,id){
+  const V=VIDEOS[id],total=V.scenes.reduce((s,x)=>s+x.d,0);
+  el.innerHTML=`<canvas aria-label="Animation : ${esc(V.title)}"></canvas><p class="vcap"></p><div class="vctl"><button type="button" class="btn small">▶ Regarder</button><div class="vbar" role="slider" tabindex="0" aria-label="Position de la vidéo" aria-valuemin="0" aria-valuemax="${total}"><i></i></div><span class="vtime">0:00 / 0:${String(total).padStart(2,"0")}</span></div>`;
+  const cv=el.querySelector("canvas"),cap=el.querySelector(".vcap"),btn=el.querySelector("button"),bar=el.querySelector(".vbar"),fillEl=bar.querySelector("i"),tm=el.querySelector(".vtime");
+  let g=sizeCanvas(cv),t=0,playing=false,last=0;
+  const fmt=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,"0")}`;
+  function frame(at){
+    let acc=0,i=0;while(i<V.scenes.length-1&&at>=acc+V.scenes[i].d){acc+=V.scenes[i].d;i++;}
+    const sc=V.scenes[i],p=at-acc,C=CV();
+    g.setTransform(cv.width/VW,0,0,cv.width/VW,0,0);g.fillStyle=C.bg;g.fillRect(0,0,VW,VH);
+    try{sc.draw(g,C,p);}catch(e){console.error(e);}
+    T(g,C,`${i+1} / ${V.scenes.length}`,VW-24,VH-22,{al:"right",s:15,c:C.mute,f:MONO,w:500});
+    cap.textContent=sc.cap;fillEl.style.width=(at/total*100)+"%";tm.textContent=`${fmt(at)} / ${fmt(total)}`;bar.setAttribute("aria-valuenow",Math.round(at));
+  }
+  function rest(){const d0=V.scenes[0].d;frame(t>0?t:d0-.01);if(t===0){fillEl.style.width="0%";tm.textContent=`0:00 / ${fmt(total)}`;}}
+  function loop(now){if(!playing||!el.isConnected){playing=false;return;}t+=Math.min(.1,(now-last)/1000);last=now;if(t>=total){t=total;playing=false;btn.textContent="↺ Revoir";frame(total-.001);return;}frame(t);requestAnimationFrame(loop);}
+  btn.onclick=()=>{if(playing){playing=false;btn.textContent="▶ Reprendre";return;}if(t>=total)t=0;playing=true;btn.textContent="❚❚ Pause";last=performance.now();requestAnimationFrame(loop);};
+  const seek=x=>{t=Math.max(0,Math.min(total-.01,x));frame(t);};
+  bar.onclick=e=>{const r=bar.getBoundingClientRect();seek((e.clientX-r.left)/r.width*total);};
+  bar.onkeydown=e=>{if(e.key==="ArrowRight")seek(t+3);if(e.key==="ArrowLeft")seek(t-3);};
+  new ResizeObserver(()=>{g=sizeCanvas(cv);playing?frame(t):rest();}).observe(cv);
+  rest();
+}
+function bindFit(box,x,setV,gain){
+  const cv=box.querySelector("[data-cv]"),ia=box.querySelector("[data-a]"),ib=box.querySelector("[data-b]");
+  let g=sizeCanvas(cv);
+  const draw=()=>{const a=+ia.value,b=+ib.value,C=CV();box.querySelector("[data-av]").textContent=a;box.querySelector("[data-bv]").textContent=b.toLocaleString("fr-FR");
+    g.setTransform(cv.width/VW,0,0,cv.width/VW,0,0);g.fillStyle=C.bg;g.fillRect(0,0,VW,VH);const P=plot(g,C,TPLOT);regScene(g,C,P,a,b);errBox(g,C,mae(a,b),1);
+    if(mae(a,b)<=150&&!box.classList.contains("done")){setV(box,true,`Bravo ! Avec a = ${a} et b = ${b}, ton modèle se trompe de ${Math.round(mae(a,b))} FC en moyenne. C'est exactement ce que fait la machine, mais toute seule et très vite.`);gain(x.id,x.xp);}};
+  ia.oninput=ib.oninput=draw;new ResizeObserver(()=>{g=sizeCanvas(cv);draw();}).observe(cv);draw();
+}
+function bindKnn(box,x,setV,gain){
+  const cv=box.querySelector("[data-cv]"),info=box.querySelector("[data-info]"),got=new Set();let g=sizeCanvas(cv),q=null;
+  const draw=()=>{const C=CV();g.setTransform(cv.width/VW,0,0,cv.width/VW,0,0);g.fillStyle=C.bg;g.fillRect(0,0,VW,VH);const P=plot(g,C,FPLOT);
+    if(q){const nb=knn(q);nb.forEach(n=>{g.save();g.setLineDash([6,6]);g.strokeStyle=C.ink;g.lineWidth=2.5;g.beginPath();g.moveTo(P.px(q[0]),P.py(q[1]));g.lineTo(P.px(n.f[0]),P.py(n.f[1]));g.stroke();g.restore();});}
+    FRUITS.forEach(f=>fruit(g,f[2],P.px(f[0]),P.py(f[1]),18,1));
+    if(q){const nb=knn(q),m=nb.filter(n=>n.f[2]==="M").length,win=m>=2?"M":"A";fruit(g,win,P.px(q[0]),P.py(q[1]),26,1);g.save();g.strokeStyle=C.ink;g.lineWidth=3;g.beginPath();g.arc(P.px(q[0]),P.py(q[1]),34,0,7);g.stroke();g.restore();
+      info.textContent=`Ses 3 voisins : ${m} mangue(s), ${3-m} avocat(s). Verdict : ${win==="M"?"mangue":"avocat"}.`;got.add(win);}
+    else T(g,C,"Touche le graphique pour placer le fruit mystère",480,40,{al:"center",s:20,c:C.mute});};
+  cv.addEventListener("click",e=>{const r=cv.getBoundingClientRect(),lx=(e.clientX-r.left)/r.width*VW,ly=(e.clientY-r.top)/r.height*VH;
+    const o=FPLOT,X=o.xmin+(lx-o.x0)/o.w*(o.xmax-o.xmin),Y=o.ymin+(o.y0-ly)/o.h*(o.ymax-o.ymin);
+    q=[Math.max(o.xmin,Math.min(o.xmax,X)),Math.max(o.ymin,Math.min(o.ymax,Y))];draw();
+    if(got.size===2&&!box.classList.contains("done")){setV(box,true,"Bravo ! Tu as vu les deux verdicts. Remarque : près de la frontière entre les groupes, un petit déplacement suffit à changer le vote.");gain(x.id,x.xp);}});
+  new ResizeObserver(()=>{g=sizeCanvas(cv);draw();}).observe(cv);draw();
+}
+
 /* ================= RENDU ================= */
 const $=id=>document.getElementById(id);
 const view=$("view");
@@ -646,9 +923,9 @@ function renderHome(){
   view.innerHTML=`
   <section class="hero">
     <div class="card">
-      <div class="eyebrow">Ton labo perso</div>
-      <h1>Salut RG. On passe de 3 à 7 sur 10.</h1>
-      <p>Cinq langages, une leçon courte, puis des exercices corrigés tout de suite. Tous les exemples parlent de ton projet Peer-Learning : tuteurs, étudiants, crédits LMD et quiz. Python, JavaScript, SQL et CSS s'exécutent ici même ; PHP se travaille en lecture de code, puis sur ta machine pour les devoirs.</p>
+      <div class="eyebrow">Le Lab · by 25 (TwentyFive) Labs</div>
+      <h1>Bienvenue au Lab. On passe de 3 à 7 sur 10.</h1>
+      <p>Cinq langages, plus le machine learning expliqué simplement avec des vidéos animées. Une leçon courte, puis des exercices corrigés tout de suite. Les exemples suivent un fil rouge : Peer-Learning, une plateforme de tutorat entre étudiants. Python, JavaScript, SQL et CSS s'exécutent ici même ; PHP se travaille en lecture de code, puis sur ta machine.</p>
       <div class="actions">${nx?`<button class="btn" type="button" data-resume="${nx.k}|${nx.x.li}">Reprendre : ${esc(L[nx.k].name)} · ${esc(nx.x.title)}</button>`:`<button class="btn" type="button" data-go="devoirs">Tout est fait : place aux devoirs</button>`}<button class="btn ghost" type="button" data-go="devoirs">Voir les devoirs</button></div>
     </div>
     <div class="card level">
@@ -663,7 +940,7 @@ function renderHome(){
   <section class="two">
     <div class="card">
       <div class="eyebrow">Prochain devoir</div>
-      ${nd?`<h3 style="font-size:19px;margin-bottom:6px">${esc(nd.titre)}</h3><p class="muted" style="margin:0 0 12px">${esc(LANGINFO[nd.lang].name)} · à rendre ${fmtDate(nd.date)} (${daysLeft(nd.date)}), noté dans ton Google Agenda.</p><button class="btn small" type="button" data-go="devoirs">Ouvrir la consigne</button>`:`<p>Tous les devoirs sont rendus. Bravo.</p>`}
+      ${nd?`<h3 style="font-size:19px;margin-bottom:6px">${esc(nd.titre)}</h3><p class="muted" style="margin:0 0 12px">${esc(LANGINFO[nd.lang].name)} · à rendre ${fmtDate(nd.date)} (${daysLeft(nd.date)}).</p><button class="btn small" type="button" data-go="devoirs">Ouvrir la consigne</button>`:`<p>Tous les devoirs sont rendus. Bravo.</p>`}
     </div>
     <div class="card">
       <div class="eyebrow">Comment ça marche</div>
@@ -681,10 +958,10 @@ function renderLang(lang){
      ${C.lessons.map((l,i)=>{const d=l.exos.filter(x=>S.done[x.id]).length;return`<button type="button" class="lesson-btn ${i===li?"on":""}" data-lesson="${i}"><span class="k">${String(i+1).padStart(2,"0")}</span>${esc(l.t)}<span class="st ${d===l.exos.length?"full":""}">${d}/${l.exos.length}</span></button>`;}).join("")}
    </aside>
    <div class="main">
-     <section class="card theory"><div class="eyebrow">Leçon ${li+1} sur ${C.lessons.length}</div><h2>${esc(les.t)}</h2>${les.th}
-       <div class="example"><div class="eyebrow" style="margin:6px 0 0">Exemple</div><pre class="code">${esc(les.ex)}</pre>
+     <section class="card theory"><div class="eyebrow">Leçon ${li+1} sur ${C.lessons.length}</div><h2>${esc(les.t)}</h2>${les.video?`<div class="vid" data-vid="${les.video}"></div>`:""}${les.th}
+       ${les.ex?`<div class="example"><div class="eyebrow" style="margin:6px 0 0">Exemple</div><pre class="code">${esc(les.ex)}</pre>
        ${lang==="php"?`<div class="muted">Résultat affiché :</div><div class="out">${esc(les.out)}</div>`:lang==="css"?"":`<div class="row"><button class="btn small ghost" type="button" id="runEx">Exécuter l'exemple</button></div><div id="exOut"></div>`}
-       </div>
+       </div>`:""}
        ${lang==="sql"?schemaHTML():""}
      </section>
      ${les.exos.map(x=>exoHTML(lang,x)).join("")}
@@ -708,6 +985,10 @@ function exoHTML(lang,x){
   }else if(x.type==="css"){
     body=`<div class="cssgrid"><textarea class="ed" data-ed spellcheck="false" id="ed-${x.id}" aria-label="Éditeur CSS">${esc(S.drafts[x.id]??x.start)}</textarea><div class="preview" data-prev></div></div>
     <div class="actions"><button class="btn small" type="button" data-check>Vérifier</button><button class="btn small ghost" type="button" data-hint>Indice</button><button class="btn small ghost" type="button" data-sol>Solution</button><span class="kbd">L'aperçu se met à jour pendant que tu tapes</span></div>`;
+  }else if(x.type==="fit"){
+    body=`<canvas class="pg" data-cv aria-label="Graphique des courses"></canvas><div class="sliders"><label for="a-${x.id}">Prix par km (a) : <b data-av>200</b> FC<input type="range" min="0" max="1000" step="50" value="200" data-a id="a-${x.id}"></label><label for="b-${x.id}">Prix de départ (b) : <b data-bv>2500</b> FC<input type="range" min="0" max="3000" step="100" value="2500" data-b id="b-${x.id}"></label></div>`;
+  }else if(x.type==="knn"){
+    body=`<canvas class="pg" data-cv aria-label="Graphique des fruits, touche pour placer un fruit mystère"></canvas><div class="info" data-info></div>`;
   }else if(x.type==="qcm"){
     body=`<div class="opts">${x.opts.map((o,i)=>`<button type="button" class="opt" data-opt="${i}"><code>${esc(o)}</code></button>`).join("")}</div>`;
   }else{
@@ -724,6 +1005,7 @@ function bindLesson(lang,les){
     const r=lang==="py"?await runPy(les.ex):await runJS(les.ex);
     o.innerHTML=`<div class="out ${r.err?"err":""}">${esc((r.out||"")+(r.err?"\n"+r.err:""))}</div>`;
   };
+  const vd=view.querySelector("[data-vid]");if(vd)mountVideo(vd,vd.dataset.vid);
   les.exos.forEach(x=>bindExo(lang,x));
 }
 function setV(box,ok,msg){const v=box.querySelector("[data-v]");v.className="verdict "+(ok?"ok":"bad");v.textContent=msg;if(ok){box.classList.add("done");const t=box.querySelector(".tag");t.className="tag ok";t.textContent="Réussi";}}
@@ -777,6 +1059,8 @@ function bindExo(lang,x){
       if(!fail){setV(box,true,"Correct ! Regarde le résultat dans l'aperçu.");gain(x.id,x.xp);}else setV(box,false,fail[1]);
     };
   }
+  if(x.type==="fit")bindFit(box,x,setV,gain);
+  if(x.type==="knn")bindKnn(box,x,setV,gain);
   if(x.type==="qcm"){
     box.querySelectorAll("[data-opt]").forEach(b=>b.onclick=()=>{
       const i=+b.dataset.opt;
@@ -797,14 +1081,14 @@ function bindExo(lang,x){
 }
 
 function renderDevoirs(){
-  view.innerHTML=`<div class="card" style="margin-bottom:16px"><div class="eyebrow">Devoirs</div><h2 style="font-size:24px;margin-bottom:6px">Six devoirs, un par semaine</h2><p class="muted" style="margin:0;max-width:70ch">Ils se font sur ta machine, dans VS Code, avec Live Server pour le front et XAMPP pour PHP et MySQL. Chaque date limite est dans ton Google Agenda avec un rappel la veille. Coche les points au fur et à mesure ; un devoir rendu rapporte 50 XP.</p></div>
+  view.innerHTML=`<div class="card" style="margin-bottom:16px"><div class="eyebrow">Devoirs</div><h2 style="font-size:24px;margin-bottom:6px">Six devoirs, un par semaine</h2><p class="muted" style="margin:0;max-width:70ch">Ils se font sur ta machine, dans VS Code, avec Live Server pour le front et XAMPP pour PHP et MySQL. Note les dates limites dans ton agenda. Coche les points au fur et à mesure ; un devoir rendu rapporte 50 XP.</p></div>
   <div class="dv">${DEVOIRS.map(d=>{
     const st=S.dv[d.id]||{c:[],rendu:false},I=LANGINFO[d.lang],dt=new Date(d.date+"T18:00:00");
     return`<article class="dcard ${st.rendu?"rendu":""}" style="--c:${I.color}">
       <div class="date"><span class="m" style="color:${I.color}">${esc(I.name)}</span><span class="d">${dt.getDate()}</span><span class="m">${dt.toLocaleDateString("fr-FR",{month:"short"})} · ${dt.toLocaleDateString("fr-FR",{weekday:"short"})}</span><span class="left">${st.rendu?"Rendu":daysLeft(d.date)}</span></div>
       <div><h3>${esc(d.titre)}</h3><p>${esc(d.txt)}</p>
       <ul class="checks">${d.checks.map((c,i)=>`<li><label><input type="checkbox" id="${d.id}-c${i}" data-dv="${d.id}" data-i="${i}" ${st.c.includes(i)?"checked":""}> ${esc(c)}</label></li>`).join("")}</ul>
-      <div class="actions"><button class="btn small ${st.rendu?"ghost":""}" type="button" data-rendu="${d.id}">${st.rendu?"Marquer comme non rendu":"Marquer comme rendu (+50 XP)"}</button><span class="cal">Échéance dans Google Agenda : ${fmtDate(d.date)}, 18 h</span></div></div>
+      <div class="actions"><button class="btn small ${st.rendu?"ghost":""}" type="button" data-rendu="${d.id}">${st.rendu?"Marquer comme non rendu":"Marquer comme rendu (+50 XP)"}</button><span class="cal">Échéance : ${fmtDate(d.date)}, 18 h</span></div></div>
     </article>`;}).join("")}</div>`;
   view.querySelectorAll("[data-dv]").forEach(cb=>cb.onchange=()=>{
     const id=cb.dataset.dv,i=+cb.dataset.i,st=S.dv[id]=S.dv[id]||{c:[],rendu:false};
