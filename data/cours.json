@@ -1,0 +1,46 @@
+{
+ "modules": [
+  {
+   "id": "python",
+   "nom": "Python",
+   "couleur": "--py",
+   "accroche": "Logique, calculs, scripts",
+   "fichier": "cours/python.json"
+  },
+  {
+   "id": "javascript",
+   "nom": "JavaScript",
+   "couleur": "--js",
+   "accroche": "Rendre une page vivante",
+   "fichier": "cours/javascript.json"
+  },
+  {
+   "id": "css",
+   "nom": "CSS",
+   "couleur": "--css",
+   "accroche": "Mettre en forme",
+   "fichier": "cours/css.json"
+  },
+  {
+   "id": "sql",
+   "nom": "SQL",
+   "couleur": "--sql",
+   "accroche": "Interroger des données",
+   "fichier": "cours/sql.json"
+  },
+  {
+   "id": "php",
+   "nom": "PHP",
+   "couleur": "--php",
+   "accroche": "Le code côté serveur",
+   "fichier": "cours/php.json"
+  },
+  {
+   "id": "machine-learning",
+   "nom": "Machine Learning",
+   "couleur": "--ml",
+   "accroche": "Expliqué simplement, de A à Z",
+   "fichier": "cours/machine-learning.json"
+  }
+ ]
+}
