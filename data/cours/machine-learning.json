@@ -1,0 +1,254 @@
+{
+ "id": "machine-learning",
+ "nom": "Machine Learning",
+ "accroche": "Expliqué simplement, de A à Z",
+ "lecons": [
+  {
+   "titre": "C'est quoi le machine learning ?",
+   "theorie": "cours/machine-learning/01-c-est-quoi-le-machine-learning.md",
+   "video": "v1",
+   "exemple": {
+    "langage": "python",
+    "code": "# Programmation classique : la règle est écrite à la main\ndef est_mangue(poids, couleur):\n    return poids > 250 and couleur >= 7\n\nprint(est_mangue(300, 9))   # une mangue bien orange\nprint(est_mangue(260, 4))   # une mangue pas encore mûre : la règle se trompe"
+   },
+   "exercices": [
+    {
+     "id": "ml1a",
+     "type": "qcm",
+     "titre": "Repérer le machine learning",
+     "xp": 10,
+     "consigne": "Lequel de ces programmes utilise du machine learning ?",
+     "options": [
+      "Un filtre anti-spam qui a appris à partir de milliers d'e-mails marqués « spam » ou « pas spam »",
+      "Une calculatrice qui fait 2 + 2",
+      "Une page web qui affiche la date du jour",
+      "Un programme dont toutes les règles ont été écrites à la main"
+     ],
+     "bonne": 0,
+     "explication": "Le filtre a appris à partir d'exemples étiquetés. Les autres suivent des règles écrites par un humain."
+    },
+    {
+     "id": "ml1b",
+     "type": "qcm",
+     "titre": "Ce qu'on donne à la machine",
+     "xp": 10,
+     "consigne": "En machine learning, qu'est-ce qu'on donne à l'ordinateur pour qu'il apprenne ?",
+     "options": [
+      "Des exemples avec les bonnes réponses",
+      "La liste complète des règles",
+      "Rien, il devine tout seul",
+      "Un processeur plus rapide"
+     ],
+     "bonne": 0,
+     "explication": "Des exemples et leurs réponses : c'est à partir d'eux que la machine construit sa règle."
+    }
+   ]
+  },
+  {
+   "titre": "Les données, la nourriture de la machine",
+   "theorie": "cours/machine-learning/02-les-donnees-la-nourriture-de-la.md",
+   "video": "v2",
+   "exemple": {
+    "langage": "python",
+    "code": "# Chaque ligne est un exemple : (poids, couleur, étiquette)\nfruits = [(300, 9, \"mangue\"), (200, 2, \"avocat\"), (280, 8, \"mangue\"), (230, 3, \"avocat\")]\n\nfor poids, couleur, etiquette in fruits:\n    print(poids, \"g, couleur\", couleur, \"→\", etiquette)\n\nmangues = [f for f in fruits if f[2] == \"mangue\"]\nprint(\"Nombre de mangues :\", len(mangues))"
+   },
+   "exercices": [
+    {
+     "id": "ml2a",
+     "type": "qcm",
+     "titre": "Trouver l'étiquette",
+     "xp": 10,
+     "consigne": "On veut prédire si un étudiant va valider son année. On a : ses heures de révision, sa présence en cours, ses notes du premier semestre, et s'il a validé ou non. Quelle colonne est l'**étiquette** ?",
+     "options": [
+      "S'il a validé ou non",
+      "Ses heures de révision",
+      "Sa présence en cours",
+      "Ses notes du premier semestre"
+     ],
+     "bonne": 0,
+     "explication": "L'étiquette est la réponse qu'on veut apprendre à prédire. Les trois autres colonnes sont des caractéristiques."
+    },
+    {
+     "id": "ml2b",
+     "type": "qcm",
+     "titre": "Des déchets en entrée",
+     "xp": 10,
+     "consigne": "Dans les exemples d'entraînement, plein d'avocats ont été étiquetés « mangue » par erreur. Que va-t-il se passer ?",
+     "options": [
+      "La machine apprend ces erreurs et va aussi confondre les avocats avec des mangues",
+      "La machine corrige toute seule les erreurs",
+      "Rien, les erreurs n'ont pas d'importance",
+      "La machine refuse d'apprendre"
+     ],
+     "bonne": 0,
+     "explication": "La machine ne sait pas que les étiquettes sont fausses. Elle fait confiance aux exemples qu'on lui donne."
+    }
+   ]
+  },
+  {
+   "titre": "Apprendre, c'est se tromper de moins en moins",
+   "theorie": "cours/machine-learning/03-apprendre-c-est-se-tromper-de.md",
+   "video": "v3",
+   "exemple": {
+    "langage": "python",
+    "code": "# La descente de gradient, en vrai : la machine règle a et b toute seule\ncourses = [(1, 1500), (2, 2000), (3, 2600), (4, 3000), (5, 3600), (6, 4000)]\na, b = 0.0, 0.0      # au départ, la machine ne sait rien\npas = 0.02           # la taille de chaque petit pas\n\nfor essai in range(1, 5001):\n    da, db = 0, 0\n    for distance, prix in courses:\n        ecart = (a * distance + b) - prix\n        da += ecart * distance\n        db += ecart\n    a -= pas * da / len(courses)\n    b -= pas * db / len(courses)\n    if essai in (1, 10, 100, 1000, 5000):\n        print(f\"essai {essai} : a = {a:.0f} FC par km, b = {b:.0f} FC\")"
+   },
+   "exercices": [
+    {
+     "id": "ml3a",
+     "type": "fit",
+     "titre": "Entraîne le modèle toi-même",
+     "xp": 25,
+     "consigne": "Tu es la machine. Bouge les deux curseurs pour que la droite passe au plus près des courses. Objectif : une erreur moyenne de **150 FC ou moins**."
+    },
+    {
+     "id": "ml3b",
+     "type": "code",
+     "titre": "Calculer l'erreur moyenne en Python",
+     "xp": 25,
+     "consigne": "Écris `erreur_moyenne(points, a, b)`. `points` est une liste de couples `(distance, prix)`. Pour chaque course, la prédiction vaut `a * distance + b` ; l'erreur est l'écart en valeur absolue (`abs()`) avec le vrai prix. Renvoie la moyenne des erreurs, arrondie à 1 décimale.",
+     "depart": "def erreur_moyenne(points, a, b):\n    total = 0\n    for distance, prix in points:\n        # calcule la prédiction et ajoute l'écart à total\n        pass\n    return 0\n",
+     "tests": "courses = [(1, 1500), (2, 2000), (3, 2600)]\nprint(erreur_moyenne(courses, 500, 1000))\nprint(erreur_moyenne(courses, 0, 0))",
+     "attendu": "33.3\n2033.3",
+     "indice": "Dans la boucle : prediction = a * distance + b, puis total += abs(prix - prediction). À la fin : return round(total / len(points), 1).",
+     "solution": "def erreur_moyenne(points, a, b):\n    total = 0\n    for distance, prix in points:\n        prediction = a * distance + b\n        total += abs(prix - prediction)\n    return round(total / len(points), 1)"
+    }
+   ]
+  },
+  {
+   "titre": "Classer : demander aux voisins",
+   "theorie": "cours/machine-learning/04-classer-demander-aux-voisins.md",
+   "video": "v4",
+   "exemple": {
+    "langage": "python",
+    "code": "# Les 3 plus proches voisins d'un fruit mystère\nfruits = [(300, 9, \"mangue\"), (280, 8, \"mangue\"), (260, 7, \"mangue\"),\n          (200, 2, \"avocat\"), (230, 3, \"avocat\"), (250, 4, \"avocat\")]\nmystere = (265, 6)\n\ndef distance(f):\n    return ((f[0] - mystere[0]) / 220) ** 2 + ((f[1] - mystere[1]) / 10) ** 2\n\nvoisins = sorted(fruits, key=distance)[:3]\nfor v in voisins:\n    print(\"voisin :\", v[2])\nvotes = [v[2] for v in voisins]\nprint(\"Verdict :\", max(set(votes), key=votes.count))"
+   },
+   "exercices": [
+    {
+     "id": "ml4a",
+     "type": "knn",
+     "titre": "Joue avec les voisins",
+     "xp": 20,
+     "consigne": "Touche le graphique pour placer un fruit mystère : ses 3 plus proches voisins votent. Pour réussir, trouve un endroit où il est classé **mangue** et un autre où il est classé **avocat**."
+    },
+    {
+     "id": "ml4b",
+     "type": "code",
+     "titre": "Le plus proche voisin en Python",
+     "xp": 25,
+     "consigne": "Écris `plus_proche(point, exemples)`. `point` est un couple `(x, y)` ; `exemples` est une liste de `(x, y, etiquette)`. Renvoie l'étiquette de l'exemple le plus proche. Astuce : pas besoin de racine carrée pour comparer, `dx*dx + dy*dy` suffit.",
+     "depart": "def plus_proche(point, exemples):\n    meilleure_distance = None\n    meilleure_etiquette = None\n    # parcours les exemples\n    return meilleure_etiquette\n",
+     "tests": "ex = [(1, 1, \"avocat\"), (8, 9, \"mangue\"), (2, 3, \"avocat\")]\nprint(plus_proche((7, 7), ex))\nprint(plus_proche((1, 2), ex))",
+     "attendu": "mangue\navocat",
+     "indice": "Pour chaque (x, y, etiquette) : d = (x - point[0])**2 + (y - point[1])**2 ; si meilleure_distance est None ou d < meilleure_distance, on garde d et etiquette.",
+     "solution": "def plus_proche(point, exemples):\n    meilleure_distance = None\n    meilleure_etiquette = None\n    for x, y, etiquette in exemples:\n        d = (x - point[0]) ** 2 + (y - point[1]) ** 2\n        if meilleure_distance is None or d < meilleure_distance:\n            meilleure_distance = d\n            meilleure_etiquette = etiquette\n    return meilleure_etiquette"
+    },
+    {
+     "id": "ml4c",
+     "type": "qcm",
+     "titre": "Pourquoi k impair ?",
+     "xp": 10,
+     "consigne": "Pourquoi choisit-on souvent un nombre impair de voisins, comme 3 ou 5, quand il y a deux catégories ?",
+     "options": [
+      "Pour éviter les égalités au moment du vote",
+      "Parce que les ordinateurs n'aiment pas les nombres pairs",
+      "Pour aller plus vite",
+      "Ça n'a aucune importance"
+     ],
+     "bonne": 0,
+     "explication": "Avec 4 voisins, on peut avoir 2 mangues contre 2 avocats. Avec 3, il y a toujours une majorité."
+    }
+   ]
+  },
+  {
+   "titre": "Entraînement, test et pièges",
+   "theorie": "cours/machine-learning/05-entrainement-test-et-pieges.md",
+   "video": "v5",
+   "exemple": {
+    "langage": "python",
+    "code": "# On cache 20 % des données pour l'examen final\nimport random\n\nnotes = [12, 8, 15, 10, 14, 9, 16, 11, 13, 7]\nrandom.seed(4)          # pour avoir toujours le même mélange\nrandom.shuffle(notes)\n\ncoupure = int(len(notes) * 0.8)\nentrainement = notes[:coupure]\ntest = notes[coupure:]\nprint(\"Entraînement :\", entrainement)\nprint(\"Test (caché) :\", test)"
+   },
+   "exercices": [
+    {
+     "id": "ml5a",
+     "type": "qcm",
+     "titre": "Par cœur",
+     "xp": 10,
+     "consigne": "Un modèle a 100 % de bonnes réponses sur ses données d'entraînement, mais seulement 55 % sur le test. Que se passe-t-il ?",
+     "options": [
+      "Il a appris par cœur au lieu de comprendre : c'est du surapprentissage",
+      "Il est parfait, le test est mal fait",
+      "Il n'a pas assez de neurones, c'est tout",
+      "C'est normal, il faut toujours 100 % à l'entraînement"
+     ],
+     "bonne": 0,
+     "explication": "Un grand écart entre l'entraînement et le test est le signe classique du surapprentissage."
+    },
+    {
+     "id": "ml5b",
+     "type": "qcm",
+     "titre": "Le biais",
+     "xp": 10,
+     "consigne": "Une application de diagnostic de maladies de peau a été entraînée presque uniquement avec des photos de peaux claires. Que risque-t-il d'arriver à Kinshasa ?",
+     "options": [
+      "Elle se trompera plus souvent, car elle a peu vu de peaux foncées",
+      "Rien, la couleur de peau ne change rien pour une machine",
+      "Elle sera plus précise",
+      "Elle refusera de fonctionner"
+     ],
+     "bonne": 0,
+     "explication": "Un modèle n'est bon que sur le genre d'exemples qu'il a vus. Des données variées sont une question de qualité et de justice."
+    }
+   ]
+  },
+  {
+   "titre": "Neurones, réseaux et IA d'aujourd'hui",
+   "theorie": "cours/machine-learning/06-neurones-reseaux-et-ia-d-aujourd.md",
+   "video": "v6",
+   "exemple": {
+    "langage": "python",
+    "code": "# Un vrai modèle avec scikit-learn (le premier lancement charge la bibliothèque)\nfrom sklearn.neighbors import KNeighborsClassifier\n\nX = [[300, 9], [200, 2], [280, 8], [230, 3], [260, 7], [210, 2]]   # poids, couleur\ny = [\"mangue\", \"avocat\", \"mangue\", \"avocat\", \"mangue\", \"avocat\"]    # étiquettes\n\nmodele = KNeighborsClassifier(n_neighbors=3)\nmodele.fit(X, y)                             # l'entraînement\nprint(modele.predict([[265, 6]])[0])         # mangue\nprint(modele.predict([[195, 1]])[0])         # avocat"
+   },
+   "exercices": [
+    {
+     "id": "ml6a",
+     "type": "code",
+     "titre": "Code ton premier neurone",
+     "xp": 25,
+     "consigne": "Écris `neurone(entrees, poids, seuil)` : multiplie chaque entrée par son poids, additionne, et renvoie `1` si la somme est supérieure ou égale au seuil, sinon `0`.",
+     "depart": "def neurone(entrees, poids, seuil):\n    somme = 0\n    # utilise range(len(entrees)) pour avoir les index\n    return 0\n",
+     "tests": "print(neurone([1, 0, 1], [0.5, 0.9, 0.4], 0.8))\nprint(neurone([0, 1, 0], [0.5, 0.2, 0.4], 0.8))\nprint(neurone([2, 1], [0.25, 0.5], 1.0))",
+     "attendu": "1\n0\n1",
+     "indice": "for i in range(len(entrees)): somme += entrees[i] * poids[i] ; puis if somme >= seuil: return 1.",
+     "solution": "def neurone(entrees, poids, seuil):\n    somme = 0\n    for i in range(len(entrees)):\n        somme += entrees[i] * poids[i]\n    if somme >= seuil:\n        return 1\n    return 0"
+    },
+    {
+     "id": "ml6c",
+     "type": "code",
+     "titre": "Ton premier vrai modèle",
+     "xp": 30,
+     "consigne": "Entraîne un `KNeighborsClassifier` de scikit-learn avec 3 voisins sur les données `X` et `y`, puis affiche la prédiction pour un fruit de **240 g** et de couleur **3**, et pour un fruit de **310 g** et de couleur **8** (une prédiction par ligne). Le premier lancement charge scikit-learn : patiente quelques secondes.",
+     "depart": "from sklearn.neighbors import KNeighborsClassifier\n\nX = [[300, 9], [200, 2], [280, 8], [230, 3], [260, 7], [210, 2]]\ny = [\"mangue\", \"avocat\", \"mangue\", \"avocat\", \"mangue\", \"avocat\"]\n\n# 1. crée le modèle\n# 2. entraîne-le avec fit\n# 3. affiche les deux prédictions\n",
+     "attendu": "avocat\nmangue",
+     "indice": "modele = KNeighborsClassifier(n_neighbors=3), puis modele.fit(X, y), puis print(modele.predict([[240, 3]])[0]).",
+     "solution": "from sklearn.neighbors import KNeighborsClassifier\n\nX = [[300, 9], [200, 2], [280, 8], [230, 3], [260, 7], [210, 2]]\ny = [\"mangue\", \"avocat\", \"mangue\", \"avocat\", \"mangue\", \"avocat\"]\n\nmodele = KNeighborsClassifier(n_neighbors=3)\nmodele.fit(X, y)\nprint(modele.predict([[240, 3]])[0])\nprint(modele.predict([[310, 8]])[0])"
+    },
+    {
+     "id": "ml6b",
+     "type": "qcm",
+     "titre": "Comment apprend une IA qui écrit ?",
+     "xp": 10,
+     "consigne": "Quelle est la tâche de base avec laquelle on entraîne un grand modèle de langage comme Claude ?",
+     "options": [
+      "Deviner le mot suivant d'un texte, sur des milliards d'exemples",
+      "Apprendre un dictionnaire par cœur",
+      "Copier des réponses écrites par des humains pour chaque question possible",
+      "Chercher sur Google à chaque fois"
+     ],
+     "bonne": 0,
+     "explication": "La prédiction du mot suivant, répétée à une échelle énorme, est la base. D'autres étapes d'entraînement viennent ensuite affiner son comportement."
+    }
+   ]
+  }
+ ]
+}
