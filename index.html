@@ -1,0 +1,848 @@
+<title>Le Labo de RG</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/alasql/4.17.3/alasql.min.js"></script>
+<style>
+/* Layout : barre d'onglets par langage en haut, puis colonne leçons + zone de travail ; chaque langage a sa couleur */
+:root{
+  --bg:#f3f5fb; --surface:#ffffff; --sunk:#eaedf6; --ink:#161a2c; --mute:#5a6180; --line:#dce1ee;
+  --accent:#3646e0; --ok:#178a57; --bad:#d03b45;
+  --py:#2f6fd0; --js:#c48a00; --css:#8a46d6; --sql:#0e8f7d; --php:#5b5fc7; --dev:#e0484f;
+  --code-bg:#151a2e; --code-ink:#e6e9f5; --code-mute:#8c93b3;
+  --display:"Unbounded","Arial Rounded MT Bold",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f121d; --surface:#171b2a; --sunk:#1f2436; --ink:#e8ebf6; --mute:#a0a7c4; --line:#2b3148;
+  --accent:#8e99ff; --ok:#3fcf8e; --bad:#ff6b74;
+  --py:#6ea4ff; --js:#f2c14e; --css:#bf8cff; --sql:#3fd3bd; --php:#9da1ff; --dev:#ff7a80;
+  --code-bg:#0b0e18; --code-ink:#e6e9f5; --code-mute:#8c93b3; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f121d; --surface:#171b2a; --sunk:#1f2436; --ink:#e8ebf6; --mute:#a0a7c4; --line:#2b3148;
+  --accent:#8e99ff; --ok:#3fcf8e; --bad:#ff6b74;
+  --py:#6ea4ff; --js:#f2c14e; --css:#bf8cff; --sql:#3fd3bd; --php:#9da1ff; --dev:#ff7a80;
+  --code-bg:#0b0e18; --code-ink:#e6e9f5; --code-mute:#8c93b3; color-scheme:dark}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:var(--body);font-size:15px;line-height:1.55;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1180px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);line-height:1.12;text-wrap:balance;margin:0;letter-spacing:-.01em}
+code{font-family:var(--mono);font-size:.88em;background:var(--sunk);padding:.1em .35em;border-radius:5px}
+button{font-family:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* en-tête */
+header.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:20px 14px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo b{font-family:var(--display);font-size:20px;font-weight:800}
+.logo .dot{width:30px;height:30px;border-radius:9px;background:conic-gradient(var(--py) 0 20%,var(--js) 0 40%,var(--css) 0 60%,var(--sql) 0 80%,var(--php) 0);flex:none}
+.stats{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.pill{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+.pill .lv{font-family:var(--display);font-size:12px;color:var(--accent)}
+.xpbar{width:90px;height:6px;border-radius:9px;background:var(--sunk);overflow:hidden}
+.xpbar i{display:block;height:100%;background:var(--accent);border-radius:9px;transition:width .5s}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:22px;scrollbar-width:thin}
+nav.tabs button{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 15px;font-weight:600;font-size:14px;display:flex;gap:8px;align-items:center}
+nav.tabs button .sw{width:10px;height:10px;border-radius:50%;background:var(--c,var(--mute))}
+nav.tabs button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* accueil */
+.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin-bottom:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px}
+.hero h1{font-size:clamp(26px,4vw,40px);font-weight:800}
+.hero p{color:var(--mute);max-width:56ch;margin:10px 0 18px}
+.btn{border:0;border-radius:11px;padding:10px 16px;font-weight:700;font-size:14px;background:var(--accent);color:#fff}
+:root[data-theme="dark"] .btn{color:#0f121d}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#0f121d}}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.small{padding:7px 12px;font-size:13px}
+.level{display:flex;flex-direction:column;gap:10px}
+.level .big{font-family:var(--display);font-size:56px;font-weight:800;line-height:1;color:var(--accent)}
+.level .t{font-weight:700}
+.meter{height:10px;background:var(--sunk);border-radius:9px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--c,var(--accent));border-radius:9px;transition:width .5s}
+.muted{color:var(--mute);font-size:13.5px}
+.langs{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.lang{background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:14px;padding:16px;text-align:left;color:var(--ink);display:flex;flex-direction:column;gap:8px}
+.lang h3{font-size:15px}
+.lang .n{font-family:var(--mono);font-size:12px;color:var(--mute)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+
+/* vue langage */
+.lview{display:grid;grid-template-columns:250px minmax(0,1fr);gap:22px;align-items:start}
+.side{position:sticky;top:12px;display:flex;flex-direction:column;gap:8px}
+.side .head{padding:14px 16px;border-radius:14px;background:var(--c);color:#fff}
+:root[data-theme="dark"] .side .head{color:#0f121d}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .side .head{color:#0f121d}}
+.side .head h2{font-size:18px}
+.side .head p{margin:4px 0 0;font-size:13px;opacity:.9}
+.lesson-btn{display:flex;gap:10px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;color:var(--ink);font-size:14px;font-weight:600}
+.lesson-btn.on{border-color:var(--c);box-shadow:inset 3px 0 0 var(--c)}
+.lesson-btn .k{font-family:var(--mono);font-size:12px;color:var(--mute);flex:none;width:22px}
+.lesson-btn .st{margin-left:auto;font-size:12px;color:var(--mute);font-family:var(--mono);flex:none}
+.lesson-btn .st.full{color:var(--ok)}
+.main{min-width:0;display:flex;flex-direction:column;gap:18px}
+.theory{max-width:72ch}
+.theory h2{font-size:24px;margin-bottom:12px}
+.theory p,.theory li{margin:0 0 10px}
+.theory ul{padding-left:20px;margin:0 0 10px}
+pre.code{background:var(--code-bg);color:var(--code-ink);font-family:var(--mono);font-size:13.5px;line-height:1.6;padding:14px 16px;border-radius:12px;overflow-x:auto;margin:0;white-space:pre}
+.example{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.example .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.out{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-family:var(--mono);font-size:13px;white-space:pre-wrap;overflow-x:auto;min-height:20px;color:var(--ink)}
+.out.err{color:var(--bad)}
+.out:empty{display:none}
+
+/* exercices */
+.ex{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.ex.done{border-color:var(--ok)}
+.ex-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.ex-top h3{font-size:16px}
+.tag{font-family:var(--mono);font-size:11.5px;padding:3px 8px;border-radius:99px;background:var(--sunk);color:var(--mute);white-space:nowrap}
+.tag.ok{background:var(--ok);color:var(--surface)}
+.prompt{margin:0;max-width:72ch}
+textarea.ed{width:100%;box-sizing:border-box;min-height:170px;resize:vertical;background:var(--code-bg);color:var(--code-ink);caret-color:var(--js);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-family:var(--mono);font-size:13.5px;line-height:1.6;tab-size:4;white-space:pre;overflow:auto}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.actions .kbd{font-size:12px;color:var(--mute);margin-left:auto}
+.verdict{border-radius:10px;padding:10px 12px;font-size:14px;font-weight:600}
+.verdict.ok{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)}
+.verdict.bad{background:color-mix(in srgb,var(--bad) 12%,transparent);color:var(--bad)}
+.verdict:empty{display:none}
+.hint{font-size:14px;background:var(--sunk);border-radius:10px;padding:10px 12px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--ink);font-size:14px}
+.opt code{background:transparent;padding:0}
+.opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent)}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,transparent)}
+input.ans{font-family:var(--mono);font-size:14px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);min-width:0;flex:1 1 220px}
+.cssgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.preview{border:1px dashed var(--line);border-radius:12px;overflow:auto;min-height:170px}
+.tablewrap{overflow-x:auto}
+table.res{border-collapse:collapse;font-size:13px;font-family:var(--mono);font-variant-numeric:tabular-nums}
+table.res th,table.res td{border:1px solid var(--line);padding:5px 10px;text-align:left;white-space:nowrap}
+table.res th{background:var(--sunk)}
+details.schema{background:var(--sunk);border-radius:12px;padding:10px 14px}
+details.schema summary{cursor:pointer;font-weight:600}
+.schema .tbls{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px}
+
+/* devoirs */
+.dv{display:flex;flex-direction:column;gap:14px}
+.dcard{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:14px;padding:20px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px}
+.dcard.rendu{opacity:.75}
+.date{display:flex;flex-direction:column;gap:2px}
+.date .d{font-family:var(--display);font-size:30px;font-weight:800;line-height:1}
+.date .m{font-weight:700;text-transform:uppercase;font-size:13px;letter-spacing:.06em}
+.date .left{font-size:12.5px;color:var(--mute);margin-top:6px}
+.dcard h3{font-size:18px;margin-bottom:8px}
+.dcard p{margin:0 0 10px;max-width:70ch}
+.checks{list-style:none;padding:0;margin:0 0 12px;display:flex;flex-direction:column;gap:6px}
+.checks label{display:flex;gap:9px;align-items:flex-start;font-size:14px;cursor:pointer}
+.checks input{margin-top:4px;accent-color:var(--c)}
+.cal{font-size:12.5px;color:var(--mute);display:flex;gap:6px;align-items:center}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;font-weight:700;opacity:0;transition:.3s;pointer-events:none;z-index:50}
+.toast.on{opacity:1;transform:translateX(-50%)}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:40;width:100%;height:100%}
+
+@media (max-width:900px){.langs{grid-template-columns:repeat(3,1fr)}.hero,.two{grid-template-columns:1fr}.lview{grid-template-columns:1fr}.side{position:static}.cssgrid{grid-template-columns:1fr}}
+@media (max-width:560px){.langs{grid-template-columns:1fr 1fr}.dcard{grid-template-columns:1fr;gap:10px}.date{flex-direction:row;align-items:baseline;gap:8px}.date .left{margin:0}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="logo"><span class="dot"></span><b>Le Labo de RG</b></div>
+    <div class="stats" id="stats"></div>
+  </header>
+  <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+  <main id="view"></main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<canvas id="confetti"></canvas>
+
+<script>
+(()=>{
+"use strict";
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const norm=s=>String(s??"").replace(/\r/g,"").split("\n").map(l=>l.trimEnd()).join("\n").trim();
+
+/* ================= CONTENU ================= */
+const L={
+py:{name:"Python",color:"var(--py)",tag:"Logique, calculs, scripts",lessons:[
+ {t:"Variables, types et affichage",th:`<p>Une <b>variable</b> est une étiquette posée sur une valeur. Python devine le type tout seul :</p>
+<ul><li><code>int</code> : nombre entier, <code>42</code></li><li><code>float</code> : nombre à virgule, <code>12.5</code></li><li><code>str</code> : texte, <code>"RG"</code></li><li><code>bool</code> : <code>True</code> ou <code>False</code></li></ul>
+<p>Pour mélanger texte et variables, la <b>f-string</b> est l'outil le plus pratique : on met un <code>f</code> devant les guillemets et les variables entre accolades. Pour convertir : <code>int("12")</code>, <code>str(5)</code>, <code>float("3.5")</code>.</p>
+<p>Attention aux trois divisions : <code>/</code> donne toujours un float, <code>//</code> la division entière, <code>%</code> le reste.</p>`,
+ ex:`nom = "RG"
+credits = 42
+moyenne = 13.5
+print(type(credits))
+print(f"{nom} a {credits} crédits et {moyenne} de moyenne")
+print(7 / 2, 7 // 2, 7 % 2)`,
+ exos:[
+  {id:"py1a",type:"code",title:"Ton bilan de semestre",xp:15,
+   p:`Crée trois variables : <code>prenom</code> (vaut <code>"RG"</code>), <code>ue_validees</code> (vaut <code>4</code>) et <code>credits_par_ue</code> (vaut <code>6</code>). Calcule <code>total</code>, puis affiche exactement :<br><code>RG a validé 4 UE, soit 24 crédits.</code>`,
+   start:`# Écris ton code ici\n`,expected:`RG a validé 4 UE, soit 24 crédits.`,
+   hint:`total = ue_validees * credits_par_ue, puis print(f"{prenom} a validé {ue_validees} UE, soit {total} crédits.")`,
+   sol:`prenom = "RG"\nue_validees = 4\ncredits_par_ue = 6\ntotal = ue_validees * credits_par_ue\nprint(f"{prenom} a validé {ue_validees} UE, soit {total} crédits.")`},
+  {id:"py1b",type:"predict",title:"Lis le code",xp:10,code:`a = 17\nb = 5\nprint(a // b, a % b)`,p:"Qu'affiche ce programme ?",answers:["3 2"],hint:"17 = 5 × 3 + 2."}
+ ]},
+ {t:"Conditions et fonctions",th:`<p>Une <b>condition</b> exécute un bloc seulement si un test est vrai. Les comparaisons : <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;=</code>… On combine avec <code>and</code>, <code>or</code>, <code>not</code>.</p>
+<p>En Python, ce sont les <b>4 espaces d'indentation</b> qui délimitent les blocs. Pas d'accolades : une indentation fausse est une erreur.</p>
+<p>Une <b>fonction</b> (<code>def</code>) range du code réutilisable. Elle reçoit des paramètres et renvoie un résultat avec <code>return</code>. Dès que <code>return</code> s'exécute, la fonction s'arrête.</p>`,
+ ex:`def mention(note):
+    if note >= 16:
+        return "Très bien"
+    elif note >= 14:
+        return "Bien"
+    elif note >= 10:
+        return "Passable"
+    else:
+        return "Échec"
+
+print(mention(15))
+print(mention(8))`,
+ exos:[
+  {id:"py2a",type:"code",title:"Statut LMD",xp:20,
+   p:`Écris la fonction <code>statut(credits)</code> qui renvoie <code>"Validé"</code> à partir de 60 crédits, <code>"Compensable"</code> de 45 à 59, et <code>"Ajourné"</code> en dessous de 45. <span class="muted">(Règle simplifiée pour l'exercice.)</span>`,
+   start:`def statut(credits):\n    # à toi de jouer\n    pass\n`,
+   tests:`print(statut(60))\nprint(statut(52))\nprint(statut(30))\nprint(statut(45))`,expected:`Validé\nCompensable\nAjourné\nCompensable`,
+   hint:"Commence par le cas le plus haut : if credits >= 60, puis elif credits >= 45, puis else.",
+   sol:`def statut(credits):\n    if credits >= 60:\n        return "Validé"\n    elif credits >= 45:\n        return "Compensable"\n    else:\n        return "Ajourné"`}
+ ]},
+ {t:"Listes et boucles",th:`<p>Une <b>liste</b> range plusieurs valeurs dans l'ordre : <code>notes = [12, 8, 15]</code>. Le premier élément est <code>notes[0]</code>, le dernier <code>notes[-1]</code>. <code>len(notes)</code> donne la taille, <code>notes.append(11)</code> ajoute à la fin.</p>
+<p>La boucle <code>for</code> parcourt chaque élément. <code>range(n)</code> fabrique les nombres de 0 à n-1. Le schéma de base à connaître par cœur : <b>initialiser un accumulateur</b>, puis le mettre à jour dans la boucle.</p>`,
+ ex:`notes = [12, 8, 15, 10]
+total = 0
+for n in notes:
+    total += n
+print("Moyenne :", total / len(notes))
+
+for i in range(3):
+    print("Tour", i)`,
+ exos:[
+  {id:"py3a",type:"code",title:"Moyenne arrondie",xp:20,
+   p:`Écris <code>moyenne(notes)</code> qui renvoie la moyenne de la liste, arrondie à 2 décimales avec <code>round(valeur, 2)</code>.`,
+   start:`def moyenne(notes):\n    pass\n`,tests:`print(moyenne([12, 15, 9]))\nprint(moyenne([10, 11]))\nprint(moyenne([13, 14, 14]))`,expected:`12.0\n10.5\n13.67`,
+   hint:"Additionne avec une boucle (ou sum), divise par len(notes), puis round(..., 2).",
+   sol:`def moyenne(notes):\n    total = 0\n    for n in notes:\n        total += n\n    return round(total / len(notes), 2)`},
+  {id:"py3b",type:"code",title:"Combien de réussites ?",xp:20,
+   p:`Écris <code>nb_reussites(notes)</code> qui compte les notes supérieures ou égales à 10. Une liste vide renvoie 0.`,
+   start:`def nb_reussites(notes):\n    pass\n`,tests:`print(nb_reussites([8, 12, 10, 9]))\nprint(nb_reussites([]))\nprint(nb_reussites([10, 10, 10]))`,expected:`2\n0\n3`,
+   hint:"Un compteur à 0, une boucle, un if note >= 10: compteur += 1.",
+   sol:`def nb_reussites(notes):\n    compteur = 0\n    for n in notes:\n        if n >= 10:\n            compteur += 1\n    return compteur`}
+ ]},
+ {t:"Dictionnaires",th:`<p>Un <b>dictionnaire</b> associe des clés à des valeurs : <code>{"Python": "Prisca", "CSS": "Joël"}</code>. On lit avec <code>d["Python"]</code>, mais si la clé n'existe pas, c'est une erreur. <code>d.get(cle, defaut)</code> renvoie une valeur par défaut à la place.</p>
+<p><code>cle in d</code> teste si une clé existe. <code>for cle, valeur in d.items():</code> parcourt les paires. Une liste de dictionnaires, c'est exactement la forme de tes données dans <code>data.js</code> sur Peer-Learning.</p>`,
+ ex:`tuteurs = {"Python": "Prisca", "CSS": "Joël", "SQL": "Naomie"}
+print(tuteurs["SQL"])
+print(tuteurs.get("PHP", "personne"))
+for matiere, nom in tuteurs.items():
+    print(matiere, "→", nom)`,
+ exos:[
+  {id:"py4a",type:"code",title:"Trouver un tuteur",xp:20,
+   p:`Écris <code>trouver_tuteur(matiere, tuteurs)</code> qui renvoie le nom du tuteur de la matière, ou <code>"Aucun tuteur"</code> si elle n'est pas dans le dictionnaire.`,
+   start:`def trouver_tuteur(matiere, tuteurs):\n    pass\n`,
+   tests:`t = {"Python": "Prisca", "CSS": "Joël"}\nprint(trouver_tuteur("CSS", t))\nprint(trouver_tuteur("PHP", t))`,expected:`Joël\nAucun tuteur`,
+   hint:"Une seule ligne suffit avec .get().",sol:`def trouver_tuteur(matiere, tuteurs):\n    return tuteurs.get(matiere, "Aucun tuteur")`},
+  {id:"py4b",type:"code",title:"Compter par promotion",xp:25,
+   p:`Écris <code>compter_par_promo(etudiants)</code> : elle reçoit une liste de dictionnaires <code>{"nom": ..., "promo": ...}</code> et renvoie un dictionnaire qui compte les étudiants par promo.`,
+   start:`def compter_par_promo(etudiants):\n    compte = {}\n    # parcours la liste et remplis compte\n    return compte\n`,
+   tests:`r = compter_par_promo([{"nom": "A", "promo": "L1"}, {"nom": "B", "promo": "L2"}, {"nom": "C", "promo": "L1"}])\nprint(r["L1"], r["L2"], r.get("L3", 0))`,expected:`2 1 0`,
+   hint:`Pour chaque étudiant e : p = e["promo"] ; compte[p] = compte.get(p, 0) + 1`,
+   sol:`def compter_par_promo(etudiants):\n    compte = {}\n    for e in etudiants:\n        p = e["promo"]\n        compte[p] = compte.get(p, 0) + 1\n    return compte`}
+ ]}
+]},
+
+js:{name:"JavaScript",color:"var(--js)",tag:"Rendre une page vivante",lessons:[
+ {t:"Variables et affichage",th:`<p>En JavaScript moderne, on déclare avec <code>const</code> (valeur qui ne sera pas réassignée) ou <code>let</code> (valeur qui change). Oublie <code>var</code>.</p>
+<p>Les <b>template literals</b> utilisent des accents graves <code>\`…\`</code> et <code>\${variable}</code>, comme les f-strings de Python. <code>console.log()</code> affiche dans la console.</p>
+<p>Piège classique : <code>+</code> colle du texte si l'un des deux est une chaîne, alors que <code>*</code>, <code>-</code>, <code>/</code> convertissent en nombre.</p>`,
+ ex:`const prenom = "RG";
+let xp = 10;
+xp += 5;
+console.log(\`\${prenom} a \${xp} XP\`);
+console.log(typeof xp, typeof prenom);
+console.log("2" + 2, "2" * 2);`,
+ exos:[
+  {id:"js1a",type:"code",title:"Message de bienvenue",xp:15,
+   p:`Déclare <code>const prenom = "RG"</code> et <code>let xp = 0</code>. Ajoute 25 à <code>xp</code>, puis affiche exactement : <code>Bienvenue RG, tu as 25 XP</code>.`,
+   start:`// Écris ton code ici\n`,expected:`Bienvenue RG, tu as 25 XP`,
+   hint:"xp += 25; puis console.log(`Bienvenue ${prenom}, tu as ${xp} XP`);",
+   sol:"const prenom = \"RG\";\nlet xp = 0;\nxp += 25;\nconsole.log(`Bienvenue ${prenom}, tu as ${xp} XP`);"},
+  {id:"js1b",type:"predict",title:"Le piège du +",xp:10,code:`console.log("5" + 3, "5" * 3);`,p:"Qu'affiche cette ligne ?",answers:["53 15"],hint:"+ avec une chaîne colle ; * convertit en nombre."}
+ ]},
+ {t:"Fonctions et conditions",th:`<p>Deux façons d'écrire une fonction :</p>
+<pre class="code">function double(x) { return x * 2; }
+const triple = (x) => x * 3;</pre>
+<p>Pour comparer, utilise toujours <code>===</code> (même valeur et même type). <code>==</code> fait des conversions surprenantes : <code>"0" == 0</code> est vrai.</p>
+<p>Les blocs <code>if / else if / else</code> sont délimités par des accolades.</p>`,
+ ex:`function estAdmis(note) {
+  if (note >= 10) {
+    return "Admis";
+  } else {
+    return "Ajourné";
+  }
+}
+console.log(estAdmis(12), estAdmis(7));
+console.log("0" == 0, "0" === 0);`,
+ exos:[
+  {id:"js2a",type:"code",title:"Mention du quiz",xp:20,
+   p:`Écris <code>mention(note)</code> sur 20 : 16 et plus → <code>"Très bien"</code>, 14 et plus → <code>"Bien"</code>, 12 et plus → <code>"Assez bien"</code>, 10 et plus → <code>"Passable"</code>, sinon <code>"Échec"</code>.`,
+   start:`function mention(note) {\n  // à toi\n}\n`,
+   tests:`console.log(mention(17));\nconsole.log(mention(14));\nconsole.log(mention(12.5));\nconsole.log(mention(10));\nconsole.log(mention(3));`,
+   expected:`Très bien\nBien\nAssez bien\nPassable\nÉchec`,
+   hint:"Teste du plus grand au plus petit avec if / else if.",
+   sol:`function mention(note) {\n  if (note >= 16) return "Très bien";\n  else if (note >= 14) return "Bien";\n  else if (note >= 12) return "Assez bien";\n  else if (note >= 10) return "Passable";\n  return "Échec";\n}`}
+ ]},
+ {t:"Tableaux et méthodes",th:`<p>Un tableau : <code>const cours = ["HTML", "CSS"]</code>. <code>.length</code> donne la taille, <code>.push()</code> ajoute.</p>
+<p>Les méthodes à maîtriser, parce qu'elles remplacent la plupart des boucles :</p>
+<ul><li><code>.filter(fn)</code> garde les éléments pour lesquels <code>fn</code> renvoie vrai</li><li><code>.map(fn)</code> transforme chaque élément</li><li><code>.find(fn)</code> renvoie le premier qui correspond</li><li><code>.join(", ")</code> colle tout en un texte</li></ul>
+<p>On les enchaîne : <code>tuteurs.filter(...).map(...)</code>.</p>`,
+ ex:`const tuteurs = [
+  { nom: "Prisca", matiere: "Python", etoiles: 4.8 },
+  { nom: "Joël", matiere: "CSS", etoiles: 4.5 },
+];
+const top = tuteurs.filter(t => t.etoiles >= 4.6).map(t => t.nom);
+console.log(top);
+console.log(tuteurs.find(t => t.matiere === "CSS").nom);`,
+ exos:[
+  {id:"js3a",type:"code",title:"Tuteurs disponibles",xp:20,
+   p:`Écris <code>nomsDisponibles(tuteurs)</code> qui renvoie un tableau contenant seulement les <b>noms</b> des tuteurs dont <code>dispo</code> vaut <code>true</code>.`,
+   start:`function nomsDisponibles(tuteurs) {\n  // utilise filter puis map\n}\n`,
+   tests:`console.log(nomsDisponibles([{nom:"Grace",dispo:true},{nom:"Jonathan",dispo:false},{nom:"Merveille",dispo:true}]).join(", "));\nconsole.log(nomsDisponibles([]).length);`,
+   expected:`Grace, Merveille\n0`,hint:"return tuteurs.filter(t => t.dispo).map(t => t.nom);",
+   sol:`function nomsDisponibles(tuteurs) {\n  return tuteurs.filter(t => t.dispo).map(t => t.nom);\n}`}
+ ]},
+ {t:"Objets et DOM",th:`<p>Un <b>objet</b> regroupe des propriétés : <code>const q = { texte: "…", bonne: "b" }</code>. On lit <code>q.texte</code>.</p>
+<p>Le <b>DOM</b>, c'est la page HTML vue par JavaScript. Les quatre gestes de base :</p>
+<ul><li><code>document.querySelector("#score")</code> trouve un élément</li><li><code>el.textContent = "…"</code> change son texte</li><li><code>el.classList.add("actif")</code> change son style via une classe</li><li><code>el.addEventListener("click", fn)</code> réagit à un clic</li></ul>
+<p>C'est exactement ce que tu as fait en remplaçant les <code>onclick</code> de ton quiz Peer-Learning par des <code>addEventListener</code>.</p>`,
+ ex:`const question = { texte: "CSS veut dire ?", choix: ["a", "b"], bonne: "b" };
+console.log(question.texte, question.choix.length);
+
+// Dans une vraie page :
+// const btn = document.querySelector("#valider");
+// btn.addEventListener("click", () => { ... });`,
+ exos:[
+  {id:"js4a",type:"code",title:"Le score du quiz",xp:20,
+   p:`Écris <code>calculerScore(reponses, corrige)</code> : deux tableaux de même longueur, renvoie le nombre de positions où la réponse est identique au corrigé.`,
+   start:`function calculerScore(reponses, corrige) {\n  let score = 0;\n  // une boucle for avec un index i\n  return score;\n}\n`,
+   tests:`console.log(calculerScore(["a","c","b"], ["a","b","b"]));\nconsole.log(calculerScore([], []));\nconsole.log(calculerScore(["d","d"], ["d","d"]));`,
+   expected:`2\n0\n2`,hint:"for (let i = 0; i < reponses.length; i++) { if (reponses[i] === corrige[i]) score++; }",
+   sol:`function calculerScore(reponses, corrige) {\n  let score = 0;\n  for (let i = 0; i < reponses.length; i++) {\n    if (reponses[i] === corrige[i]) score++;\n  }\n  return score;\n}`},
+  {id:"js4b",type:"qcm",title:"Écrire dans la page",xp:10,p:`Quelle ligne affiche « Bravo » dans <code>&lt;p id="msg"&gt;&lt;/p&gt;</code> ?`,
+   opts:[`document.querySelector("#msg").textContent = "Bravo";`,`document.msg = "Bravo";`,`console.log("#msg", "Bravo");`,`document.querySelector("msg").value = "Bravo";`],a:0,
+   why:"querySelector a besoin du # pour un id, et textContent change le texte affiché d'un paragraphe (value sert aux champs de formulaire)."}
+ ]}
+]},
+
+css:{name:"CSS",color:"var(--css)",tag:"Mettre en forme",lessons:[
+ {t:"Sélecteurs et texte",th:`<p>Une règle CSS = un <b>sélecteur</b> + des <b>déclarations</b> : <code>.nom { color: navy; }</code>.</p>
+<ul><li><code>p</code> cible toutes les balises p</li><li><code>.carte</code> cible la classe carte</li><li><code>#titre</code> cible l'id titre</li><li><code>.carte .nom</code> cible un .nom <b>dans</b> une .carte</li></ul>
+<p>Si deux règles se contredisent, la plus <b>spécifique</b> gagne (id &gt; classe &gt; balise), sinon la dernière écrite.</p>
+<p>Propriétés de texte utiles : <code>color</code>, <code>font-size</code>, <code>font-weight</code> (400 normal, 700 gras), <code>text-transform</code>, <code>line-height</code>.</p>`,
+ ex:`.nom { font-weight: 700; color: #3646e0; }
+.matiere { text-transform: uppercase; font-size: 12px; }`,
+ exos:[
+  {id:"css1a",type:"css",title:"Le nom en valeur",xp:15,
+   p:`Dans l'aperçu, mets les noms (<code>.nom</code>) en gras avec <code>font-weight: 700</code> et donne à <code>.matiere</code> une taille de <code>13px</code>.`,
+   start:`.nom {\n\n}\n.matiere {\n\n}\n`,
+   checks:[[q=>parseInt(gcs(q(".nom")).fontWeight)>=700,"Le nom n'est pas en gras (font-weight: 700)."],[q=>gcs(q(".matiere")).fontSize==="13px","La matière ne fait pas 13px."]],
+   hint:"font-weight: 700; dans .nom, font-size: 13px; dans .matiere.",sol:`.nom {\n  font-weight: 700;\n}\n.matiere {\n  font-size: 13px;\n}`}
+ ]},
+ {t:"Le modèle de boîte",th:`<p>Chaque élément est une boîte, de l'intérieur vers l'extérieur : <b>contenu</b> → <code>padding</code> (marge intérieure) → <code>border</code> → <code>margin</code> (marge extérieure).</p>
+<p><code>border: 2px solid #ccc</code> résume épaisseur, style et couleur. <code>border-radius</code> arrondit les coins.</p>
+<p>Ajoute toujours <code>* { box-sizing: border-box; }</code> à tes projets : la largeur inclut alors le padding et la bordure, ce qui évite les débordements.</p>`,
+ ex:`.carte {
+  padding: 16px;
+  border: 2px solid #dce1ee;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}`,
+ exos:[
+  {id:"css2a",type:"css",title:"Une vraie carte",xp:20,
+   p:`Donne à <code>.carte</code> un <code>padding</code> de 16px, une bordure pleine de 2px (couleur au choix) et des coins arrondis de 12px.`,
+   start:`.carte {\n\n}\n`,
+   checks:[[q=>gcs(q(".carte")).paddingTop==="16px","Le padding n'est pas de 16px."],[q=>gcs(q(".carte")).borderTopWidth==="2px"&&gcs(q(".carte")).borderTopStyle==="solid","Il manque une bordure solid de 2px."],[q=>gcs(q(".carte")).borderTopLeftRadius==="12px","Les coins ne sont pas arrondis à 12px."]],
+   hint:"border: 2px solid gray; border-radius: 12px;",sol:`.carte {\n  padding: 16px;\n  border: 2px solid #c9cfe2;\n  border-radius: 12px;\n}`}
+ ]},
+ {t:"Flexbox",th:`<p>Flexbox aligne des éléments sur <b>une ligne</b> (ou une colonne). On l'active sur le <b>parent</b> : <code>display: flex</code>.</p>
+<ul><li><code>justify-content</code> : répartition sur l'axe principal (<code>space-between</code>, <code>center</code>…)</li><li><code>align-items</code> : alignement sur l'axe perpendiculaire (<code>center</code> pour centrer verticalement)</li><li><code>gap</code> : espace entre les enfants</li><li><code>flex-direction: column</code> pour empiler</li></ul>`,
+ ex:`.rangee {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}`,
+ exos:[
+  {id:"css3a",type:"css",title:"Avatar à côté du nom",xp:20,
+   p:`Dans chaque carte, la <code>.rangee</code> contient l'avatar et le nom. Mets-les côte à côte avec Flexbox, centrés verticalement, avec un <code>gap</code> de 12px.`,
+   start:`.rangee {\n\n}\n`,
+   checks:[[q=>gcs(q(".rangee")).display==="flex","La rangée n'est pas en display: flex."],[q=>gcs(q(".rangee")).alignItems==="center","Les éléments ne sont pas centrés verticalement (align-items)."],[q=>gcs(q(".rangee")).columnGap==="12px","Le gap n'est pas de 12px."]],
+   hint:"Trois lignes : display, align-items, gap.",sol:`.rangee {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}`}
+ ]},
+ {t:"Grid et responsive",th:`<p>CSS Grid gère <b>deux dimensions</b> à la fois. <code>grid-template-columns: repeat(3, 1fr)</code> crée 3 colonnes égales (<code>fr</code> = une part de l'espace libre).</p>
+<p>Une <b>media query</b> applique des règles seulement sous une condition, souvent la largeur de l'écran :</p>
+<pre class="code">@media (max-width: 600px) {
+  .grille { grid-template-columns: 1fr; }
+}</pre>
+<p>Méthode conseillée : écris d'abord la version mobile, puis élargis.</p>`,
+ ex:`.grille {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}`,
+ exos:[
+  {id:"css4a",type:"css",title:"La grille des tuteurs",xp:20,
+   p:`Transforme <code>.grille</code> en grille de <b>3 colonnes égales</b> avec un espace de 16px entre les cartes.`,
+   start:`.grille {\n\n}\n`,
+   checks:[[q=>gcs(q(".grille")).display==="grid","La grille n'est pas en display: grid."],[q=>gcs(q(".grille")).gridTemplateColumns.trim().split(/\s+/).length===3,"Il ne faut pas exactement 3 colonnes."],[q=>gcs(q(".grille")).columnGap==="16px","L'espace entre colonnes n'est pas de 16px."]],
+   hint:"grid-template-columns: repeat(3, 1fr);",sol:`.grille {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 16px;\n}`},
+  {id:"css4b",type:"qcm",title:"Lire une media query",xp:10,p:`Que fait <code>@media (max-width: 600px) { .grille { grid-template-columns: 1fr; } }</code> ?`,
+   opts:["Sur les écrans de 600px ou moins, les cartes passent sur une seule colonne","Sur les écrans de plus de 600px, la grille fait 1 colonne","La grille fait toujours 600px de large","Elle supprime la grille sur mobile"],a:0,
+   why:"max-width: 600px veut dire « jusqu'à 600px de large ». 1fr = une seule colonne qui prend toute la largeur."}
+ ]}
+]},
+
+sql:{name:"SQL",color:"var(--sql)",tag:"Interroger des données",lessons:[
+ {t:"SELECT et WHERE",th:`<p>Une base de données range les informations dans des <b>tables</b> (lignes et colonnes). Ici, la base de Peer-Learning a trois tables : <code>etudiants</code>, <code>tuteurs</code> et <code>seances</code>.</p>
+<p><code>SELECT colonnes FROM table WHERE condition</code> lit des lignes. <code>*</code> veut dire toutes les colonnes. Les textes vont entre <b>apostrophes</b> : <code>WHERE promo = 'L1'</code>. On combine avec <code>AND</code> / <code>OR</code>.</p>`,
+ ex:`SELECT nom, matiere FROM tuteurs WHERE etoiles > 4.5`,
+ exos:[
+  {id:"sql1a",type:"sql",title:"Les étudiants de L1",xp:15,p:`Affiche le <code>nom</code> et les <code>credits</code> de tous les étudiants de la promo <code>L1</code>.`,
+   start:`SELECT \n`,sol:`SELECT nom, credits FROM etudiants WHERE promo = 'L1'`,hint:"SELECT nom, credits FROM etudiants WHERE ..."},
+  {id:"sql1b",type:"sql",title:"Deux conditions",xp:15,p:`Affiche le <code>nom</code> des étudiants qui ont <b>60 crédits</b> <b>et</b> qui ne sont pas en L1 (<code>&lt;&gt;</code> veut dire « différent de »).`,
+   start:`SELECT \n`,sol:`SELECT nom FROM etudiants WHERE credits = 60 AND promo <> 'L1'`,hint:"WHERE credits = 60 AND promo <> 'L1'"}
+ ]},
+ {t:"Trier et limiter",th:`<p><code>ORDER BY colonne</code> trie (croissant par défaut, <code>DESC</code> pour décroissant). <code>LIMIT n</code> garde les n premières lignes.</p>
+<p>L'ordre d'écriture est toujours : <code>SELECT … FROM … WHERE … ORDER BY … LIMIT …</code></p>`,
+ ex:`SELECT nom, credits FROM etudiants ORDER BY credits DESC`,
+ exos:[
+  {id:"sql2a",type:"sql",title:"Le podium des tuteurs",xp:20,p:`Affiche le <code>nom</code> et les <code>etoiles</code> des <b>3 tuteurs les mieux notés</b>, du meilleur au moins bon.`,
+   start:`SELECT \n`,sol:`SELECT nom, etoiles FROM tuteurs ORDER BY etoiles DESC LIMIT 3`,ordered:true,hint:"ORDER BY etoiles DESC LIMIT 3"}
+ ]},
+ {t:"Compter et regrouper",th:`<p>Les <b>fonctions d'agrégat</b> résument plusieurs lignes en une valeur : <code>COUNT(*)</code>, <code>SUM()</code>, <code>AVG()</code>, <code>MIN()</code>, <code>MAX()</code>.</p>
+<p><code>GROUP BY</code> fait un résumé <b>par groupe</b>. On renomme une colonne calculée avec <code>AS</code> :</p>
+<pre class="code">SELECT promo, COUNT(*) AS nb FROM etudiants GROUP BY promo</pre>`,
+ ex:`SELECT AVG(etoiles) AS moyenne FROM tuteurs`,
+ exos:[
+  {id:"sql3a",type:"sql",title:"Effectif par promo",xp:20,p:`Affiche chaque <code>promo</code> avec le <b>nombre d'étudiants</b> qu'elle contient.`,
+   start:`SELECT \n`,sol:`SELECT promo, COUNT(*) AS nb FROM etudiants GROUP BY promo`,hint:"SELECT promo, COUNT(*) ... GROUP BY promo"},
+  {id:"sql3b",type:"sql",title:"Moyenne de crédits en L1",xp:20,p:`Affiche la <b>moyenne des crédits</b> des étudiants de L1 (une seule valeur).`,
+   start:`SELECT \n`,sol:`SELECT AVG(credits) AS moyenne FROM etudiants WHERE promo = 'L1'`,hint:"AVG(credits) avec un WHERE."}
+ ]},
+ {t:"Jointures",th:`<p>La table <code>seances</code> ne contient pas de noms, seulement <code>etudiant_id</code> et <code>tuteur_id</code>. Ce sont des <b>clés étrangères</b> : elles pointent vers l'<code>id</code> d'une autre table.</p>
+<p><code>JOIN … ON …</code> recolle les tables. On donne des alias courts pour s'y retrouver :</p>
+<pre class="code">SELECT e.nom, s.duree
+FROM seances s
+JOIN etudiants e ON e.id = s.etudiant_id</pre>
+<p>C'est le cœur du module de matching de ton projet E-Campus.</p>`,
+ ex:`SELECT e.nom, s.duree
+FROM seances s
+JOIN etudiants e ON e.id = s.etudiant_id`,
+ exos:[
+  {id:"sql4a",type:"sql",title:"Qui a vu qui ?",xp:25,p:`Pour chaque séance, affiche le <b>nom de l'étudiant</b>, le <b>nom du tuteur</b> et la <code>duree</code>. Il faut deux <code>JOIN</code>.`,
+   start:`SELECT e.nom, t.nom, s.duree\nFROM seances s\n`,sol:`SELECT e.nom AS etudiant, t.nom AS tuteur, s.duree FROM seances s JOIN etudiants e ON e.id = s.etudiant_id JOIN tuteurs t ON t.id = s.tuteur_id`,
+   hint:"JOIN etudiants e ON e.id = s.etudiant_id puis JOIN tuteurs t ON t.id = s.tuteur_id"},
+  {id:"sql4b",type:"sql",title:"Temps de tutorat par étudiant",xp:30,p:`Affiche le <b>nom de chaque étudiant</b> qui a eu des séances, avec le <b>total de minutes</b> (<code>SUM(s.duree)</code>).`,
+   start:`SELECT e.nom, SUM(s.duree) AS total\nFROM seances s\n`,sol:`SELECT e.nom, SUM(s.duree) AS total FROM seances s JOIN etudiants e ON e.id = s.etudiant_id GROUP BY e.nom`,
+   hint:"Un JOIN vers etudiants, puis GROUP BY e.nom."},
+  {id:"sql4c",type:"qcm",title:"Modifier des données",xp:10,p:"Rahel vient de valider une UE de 6 crédits. Quelle requête met sa ligne à jour ?",
+   opts:["UPDATE etudiants SET credits = credits + 6 WHERE nom = 'Rahel'","UPDATE etudiants SET credits = credits + 6","INSERT INTO etudiants (credits) VALUES (6)","SELECT credits + 6 FROM etudiants WHERE nom = 'Rahel'"],a:0,
+   why:"UPDATE … SET modifie. Sans WHERE, la modification touche toutes les lignes de la table : c'est l'erreur la plus dangereuse en SQL."}
+ ]}
+]},
+
+php:{name:"PHP",color:"var(--php)",tag:"Le code côté serveur",lessons:[
+ {t:"Syntaxe et variables",th:`<p>PHP s'exécute sur le <b>serveur</b>, avant que la page arrive dans le navigateur. Le visiteur ne voit jamais ton code PHP, seulement le HTML qu'il produit. Pour pratiquer chez toi : installe <b>XAMPP</b>, ou lance <code>php -S localhost:8000</code> dans ton dossier.</p>
+<p>Le code se place entre <code>&lt;?php</code> et <code>?&gt;</code>. Les variables commencent toujours par <code>$</code>. Chaque instruction finit par <code>;</code>.</p>
+<p>On colle des textes avec le <b>point</b> <code>.</code> (pas le +). Entre guillemets doubles, les variables sont remplacées : <code>"Salut $nom"</code>. Entre apostrophes, non.</p>`,
+ ex:`<?php
+$nom = "RG";
+$credits = 30;
+echo "Bonjour $nom<br>";
+echo 'Bonjour $nom<br>';
+echo "Crédits : " . ($credits * 2);
+?>`,out:`Bonjour RG
+Bonjour $nom
+Crédits : 60`,
+ exos:[
+  {id:"php1a",type:"predict",title:"Lis le code",xp:10,code:`<?php\n$ue = 5;\n$par_ue = 6;\necho "Total : " . $ue * $par_ue . " crédits";\n?>`,p:"Qu'affiche ce script ?",answers:["Total : 30 crédits"],hint:"Le point colle les morceaux ; la multiplication passe avant."},
+  {id:"php1b",type:"qcm",title:"Guillemets",xp:10,p:`Avec <code>$prenom = "RG";</code>, quelle ligne affiche <code>Salut RG</code> ?`,opts:[`echo "Salut $prenom";`,`echo 'Salut $prenom';`,`echo "Salut " + $prenom;`,`print(Salut, $prenom);`],a:0,why:"Seuls les guillemets doubles remplacent les variables. En PHP, + additionne des nombres ; pour du texte, c'est le point."}
+ ]},
+ {t:"Conditions et boucles",th:`<p>Les conditions ressemblent au JavaScript : <code>if (...) { } elseif (...) { } else { }</code> (attention, <code>elseif</code> s'écrit en un mot).</p>
+<p>La boucle reine de PHP est <code>foreach</code>, pour parcourir un tableau :</p>
+<pre class="code">foreach ($cours as $c) { echo $c; }
+foreach ($cours as $i => $c) { echo "$i : $c"; }</pre>`,
+ ex:`<?php
+$notes = [12, 8, 15];
+foreach ($notes as $n) {
+  if ($n >= 10) { echo "$n OK "; }
+  else { echo "$n KO "; }
+}
+?>`,out:`12 OK 8 KO 15 OK`,
+ exos:[
+  {id:"php2a",type:"predict",title:"foreach avec index",xp:15,code:`<?php\n$cours = ["HTML", "CSS", "JS"];\nforeach ($cours as $i => $c) {\n  echo $i . "-" . $c . " ";\n}\n?>`,p:"Qu'affiche ce script ? (ignore l'espace final)",answers:["0-HTML 1-CSS 2-JS"],hint:"Les index d'un tableau commencent à 0."}
+ ]},
+ {t:"Tableaux et fonctions",th:`<p>Deux sortes de tableaux :</p>
+<ul><li>indexé : <code>$notes = [12, 15, 9];</code> → <code>$notes[0]</code></li><li>associatif (comme un dictionnaire Python) : <code>$t = ["nom" =&gt; "Prisca", "matiere" =&gt; "Python"];</code> → <code>$t["nom"]</code></li></ul>
+<p>Fonctions utiles : <code>count()</code>, <code>array_sum()</code>, <code>in_array()</code>, <code>strtoupper()</code>. On écrit les siennes avec <code>function nom($param) { return ...; }</code>.</p>`,
+ ex:`<?php
+function moyenne($notes) {
+  return array_sum($notes) / count($notes);
+}
+$tuteur = ["nom" => "Prisca", "matiere" => "Python"];
+echo $tuteur["nom"] . " : " . moyenne([12, 16]);
+?>`,out:`Prisca : 14`,
+ exos:[
+  {id:"php3a",type:"fill",title:"Complète la fonction",xp:15,code:`function moyenne($notes) {\n  return array_sum($notes) / ______($notes);\n}`,p:"Quel mot remplace les tirets pour obtenir le nombre de notes ?",answers:["count"],hint:"C'est l'équivalent de len() en Python."},
+  {id:"php3b",type:"fill",title:"Lire un tableau associatif",xp:15,code:`$tuteur = ["nom" => "Prisca", "matiere" => "Python"];\necho $tuteur[______];   // doit afficher Python`,p:"Qu'écris-tu entre les crochets ?",answers:['"matiere"',"'matiere'"],hint:"La clé est un texte, donc entre guillemets."}
+ ]},
+ {t:"Formulaires et base de données",th:`<p>Quand un formulaire est envoyé, PHP récupère les champs dans <code>$_POST</code> (méthode post, données invisibles dans l'URL) ou <code>$_GET</code> (données visibles dans l'URL, pour une recherche par exemple).</p>
+<p>Deux règles de sécurité non négociables :</p>
+<ul><li>Pour <b>afficher</b> une donnée tapée par un visiteur : <code>htmlspecialchars($texte)</code>, sinon il peut injecter du HTML ou du JavaScript.</li><li>Pour l'<b>envoyer en SQL</b> : une requête préparée avec PDO. Jamais de concaténation de texte dans une requête.</li></ul>`,
+ ex:`<?php
+$pdo = new PDO("mysql:host=localhost;dbname=peer", "root", "");
+$req = $pdo->prepare("INSERT INTO messages (nom, texte) VALUES (?, ?)");
+$req->execute([$_POST["nom"], $_POST["texte"]]);
+echo "Merci " . htmlspecialchars($_POST["nom"]);
+?>`,out:`Merci Grace`,
+ exos:[
+  {id:"php4a",type:"qcm",title:"Pourquoi préparer ?",xp:10,p:"Pourquoi utiliser <code>prepare()</code> et <code>execute()</code> plutôt que coller <code>$_POST[\"nom\"]</code> dans la requête ?",
+   opts:["Pour empêcher les injections SQL : les données ne sont jamais lues comme du code SQL","Parce que c'est plus rapide à écrire","Parce que MySQL refuse les autres requêtes","Pour chiffrer le mot de passe"],a:0,why:"Un visiteur pourrait taper du SQL dans le champ « nom ». Avec une requête préparée, sa saisie reste une simple valeur."},
+  {id:"php4b",type:"qcm",title:"GET ou POST ?",xp:10,p:"Ton formulaire de contact envoie un nom et un message à enregistrer. Quelle méthode choisir ?",
+   opts:["POST : on modifie des données et rien ne doit apparaître dans l'URL","GET : c'est la méthode par défaut","GET : c'est plus sécurisé","Peu importe"],a:0,why:"GET sert à lire (recherche, filtres). POST sert à envoyer ou modifier des données."}
+ ]}
+]}
+};
+const ORDER=["py","js","css","sql","php"];
+const HASH={py:"python",js:"javascript",css:"css",sql:"sql",php:"php"};
+
+/* ================= DEVOIRS ================= */
+const DEVOIRS=[
+ {id:"d1",lang:"py",date:"2026-10-28",titre:"Calculateur de crédits LMD",
+  txt:"Un script Python qui demande au clavier (input) les notes de 5 UE, puis affiche la moyenne, les crédits obtenus (6 par UE validée à 10 ou plus) et le statut du semestre.",
+  checks:["Une fonction moyenne(notes) et une fonction statut(credits)","Les notes sont lues avec input() et converties avec float()","Une boucle for qui compte les UE validées","Un affichage propre avec des f-strings","Testé avec au moins 3 jeux de notes différents"]},
+ {id:"d2",lang:"css",date:"2026-11-04",titre:"La grille des tuteurs, version responsive",
+  txt:"Reprends la page des tuteurs de ton site Peer-Learning et refais toute la mise en page des cartes à la main : 3 colonnes sur ordinateur, 2 sur tablette, 1 sur téléphone.",
+  checks:["box-sizing: border-box sur tous les éléments","Cartes avec padding, bordure et coins arrondis","Avatar et nom alignés avec Flexbox","Grille CSS avec repeat() et gap","Deux media queries (tablette et téléphone), testées en réduisant la fenêtre"]},
+ {id:"d3",lang:"js",date:"2026-11-11",titre:"Un quiz qui se mélange à chaque partie",
+  txt:"Ajoute à ton questionnaire Peer-Learning la régénération des questions : à chaque nouvelle partie, 10 questions tirées au hasard parmi les 42, dans un ordre différent.",
+  checks:["Les questions sont un tableau d'objets {texte, choix, bonne}","Une fonction melanger(tableau) (algorithme de Fisher-Yates)","Bouton « Rejouer » branché avec addEventListener","Score calculé avec une fonction séparée","Meilleur score gardé dans localStorage"]},
+ {id:"d4",lang:"sql",date:"2026-11-18",titre:"La base de données Peer-Learning",
+  txt:"Dans MySQL (XAMPP / phpMyAdmin) ou SQLite, crée la vraie base du projet : étudiants, tuteurs, séances. Remplis-la et écris les requêtes dont le site aurait besoin.",
+  checks:["Trois tables avec clé primaire et clés étrangères","Au moins 8 lignes par table (INSERT)","Une requête avec WHERE et ORDER BY","Une requête avec GROUP BY et COUNT ou SUM","Une requête avec deux JOIN","Le tout enregistré dans un fichier peer_learning.sql"]},
+ {id:"d5",lang:"php",date:"2026-11-25",titre:"Le formulaire de contact côté serveur",
+  txt:"Ton formulaire de contact actuel valide seulement dans le navigateur. Fais-le traiter par PHP : vérification des champs sur le serveur, puis enregistrement dans la base du devoir 4.",
+  checks:["Formulaire en method=\"post\"","Vérification des champs vides et de l'email avec filter_var()","Enregistrement avec PDO et une requête préparée","Affichage sécurisé avec htmlspecialchars()","Une page qui liste les messages reçus"]},
+ {id:"d6",lang:"dev",date:"2026-12-09",titre:"Projet final : Peer-Learning dynamique",
+  txt:"Assemble tout : la liste des tuteurs vient de la base (PHP + SQL), on la filtre en direct (JavaScript), elle est mise en forme proprement (CSS), et un script Python produit un petit rapport de statistiques à partir d'un export CSV.",
+  checks:["tuteurs.php lit les tuteurs depuis MySQL","Champ de recherche qui filtre les cartes sans recharger (JS)","Mise en page responsive (CSS du devoir 2)","Export CSV des séances","rapport.py : minutes de tutorat par tuteur et par étudiant","Un README qui explique comment lancer le projet"]}
+];
+const LANGINFO={...Object.fromEntries(ORDER.map(k=>[k,{name:L[k].name,color:L[k].color}])),dev:{name:"Projet final",color:"var(--dev)"}};
+
+/* ================= ÉTAT ================= */
+const KEY="laboRG.v1";
+let S={done:{},xp:0,halved:{},drafts:{},days:[],dv:{},lesson:{}};
+try{const raw=localStorage.getItem(KEY);if(raw)S={...S,...JSON.parse(raw)};}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const allExos=lang=>L[lang].lessons.flatMap((l,li)=>l.exos.map(x=>({...x,li})));
+const TITLES=["Débutant","Apprenti","Bricoleur de code","Codeur","Développeur junior","Développeur","Développeur confirmé","Architecte","Maître du code"];
+const level=()=>Math.floor(S.xp/100)+1;
+function streak(){
+  const set=new Set(S.days);let d=new Date(),n=0;
+  const k=x=>x.toISOString().slice(0,10);
+  if(!set.has(k(d)))d.setDate(d.getDate()-1);
+  while(set.has(k(d))){n++;d.setDate(d.getDate()-1);}
+  return n;
+}
+function gain(id,xp){
+  if(S.done[id])return;
+  const g=S.halved[id]?Math.ceil(xp/2):xp;
+  const before=level();
+  S.done[id]=true;S.xp+=g;
+  const t=new Date().toISOString().slice(0,10);if(!S.days.includes(t))S.days.push(t);
+  save();renderStats();
+  toast(level()>before?`Niveau ${level()} : ${TITLES[Math.min(level()-1,TITLES.length-1)]} !`:`+${g} XP`);
+  confetti();
+}
+
+/* ================= MOTEURS ================= */
+function builtinRead(x){if(Sk.builtinFiles===undefined||Sk.builtinFiles.files[x]===undefined)throw "Fichier introuvable : "+x;return Sk.builtinFiles.files[x];}
+async function runPy(code){
+  if(typeof Sk==="undefined")return{out:"",err:"Le moteur Python n'a pas pu se charger. Vérifie ta connexion puis recharge la page."};
+  let out="";
+  Sk.configure({output:t=>{out+=t;},read:builtinRead,__future__:Sk.python3,execLimit:5000});
+  try{await Sk.misceval.asyncToPromise(()=>Sk.importMainWithBody("<stdin>",false,code,true));return{out,err:null};}
+  catch(e){return{out,err:String(e)};}
+}
+function fmtJS(v){if(typeof v==="string")return v;try{return JSON.stringify(v);}catch(e){return String(v);}}
+async function runJS(code){
+  const logs=[];const c={log:(...a)=>logs.push(a.map(fmtJS).join(" ")),error:(...a)=>logs.push(a.map(fmtJS).join(" ")),warn:(...a)=>logs.push(a.map(fmtJS).join(" "))};
+  try{new Function("console",code)(c);return{out:logs.join("\n"),err:null};}
+  catch(e){return{out:logs.join("\n"),err:e.name+" : "+e.message};}
+}
+const SEED=[
+ "CREATE TABLE etudiants (id INT, nom STRING, promo STRING, credits INT)",
+ "INSERT INTO etudiants VALUES (1,'Rahel','L1',48),(2,'Grace','L1',60),(3,'Jonathan','L2',55),(4,'Merveille','L1',30),(5,'Christian','L2',60),(6,'Divine','L3',52)",
+ "CREATE TABLE tuteurs (id INT, nom STRING, matiere STRING, etoiles NUMBER)",
+ "INSERT INTO tuteurs VALUES (1,'Prisca','Python',4.8),(2,'Joël','CSS',4.5),(3,'Naomie','SQL',4.9),(4,'Fiston','JavaScript',4.2),(5,'Bénédicte','PHP',4.6)",
+ "CREATE TABLE seances (id INT, etudiant_id INT, tuteur_id INT, duree INT)",
+ "INSERT INTO seances VALUES (1,1,1,60),(2,1,3,45),(3,4,2,30),(4,2,4,90),(5,3,1,60)"
+];
+let dbN=0;
+function runSQL(q){
+  if(typeof alasql==="undefined")return{err:"Le moteur SQL n'a pas pu se charger. Recharge la page."};
+  try{
+    const db=new alasql.Database("labo"+(dbN++));
+    SEED.forEach(s=>db.exec(s));
+    const clean=q.trim().replace(/;\s*$/,"");
+    if(!clean)return{err:"Écris une requête."};
+    const r=db.exec(clean);
+    return{rows:Array.isArray(r)?r:null,info:Array.isArray(r)?null:"Requête exécutée ("+r+")"};
+  }catch(e){return{err:String(e.message||e)};}
+}
+function tableHTML(rows){
+  if(!rows||!rows.length)return'<p class="muted">Aucune ligne.</p>';
+  const cols=Object.keys(rows[0]);
+  return`<div class="tablewrap"><table class="res"><thead><tr>${cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td>${esc(r[c]??"NULL")}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+const rowKey=r=>JSON.stringify(Object.values(r).map(v=>typeof v==="number"?Math.round(v*100)/100:v));
+function sameRows(a,b,ordered){
+  if(!a||!b||a.length!==b.length)return false;
+  if(a.length&&Object.keys(a[0]).length!==Object.keys(b[0]).length)return false;
+  let A=a.map(rowKey),B=b.map(rowKey);if(!ordered){A.sort();B.sort();}
+  return A.every((x,i)=>x===B[i]);
+}
+const CSS_HTML=`<div class="grille">${[["PK","Prisca K.","Python · L3","Algorithmique et premiers scripts."],["JM","Joël M.","CSS · L2","Flexbox, Grid et responsive."],["NB","Naomie B.","SQL · L3","Requêtes, jointures et modélisation."]].map(([a,n,m,b])=>`<article class="carte"><div class="rangee"><span class="avatar">${a}</span><div><h3 class="nom">${n}</h3><p class="matiere">${m}</p></div></div><p class="bio">${b}</p></article>`).join("")}</div>`;
+const CSS_BASE=`:host{display:block;background:#ffffff;color:#1c2033;font:14px/1.45 system-ui,sans-serif;padding:14px}
+.carte{background:#f5f6fb}.avatar{width:40px;height:40px;border-radius:50%;background:#dfe5ff;color:#2a3592;display:inline-grid;place-items:center;font-weight:700;flex:none}
+h3{margin:0;font-size:15px;font-weight:400}p{margin:4px 0}.matiere{color:#5a6180;font-size:15px}.bio{font-size:13px;color:#3c4260}`;
+const gcs=el=>getComputedStyle(el);
+
+/* ================= RENDU ================= */
+const $=id=>document.getElementById(id);
+const view=$("view");
+let route="accueil";
+function renderStats(){
+  const lv=level(),into=S.xp%100;
+  $("stats").innerHTML=`<span class="pill"><span class="lv">NIV ${lv}</span>${esc(TITLES[Math.min(lv-1,TITLES.length-1)])}<span class="xpbar"><i style="width:${into}%"></i></span>${S.xp} XP</span><span class="pill" title="Jours d'affilée avec au moins un exercice réussi">Série : ${streak()} j</span>`;
+}
+function renderTabs(){
+  const items=[["accueil","Accueil",null],...ORDER.map(k=>[HASH[k],L[k].name,L[k].color]),["devoirs","Devoirs","var(--dev)"]];
+  $("tabs").innerHTML=items.map(([id,n,c])=>`<button type="button" data-go="${id}" class="${route===id?"on":""}" style="${c?`--c:${c}`:""}">${c?'<span class="sw"></span>':""}${n}</button>`).join("");
+}
+function progress(lang){const xs=allExos(lang);const d=xs.filter(x=>S.done[x.id]).length;return{d,n:xs.length,p:xs.length?d/xs.length:0};}
+const fmtDate=s=>new Date(s+"T18:00:00").toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"});
+function daysLeft(s){const d=Math.round((new Date(s+"T18:00:00")-new Date())/864e5);return d<0?"date passée":d===0?"aujourd'hui":d===1?"demain":`dans ${d} jours`;}
+function nextExo(){for(const k of ORDER){const x=allExos(k).find(x=>!S.done[x.id]);if(x)return{k,x};}return null;}
+
+function renderHome(){
+  const lv=level(),nx=nextExo(),nd=DEVOIRS.find(d=>!(S.dv[d.id]&&S.dv[d.id].rendu));
+  const total=ORDER.reduce((a,k)=>a+progress(k).n,0),done=ORDER.reduce((a,k)=>a+progress(k).d,0);
+  view.innerHTML=`
+  <section class="hero">
+    <div class="card">
+      <div class="eyebrow">Ton labo perso</div>
+      <h1>Salut RG. On passe de 3 à 7 sur 10.</h1>
+      <p>Cinq langages, une leçon courte, puis des exercices corrigés tout de suite. Tous les exemples parlent de ton projet Peer-Learning : tuteurs, étudiants, crédits LMD et quiz. Python, JavaScript, SQL et CSS s'exécutent ici même ; PHP se travaille en lecture de code, puis sur ta machine pour les devoirs.</p>
+      <div class="actions">${nx?`<button class="btn" type="button" data-resume="${nx.k}|${nx.x.li}">Reprendre : ${esc(L[nx.k].name)} · ${esc(nx.x.title)}</button>`:`<button class="btn" type="button" data-go="devoirs">Tout est fait : place aux devoirs</button>`}<button class="btn ghost" type="button" data-go="devoirs">Voir les devoirs</button></div>
+    </div>
+    <div class="card level">
+      <div class="eyebrow">Progression</div>
+      <div class="big">${lv}</div>
+      <div class="t">${esc(TITLES[Math.min(lv-1,TITLES.length-1)])}</div>
+      <div class="meter"><i style="width:${S.xp%100}%"></i></div>
+      <div class="muted">${100-S.xp%100} XP avant le niveau ${lv+1} · ${done}/${total} exercices réussis · série de ${streak()} jour(s)</div>
+    </div>
+  </section>
+  <section class="langs">${ORDER.map(k=>{const p=progress(k);return`<button class="lang" type="button" data-go="${HASH[k]}" style="--c:${L[k].color}"><h3>${L[k].name}</h3><span class="muted">${L[k].tag}</span><div class="meter"><i style="width:${p.p*100}%"></i></div><span class="n">${p.d}/${p.n} exercices</span></button>`;}).join("")}</section>
+  <section class="two">
+    <div class="card">
+      <div class="eyebrow">Prochain devoir</div>
+      ${nd?`<h3 style="font-size:19px;margin-bottom:6px">${esc(nd.titre)}</h3><p class="muted" style="margin:0 0 12px">${esc(LANGINFO[nd.lang].name)} · à rendre ${fmtDate(nd.date)} (${daysLeft(nd.date)}), noté dans ton Google Agenda.</p><button class="btn small" type="button" data-go="devoirs">Ouvrir la consigne</button>`:`<p>Tous les devoirs sont rendus. Bravo.</p>`}
+    </div>
+    <div class="card">
+      <div class="eyebrow">Comment ça marche</div>
+      <p style="margin:0 0 8px">Chaque exercice réussi rapporte des XP. Afficher la solution avant de réussir divise le gain par deux : essaie d'abord, regarde l'indice ensuite.</p>
+      <p class="muted" style="margin:0">Raccourci : Ctrl + Entrée exécute le code de l'éditeur. Ta progression reste enregistrée dans ce navigateur.</p>
+    </div>
+  </section>`;
+}
+
+function renderLang(lang){
+  const C=L[lang],li=Math.min(S.lesson[lang]||0,C.lessons.length-1),les=C.lessons[li];
+  view.innerHTML=`<div class="lview" style="--c:${C.color}">
+   <aside class="side">
+     <div class="head"><h2>${C.name}</h2><p>${C.tag}</p></div>
+     ${C.lessons.map((l,i)=>{const d=l.exos.filter(x=>S.done[x.id]).length;return`<button type="button" class="lesson-btn ${i===li?"on":""}" data-lesson="${i}"><span class="k">${String(i+1).padStart(2,"0")}</span>${esc(l.t)}<span class="st ${d===l.exos.length?"full":""}">${d}/${l.exos.length}</span></button>`;}).join("")}
+   </aside>
+   <div class="main">
+     <section class="card theory"><div class="eyebrow">Leçon ${li+1} sur ${C.lessons.length}</div><h2>${esc(les.t)}</h2>${les.th}
+       <div class="example"><div class="eyebrow" style="margin:6px 0 0">Exemple</div><pre class="code">${esc(les.ex)}</pre>
+       ${lang==="php"?`<div class="muted">Résultat affiché :</div><div class="out">${esc(les.out)}</div>`:lang==="css"?"":`<div class="row"><button class="btn small ghost" type="button" id="runEx">Exécuter l'exemple</button></div><div id="exOut"></div>`}
+       </div>
+       ${lang==="sql"?schemaHTML():""}
+     </section>
+     ${les.exos.map(x=>exoHTML(lang,x)).join("")}
+     <div class="actions">${li>0?`<button class="btn ghost" type="button" data-lesson="${li-1}">← Leçon précédente</button>`:""}${li<C.lessons.length-1?`<button class="btn" type="button" data-lesson="${li+1}">Leçon suivante →</button>`:`<button class="btn" type="button" data-go="${HASH[ORDER[ORDER.indexOf(lang)+1]]||"devoirs"}">${ORDER[ORDER.indexOf(lang)+1]?"Langage suivant : "+L[ORDER[ORDER.indexOf(lang)+1]].name+" →":"Passer aux devoirs →"}</button>`}</div>
+   </div></div>`;
+  bindLesson(lang,les);
+}
+function schemaHTML(){
+  const t=[["etudiants","SELECT * FROM etudiants"],["tuteurs","SELECT * FROM tuteurs"],["seances","SELECT * FROM seances"]];
+  return`<details class="schema" style="margin-top:14px"><summary>Voir les tables de la base</summary><div class="tbls">${t.map(([n,q])=>`<div><div class="eyebrow" style="margin:0 0 4px">${n}</div>${tableHTML(runSQL(q).rows)}</div>`).join("")}</div></details>`;
+}
+function exoHTML(lang,x){
+  const done=!!S.done[x.id];
+  const head=`<div class="ex-top"><h3>${esc(x.title)}</h3><span class="tag ${done?"ok":""}">${done?"Réussi":"+"+x.xp+" XP"}</span></div><p class="prompt">${x.p}</p>`;
+  const tail=`<div class="verdict" data-v></div><div class="hint" data-h hidden></div>`;
+  let body="";
+  if(x.type==="code"||x.type==="sql"){
+    body=`<textarea class="ed" data-ed spellcheck="false" autocapitalize="off" autocomplete="off" id="ed-${x.id}" aria-label="Éditeur">${esc(S.drafts[x.id]??x.start)}</textarea>
+    <div class="actions"><button class="btn small ghost" type="button" data-run>Exécuter</button><button class="btn small" type="button" data-check>Vérifier</button><button class="btn small ghost" type="button" data-hint>Indice</button><button class="btn small ghost" type="button" data-sol>Solution</button><span class="kbd">Ctrl + Entrée</span></div>
+    <div data-o></div>`;
+  }else if(x.type==="css"){
+    body=`<div class="cssgrid"><textarea class="ed" data-ed spellcheck="false" id="ed-${x.id}" aria-label="Éditeur CSS">${esc(S.drafts[x.id]??x.start)}</textarea><div class="preview" data-prev></div></div>
+    <div class="actions"><button class="btn small" type="button" data-check>Vérifier</button><button class="btn small ghost" type="button" data-hint>Indice</button><button class="btn small ghost" type="button" data-sol>Solution</button><span class="kbd">L'aperçu se met à jour pendant que tu tapes</span></div>`;
+  }else if(x.type==="qcm"){
+    body=`<div class="opts">${x.opts.map((o,i)=>`<button type="button" class="opt" data-opt="${i}"><code>${esc(o)}</code></button>`).join("")}</div>`;
+  }else{
+    body=`<pre class="code">${esc(x.code)}</pre><div class="actions"><input class="ans" data-ans id="ans-${x.id}" placeholder="Ta réponse" autocomplete="off" aria-label="Ta réponse"><button class="btn small" type="button" data-check>Vérifier</button><button class="btn small ghost" type="button" data-hint>Indice</button></div>`;
+  }
+  return`<section class="ex ${done?"done":""}" data-exo="${x.id}">${head}${body}${tail}</section>`;
+}
+
+function bindLesson(lang,les){
+  const runEx=$("runEx");
+  if(runEx)runEx.onclick=async()=>{
+    const o=$("exOut");
+    if(lang==="sql"){const r=runSQL(les.ex);o.innerHTML=r.err?`<div class="out err">${esc(r.err)}</div>`:tableHTML(r.rows);return;}
+    const r=lang==="py"?await runPy(les.ex):await runJS(les.ex);
+    o.innerHTML=`<div class="out ${r.err?"err":""}">${esc((r.out||"")+(r.err?"\n"+r.err:""))}</div>`;
+  };
+  les.exos.forEach(x=>bindExo(lang,x));
+}
+function setV(box,ok,msg){const v=box.querySelector("[data-v]");v.className="verdict "+(ok?"ok":"bad");v.textContent=msg;if(ok){box.classList.add("done");const t=box.querySelector(".tag");t.className="tag ok";t.textContent="Réussi";}}
+function bindExo(lang,x){
+  const box=document.querySelector(`[data-exo="${x.id}"]`);if(!box)return;
+  const ed=box.querySelector("[data-ed]"),o=box.querySelector("[data-o]"),hint=box.querySelector("[data-h]");
+  const hb=box.querySelector("[data-hint]");if(hb)hb.onclick=()=>{hint.hidden=false;hint.innerHTML="<b>Indice :</b> "+esc(x.hint);};
+  const sb=box.querySelector("[data-sol]");
+  if(sb)sb.onclick=()=>{if(!S.done[x.id]){S.halved[x.id]=true;save();}hint.hidden=false;hint.innerHTML=`<b>Une solution possible</b>${S.done[x.id]?"":" (gain divisé par deux)"} :<pre class="code" style="margin-top:8px">${esc(x.sol)}</pre>`;};
+  if(ed){
+    let tm;
+    ed.addEventListener("input",()=>{clearTimeout(tm);tm=setTimeout(()=>{S.drafts[x.id]=ed.value;save();},300);if(x.type==="css")preview();});
+    ed.addEventListener("keydown",e=>{
+      if(e.key==="Tab"){e.preventDefault();const s=ed.selectionStart,en=ed.selectionEnd,ind=lang==="py"?"    ":"  ";ed.setRangeText(ind,s,en,"end");ed.dispatchEvent(new Event("input"));}
+      if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();(box.querySelector("[data-run]")||box.querySelector("[data-check]")).click();}
+    });
+  }
+  if(x.type==="code"){
+    const run=lang==="py"?runPy:runJS,mark=lang==="py"?'print("<<<T>>>")':'console.log("<<<T>>>");';
+    box.querySelector("[data-run]").onclick=async()=>{const r=await run(ed.value);o.innerHTML=`<div class="out ${r.err?"err":""}">${esc((r.out||"(rien n'a été affiché)")+(r.err?"\n"+r.err:""))}</div>`;};
+    box.querySelector("[data-check]").onclick=async()=>{
+      const code=x.tests?ed.value+"\n"+mark+"\n"+x.tests:ed.value;
+      const r=await run(code);
+      if(r.err){o.innerHTML=`<div class="out err">${esc(r.err)}</div>`;setV(box,false,"Ton code plante avant la fin. Lis l'erreur ci-dessus : elle indique la ligne.");return;}
+      let got=r.out;if(x.tests){const i=got.indexOf("<<<T>>>");got=i<0?"":got.slice(i+7);}
+      got=norm(got);
+      if(got===norm(x.expected)){o.innerHTML="";setV(box,true,"Correct ! Tous les tests passent.");gain(x.id,x.xp);}
+      else{o.innerHTML=`<div class="out">Attendu :\n${esc(norm(x.expected))}\n\nObtenu :\n${esc(got||"(rien)")}</div>`;setV(box,false,"Pas encore. Compare ligne par ligne ce qui est attendu et ce que ton code donne.");}
+    };
+  }
+  if(x.type==="sql"){
+    box.querySelector("[data-run]").onclick=()=>{const r=runSQL(ed.value);o.innerHTML=r.err?`<div class="out err">${esc(r.err)}</div>`:r.rows?tableHTML(r.rows):`<div class="out">${esc(r.info)}</div>`;};
+    box.querySelector("[data-check]").onclick=()=>{
+      const r=runSQL(ed.value),ref=runSQL(x.sol).rows;
+      if(r.err){o.innerHTML=`<div class="out err">${esc(r.err)}</div>`;setV(box,false,"La requête contient une erreur de syntaxe.");return;}
+      o.innerHTML=tableHTML(r.rows);
+      if(sameRows(r.rows,ref,x.ordered)){setV(box,true,"Correct ! Le résultat est exactement celui attendu.");gain(x.id,x.xp);}
+      else{
+        const n=r.rows?r.rows.length:0;
+        setV(box,false,`Pas encore : ta requête renvoie ${n} ligne(s) et ${r.rows&&r.rows[0]?Object.keys(r.rows[0]).length:0} colonne(s), il en faut ${ref.length} et ${Object.keys(ref[0]).length}${x.ordered?", dans le bon ordre":""}.`);
+      }
+    };
+  }
+  let root;
+  function preview(){root.innerHTML=`<style>${CSS_BASE}</style><style>${ed.value}</style>${CSS_HTML}`;}
+  if(x.type==="css"){
+    const host=box.querySelector("[data-prev]");root=host.attachShadow({mode:"open"});preview();
+    box.querySelector("[data-check]").onclick=()=>{
+      preview();const q=s=>root.querySelector(s);
+      const fail=x.checks.find(([f])=>{try{return !f(q);}catch(e){return true;}});
+      if(!fail){setV(box,true,"Correct ! Regarde le résultat dans l'aperçu.");gain(x.id,x.xp);}else setV(box,false,fail[1]);
+    };
+  }
+  if(x.type==="qcm"){
+    box.querySelectorAll("[data-opt]").forEach(b=>b.onclick=()=>{
+      const i=+b.dataset.opt;
+      if(i===x.a){b.classList.add("right");setV(box,true,"Exact. "+x.why);gain(x.id,x.xp);}
+      else{b.classList.add("wrong");setV(box,false,"Non. Relis la question et réessaie.");}
+    });
+  }
+  if(x.type==="predict"||x.type==="fill"){
+    const inp=box.querySelector("[data-ans]");
+    const chk=()=>{
+      const a=inp.value.trim().replace(/\s+/g," ");
+      const ok=x.answers.some(r=>x.type==="fill"?r.toLowerCase()===a.toLowerCase():r===a);
+      if(ok){setV(box,true,"Exact !");gain(x.id,x.xp);}else setV(box,false,"Ce n'est pas ça. Exécute le code dans ta tête ligne par ligne.");
+    };
+    box.querySelector("[data-check]").onclick=chk;
+    inp.addEventListener("keydown",e=>{if(e.key==="Enter")chk();});
+  }
+}
+
+function renderDevoirs(){
+  view.innerHTML=`<div class="card" style="margin-bottom:16px"><div class="eyebrow">Devoirs</div><h2 style="font-size:24px;margin-bottom:6px">Six devoirs, un par semaine</h2><p class="muted" style="margin:0;max-width:70ch">Ils se font sur ta machine, dans VS Code, avec Live Server pour le front et XAMPP pour PHP et MySQL. Chaque date limite est dans ton Google Agenda avec un rappel la veille. Coche les points au fur et à mesure ; un devoir rendu rapporte 50 XP.</p></div>
+  <div class="dv">${DEVOIRS.map(d=>{
+    const st=S.dv[d.id]||{c:[],rendu:false},I=LANGINFO[d.lang],dt=new Date(d.date+"T18:00:00");
+    return`<article class="dcard ${st.rendu?"rendu":""}" style="--c:${I.color}">
+      <div class="date"><span class="m" style="color:${I.color}">${esc(I.name)}</span><span class="d">${dt.getDate()}</span><span class="m">${dt.toLocaleDateString("fr-FR",{month:"short"})} · ${dt.toLocaleDateString("fr-FR",{weekday:"short"})}</span><span class="left">${st.rendu?"Rendu":daysLeft(d.date)}</span></div>
+      <div><h3>${esc(d.titre)}</h3><p>${esc(d.txt)}</p>
+      <ul class="checks">${d.checks.map((c,i)=>`<li><label><input type="checkbox" id="${d.id}-c${i}" data-dv="${d.id}" data-i="${i}" ${st.c.includes(i)?"checked":""}> ${esc(c)}</label></li>`).join("")}</ul>
+      <div class="actions"><button class="btn small ${st.rendu?"ghost":""}" type="button" data-rendu="${d.id}">${st.rendu?"Marquer comme non rendu":"Marquer comme rendu (+50 XP)"}</button><span class="cal">Échéance dans Google Agenda : ${fmtDate(d.date)}, 18 h</span></div></div>
+    </article>`;}).join("")}</div>`;
+  view.querySelectorAll("[data-dv]").forEach(cb=>cb.onchange=()=>{
+    const id=cb.dataset.dv,i=+cb.dataset.i,st=S.dv[id]=S.dv[id]||{c:[],rendu:false};
+    st.c=cb.checked?[...new Set([...st.c,i])]:st.c.filter(v=>v!==i);save();
+  });
+  view.querySelectorAll("[data-rendu]").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.rendu,st=S.dv[id]=S.dv[id]||{c:[],rendu:false};
+    st.rendu=!st.rendu;
+    if(st.rendu&&!S.done["dv-"+id])gain("dv-"+id,50);
+    save();renderDevoirs();
+  });
+}
+
+function go(r,push=true){
+  route=r;renderTabs();
+  const lang=Object.keys(HASH).find(k=>HASH[k]===r);
+  if(lang)renderLang(lang);else if(r==="devoirs")renderDevoirs();else{route="accueil";renderTabs();renderHome();}
+  if(push){try{history.replaceState(null,"","#"+route);}catch(e){}}
+  window.scrollTo({top:0});
+}
+document.addEventListener("click",e=>{
+  const g=e.target.closest("[data-go]");if(g){go(g.dataset.go);return;}
+  const rs=e.target.closest("[data-resume]");if(rs){const[k,li]=rs.dataset.resume.split("|");S.lesson[k]=+li;save();go(HASH[k]);return;}
+  const l=e.target.closest("[data-lesson]");if(l){const lang=Object.keys(HASH).find(k=>HASH[k]===route);S.lesson[lang]=+l.dataset.lesson;save();renderLang(lang);window.scrollTo({top:0});}
+});
+
+/* ================= EFFETS ================= */
+let tt;function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),1800);}
+function confetti(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const c=$("confetti"),g=c.getContext("2d"),d=devicePixelRatio||1;c.width=innerWidth*d;c.height=innerHeight*d;
+  const cs=getComputedStyle(document.documentElement),cols=["--py","--js","--css","--sql","--php","--dev"].map(v=>cs.getPropertyValue(v).trim());
+  const P=Array.from({length:90},()=>({x:c.width/2,y:c.height*.75,vx:(Math.random()-.5)*16*d,vy:(-Math.random()*16-6)*d,s:(4+Math.random()*5)*d,c:cols[Math.floor(Math.random()*cols.length)],r:Math.random()*6}));
+  let f=0;(function tick(){g.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.55*d;p.r+=.2;g.save();g.translate(p.x,p.y);g.rotate(p.r);g.fillStyle=p.c;g.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);g.restore();});if(++f<70)requestAnimationFrame(tick);else g.clearRect(0,0,c.width,c.height);})();
+}
+
+renderStats();
+const h=(location.hash||"").slice(1);
+go(["accueil","devoirs",...Object.values(HASH)].includes(h)?h:"accueil",false);
+})();
+</script>
