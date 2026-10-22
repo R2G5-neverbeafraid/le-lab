@@ -1,0 +1,131 @@
+{
+ "id": "python",
+ "nom": "Python",
+ "accroche": "Logique, calculs, scripts",
+ "lecons": [
+  {
+   "titre": "Variables, types et affichage",
+   "theorie": "cours/python/01-variables-types-et-affichage.md",
+   "exemple": {
+    "langage": "python",
+    "code": "nom = \"RG\"\ncredits = 42\nmoyenne = 13.5\nprint(type(credits))\nprint(f\"{nom} a {credits} crédits et {moyenne} de moyenne\")\nprint(7 / 2, 7 // 2, 7 % 2)"
+   },
+   "exercices": [
+    {
+     "id": "py1a",
+     "type": "code",
+     "titre": "Ton bilan de semestre",
+     "xp": 15,
+     "consigne": "Crée trois variables : `prenom` (vaut `\"RG\"`), `ue_validees` (vaut `4`) et `credits_par_ue` (vaut `6`). Calcule `total`, puis affiche exactement :  \n`RG a validé 4 UE, soit 24 crédits.`",
+     "depart": "# Écris ton code ici\n",
+     "attendu": "RG a validé 4 UE, soit 24 crédits.",
+     "indice": "total = ue_validees * credits_par_ue, puis print(f\"{prenom} a validé {ue_validees} UE, soit {total} crédits.\")",
+     "solution": "prenom = \"RG\"\nue_validees = 4\ncredits_par_ue = 6\ntotal = ue_validees * credits_par_ue\nprint(f\"{prenom} a validé {ue_validees} UE, soit {total} crédits.\")"
+    },
+    {
+     "id": "py1b",
+     "type": "predict",
+     "titre": "Lis le code",
+     "xp": 10,
+     "consigne": "Qu'affiche ce programme ?",
+     "code": "a = 17\nb = 5\nprint(a // b, a % b)",
+     "reponses": [
+      "3 2"
+     ],
+     "indice": "17 = 5 × 3 + 2.",
+     "explication": "17 = 5 × 3 + 2."
+    }
+   ]
+  },
+  {
+   "titre": "Conditions et fonctions",
+   "theorie": "cours/python/02-conditions-et-fonctions.md",
+   "exemple": {
+    "langage": "python",
+    "code": "def mention(note):\n    if note >= 16:\n        return \"Très bien\"\n    elif note >= 14:\n        return \"Bien\"\n    elif note >= 10:\n        return \"Passable\"\n    else:\n        return \"Échec\"\n\nprint(mention(15))\nprint(mention(8))"
+   },
+   "exercices": [
+    {
+     "id": "py2a",
+     "type": "code",
+     "titre": "Statut LMD",
+     "xp": 20,
+     "consigne": "Écris la fonction `statut(credits)` qui renvoie `\"Validé\"` à partir de 60 crédits, `\"Compensable\"` de 45 à 59, et `\"Ajourné\"` en dessous de 45. *(Règle simplifiée pour l'exercice.)*",
+     "depart": "def statut(credits):\n    # à toi de jouer\n    pass\n",
+     "tests": "print(statut(60))\nprint(statut(52))\nprint(statut(30))\nprint(statut(45))",
+     "attendu": "Validé\nCompensable\nAjourné\nCompensable",
+     "indice": "Commence par le cas le plus haut : if credits >= 60, puis elif credits >= 45, puis else.",
+     "solution": "def statut(credits):\n    if credits >= 60:\n        return \"Validé\"\n    elif credits >= 45:\n        return \"Compensable\"\n    else:\n        return \"Ajourné\""
+    }
+   ]
+  },
+  {
+   "titre": "Listes et boucles",
+   "theorie": "cours/python/03-listes-et-boucles.md",
+   "exemple": {
+    "langage": "python",
+    "code": "notes = [12, 8, 15, 10]\ntotal = 0\nfor n in notes:\n    total += n\nprint(\"Moyenne :\", total / len(notes))\n\nfor i in range(3):\n    print(\"Tour\", i)"
+   },
+   "exercices": [
+    {
+     "id": "py3a",
+     "type": "code",
+     "titre": "Moyenne arrondie",
+     "xp": 20,
+     "consigne": "Écris `moyenne(notes)` qui renvoie la moyenne de la liste, arrondie à 2 décimales avec `round(valeur, 2)`.",
+     "depart": "def moyenne(notes):\n    pass\n",
+     "tests": "print(moyenne([12, 15, 9]))\nprint(moyenne([10, 11]))\nprint(moyenne([13, 14, 14]))",
+     "attendu": "12.0\n10.5\n13.67",
+     "indice": "Additionne avec une boucle (ou sum), divise par len(notes), puis round(..., 2).",
+     "solution": "def moyenne(notes):\n    total = 0\n    for n in notes:\n        total += n\n    return round(total / len(notes), 2)"
+    },
+    {
+     "id": "py3b",
+     "type": "code",
+     "titre": "Combien de réussites ?",
+     "xp": 20,
+     "consigne": "Écris `nb_reussites(notes)` qui compte les notes supérieures ou égales à 10. Une liste vide renvoie 0.",
+     "depart": "def nb_reussites(notes):\n    pass\n",
+     "tests": "print(nb_reussites([8, 12, 10, 9]))\nprint(nb_reussites([]))\nprint(nb_reussites([10, 10, 10]))",
+     "attendu": "2\n0\n3",
+     "indice": "Un compteur à 0, une boucle, un if note >= 10: compteur += 1.",
+     "solution": "def nb_reussites(notes):\n    compteur = 0\n    for n in notes:\n        if n >= 10:\n            compteur += 1\n    return compteur"
+    }
+   ]
+  },
+  {
+   "titre": "Dictionnaires",
+   "theorie": "cours/python/04-dictionnaires.md",
+   "exemple": {
+    "langage": "python",
+    "code": "tuteurs = {\"Python\": \"Prisca\", \"CSS\": \"Joël\", \"SQL\": \"Naomie\"}\nprint(tuteurs[\"SQL\"])\nprint(tuteurs.get(\"PHP\", \"personne\"))\nfor matiere, nom in tuteurs.items():\n    print(matiere, \"→\", nom)"
+   },
+   "exercices": [
+    {
+     "id": "py4a",
+     "type": "code",
+     "titre": "Trouver un tuteur",
+     "xp": 20,
+     "consigne": "Écris `trouver_tuteur(matiere, tuteurs)` qui renvoie le nom du tuteur de la matière, ou `\"Aucun tuteur\"` si elle n'est pas dans le dictionnaire.",
+     "depart": "def trouver_tuteur(matiere, tuteurs):\n    pass\n",
+     "tests": "t = {\"Python\": \"Prisca\", \"CSS\": \"Joël\"}\nprint(trouver_tuteur(\"CSS\", t))\nprint(trouver_tuteur(\"PHP\", t))",
+     "attendu": "Joël\nAucun tuteur",
+     "indice": "Une seule ligne suffit avec .get().",
+     "solution": "def trouver_tuteur(matiere, tuteurs):\n    return tuteurs.get(matiere, \"Aucun tuteur\")"
+    },
+    {
+     "id": "py4b",
+     "type": "code",
+     "titre": "Compter par promotion",
+     "xp": 25,
+     "consigne": "Écris `compter_par_promo(etudiants)` : elle reçoit une liste de dictionnaires `{\"nom\": ..., \"promo\": ...}` et renvoie un dictionnaire qui compte les étudiants par promo.",
+     "depart": "def compter_par_promo(etudiants):\n    compte = {}\n    # parcours la liste et remplis compte\n    return compte\n",
+     "tests": "r = compter_par_promo([{\"nom\": \"A\", \"promo\": \"L1\"}, {\"nom\": \"B\", \"promo\": \"L2\"}, {\"nom\": \"C\", \"promo\": \"L1\"}])\nprint(r[\"L1\"], r[\"L2\"], r.get(\"L3\", 0))",
+     "attendu": "2 1 0",
+     "indice": "Pour chaque étudiant e : p = e[\"promo\"] ; compte[p] = compte.get(p, 0) + 1",
+     "solution": "def compter_par_promo(etudiants):\n    compte = {}\n    for e in etudiants:\n        p = e[\"promo\"]\n        compte[p] = compte.get(p, 0) + 1\n    return compte"
+    }
+   ]
+  }
+ ]
+}
