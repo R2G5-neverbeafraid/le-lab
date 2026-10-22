@@ -1,0 +1,182 @@
+{
+ "id": "css",
+ "nom": "CSS",
+ "accroche": "Mettre en forme",
+ "lecons": [
+  {
+   "titre": "Sélecteurs et texte",
+   "theorie": "cours/css/01-selecteurs-et-texte.md",
+   "exemple": {
+    "langage": "css",
+    "code": ".nom { font-weight: 700; color: #3646e0; }\n.matiere { text-transform: uppercase; font-size: 12px; }"
+   },
+   "exercices": [
+    {
+     "id": "css1a",
+     "type": "css",
+     "titre": "Le nom en valeur",
+     "xp": 15,
+     "consigne": "Dans l'aperçu, mets les noms (`.nom`) en gras avec `font-weight: 700` et donne à `.matiere` une taille de `13px`.",
+     "depart": ".nom {\n\n}\n.matiere {\n\n}\n",
+     "indice": "font-weight: 700; dans .nom, font-size: 13px; dans .matiere.",
+     "solution": ".nom {\n  font-weight: 700;\n}\n.matiere {\n  font-size: 13px;\n}",
+     "verifications": [
+      {
+       "selecteur": ".nom",
+       "propriete": "font-weight",
+       "min": 700,
+       "message": "Le nom n'est pas en gras (font-weight: 700)."
+      },
+      {
+       "selecteur": ".matiere",
+       "propriete": "font-size",
+       "egal": "13px",
+       "message": "La matière ne fait pas 13px."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "titre": "Le modèle de boîte",
+   "theorie": "cours/css/02-le-modele-de-boite.md",
+   "exemple": {
+    "langage": "css",
+    "code": ".carte {\n  padding: 16px;\n  border: 2px solid #dce1ee;\n  border-radius: 12px;\n  margin-bottom: 12px;\n}"
+   },
+   "exercices": [
+    {
+     "id": "css2a",
+     "type": "css",
+     "titre": "Une vraie carte",
+     "xp": 20,
+     "consigne": "Donne à `.carte` un `padding` de 16px, une bordure pleine de 2px (couleur au choix) et des coins arrondis de 12px.",
+     "depart": ".carte {\n\n}\n",
+     "indice": "border: 2px solid gray; border-radius: 12px;",
+     "solution": ".carte {\n  padding: 16px;\n  border: 2px solid #c9cfe2;\n  border-radius: 12px;\n}",
+     "verifications": [
+      {
+       "selecteur": ".carte",
+       "propriete": "padding-top",
+       "egal": "16px",
+       "message": "Le padding n'est pas de 16px."
+      },
+      {
+       "selecteur": ".carte",
+       "propriete": "border-top-width",
+       "egal": "2px",
+       "message": "Il manque une bordure de 2px."
+      },
+      {
+       "selecteur": ".carte",
+       "propriete": "border-top-style",
+       "egal": "solid",
+       "message": "La bordure n'est pas pleine (solid)."
+      },
+      {
+       "selecteur": ".carte",
+       "propriete": "border-top-left-radius",
+       "egal": "12px",
+       "message": "Les coins ne sont pas arrondis à 12px."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "titre": "Flexbox",
+   "theorie": "cours/css/03-flexbox.md",
+   "exemple": {
+    "langage": "css",
+    "code": ".rangee {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}"
+   },
+   "exercices": [
+    {
+     "id": "css3a",
+     "type": "css",
+     "titre": "Avatar à côté du nom",
+     "xp": 20,
+     "consigne": "Dans chaque carte, la `.rangee` contient l'avatar et le nom. Mets-les côte à côte avec Flexbox, centrés verticalement, avec un `gap` de 12px.",
+     "depart": ".rangee {\n\n}\n",
+     "indice": "Trois lignes : display, align-items, gap.",
+     "solution": ".rangee {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}",
+     "verifications": [
+      {
+       "selecteur": ".rangee",
+       "propriete": "display",
+       "egal": "flex",
+       "message": "La rangée n'est pas en display: flex."
+      },
+      {
+       "selecteur": ".rangee",
+       "propriete": "align-items",
+       "egal": "center",
+       "message": "Les éléments ne sont pas centrés verticalement (align-items)."
+      },
+      {
+       "selecteur": ".rangee",
+       "propriete": "column-gap",
+       "egal": "12px",
+       "message": "Le gap n'est pas de 12px."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "titre": "Grid et responsive",
+   "theorie": "cours/css/04-grid-et-responsive.md",
+   "exemple": {
+    "langage": "css",
+    "code": ".grille {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 16px;\n}"
+   },
+   "exercices": [
+    {
+     "id": "css4a",
+     "type": "css",
+     "titre": "La grille des tuteurs",
+     "xp": 20,
+     "consigne": "Transforme `.grille` en grille de **3 colonnes égales** avec un espace de 16px entre les cartes.",
+     "depart": ".grille {\n\n}\n",
+     "indice": "grid-template-columns: repeat(3, 1fr);",
+     "solution": ".grille {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 16px;\n}",
+     "verifications": [
+      {
+       "selecteur": ".grille",
+       "propriete": "display",
+       "egal": "grid",
+       "message": "La grille n'est pas en display: grid."
+      },
+      {
+       "selecteur": ".grille",
+       "propriete": "grid-template-columns",
+       "colonnes": 3,
+       "message": "La grille n'a pas exactement 3 colonnes."
+      },
+      {
+       "selecteur": ".grille",
+       "propriete": "column-gap",
+       "egal": "16px",
+       "message": "L'espace entre colonnes n'est pas de 16px."
+      }
+     ]
+    },
+    {
+     "id": "css4b",
+     "type": "qcm",
+     "titre": "Lire une media query",
+     "xp": 10,
+     "consigne": "Que fait `@media (max-width: 600px) { .grille { grid-template-columns: 1fr; } }` ?",
+     "options": [
+      "Sur les écrans de 600px ou moins, les cartes passent sur une seule colonne",
+      "Sur les écrans de plus de 600px, la grille fait 1 colonne",
+      "La grille fait toujours 600px de large",
+      "Elle supprime la grille sur mobile"
+     ],
+     "bonne": 0,
+     "explication": "max-width: 600px veut dire « jusqu'à 600px de large ». 1fr = une seule colonne qui prend toute la largeur."
+    }
+   ]
+  }
+ ]
+}
