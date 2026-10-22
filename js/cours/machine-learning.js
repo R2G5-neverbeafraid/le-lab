@@ -1,5 +1,5 @@
 /* Le Lab — cours : machine-learning
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 L.ml={name:"Machine Learning",color:"var(--ml)",tag:"Expliqué simplement, de A à Z",lessons:[

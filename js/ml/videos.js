@@ -1,5 +1,5 @@
 /* Le Lab — vidéos animées du module Machine Learning
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 const VW=960,VH=540,DISP="Unbounded, system-ui, sans-serif",BODY="Figtree, system-ui, sans-serif",MONO="JetBrains Mono, ui-monospace, monospace";

@@ -1,5 +1,5 @@
 /* Le Lab — effets : notification et confettis
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 let tt;function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),1800);}

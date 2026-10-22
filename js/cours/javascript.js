@@ -1,5 +1,5 @@
 /* Le Lab — cours : javascript
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 L.js={name:"JavaScript",color:"var(--js)",tag:"Rendre une page vivante",lessons:[

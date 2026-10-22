@@ -1,5 +1,5 @@
 /* Le Lab — exécution de Python dans le navigateur (Skulpt)
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 function builtinRead(x){if(Sk.builtinFiles===undefined||Sk.builtinFiles.files[x]===undefined)throw "Fichier introuvable : "+x;return Sk.builtinFiles.files[x];}

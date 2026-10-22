@@ -1,5 +1,5 @@
 /* Le Lab — devoirs
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 const DEVOIRS=[

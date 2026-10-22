@@ -1,5 +1,5 @@
 /* Le Lab — cours : sql
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 L.sql={name:"SQL",color:"var(--sql)",tag:"Interroger des données",lessons:[

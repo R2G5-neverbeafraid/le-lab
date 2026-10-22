@@ -1,5 +1,5 @@
 /* Le Lab — registre des cours (chaque fichier de js/cours/ ajoute son langage)
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 const L={};

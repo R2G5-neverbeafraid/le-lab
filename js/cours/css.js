@@ -1,5 +1,5 @@
 /* Le Lab — cours : css
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 L.css={name:"CSS",color:"var(--css)",tag:"Mettre en forme",lessons:[

@@ -1,5 +1,5 @@
 /* Le Lab — labos interactifs du module Machine Learning
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 function bindFit(box,x,setV,gain){

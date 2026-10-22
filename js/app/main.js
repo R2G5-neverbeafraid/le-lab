@@ -1,5 +1,5 @@
 /* Le Lab — démarrage
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 renderStats();

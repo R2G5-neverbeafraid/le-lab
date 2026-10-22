@@ -1,5 +1,5 @@
 /* Le Lab — cours : python
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 L.py={name:"Python",color:"var(--py)",tag:"Logique, calculs, scripts",lessons:[

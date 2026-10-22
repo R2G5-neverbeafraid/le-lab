@@ -1,5 +1,5 @@
 /* Le Lab — exécution de JavaScript
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 function fmtJS(v){if(typeof v==="string")return v;try{return JSON.stringify(v);}catch(e){return String(v);}}

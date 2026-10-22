@@ -1,5 +1,5 @@
 /* Le Lab — affichage des pages, leçons et exercices
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 const $=id=>document.getElementById(id);
@@ -24,7 +24,7 @@ function renderHome(){
   view.innerHTML=`
   <section class="hero">
     <div class="card">
-      <div class="eyebrow">Le Lab · by 25 (TwentyFive) Labs</div>
+      <div class="eyebrow">Le Lab · by 25 Labs</div>
       <h1>Bienvenue au Lab. On passe de 3 à 7 sur 10.</h1>
       <p>Cinq langages, plus le machine learning expliqué simplement avec des vidéos animées. Une leçon courte, puis des exercices corrigés tout de suite. Les exemples suivent un fil rouge : Peer-Learning, une plateforme de tutorat entre étudiants. Python, JavaScript, SQL et CSS s'exécutent ici même ; PHP se travaille en lecture de code, puis sur ta machine.</p>
       <div class="actions">${nx?`<button class="btn" type="button" data-resume="${nx.k}|${nx.x.li}">Reprendre : ${esc(L[nx.k].name)} · ${esc(nx.x.title)}</button>`:`<button class="btn" type="button" data-go="devoirs">Tout est fait : place aux devoirs</button>`}<button class="btn ghost" type="button" data-go="devoirs">Voir les devoirs</button></div>

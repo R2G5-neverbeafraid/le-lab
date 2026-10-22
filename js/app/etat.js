@@ -1,5 +1,5 @@
 /* Le Lab — progression, XP et sauvegarde
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 const KEY="laboRG.v1";

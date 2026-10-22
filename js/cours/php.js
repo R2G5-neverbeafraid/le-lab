@@ -1,5 +1,5 @@
 /* Le Lab — cours : php
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 L.php={name:"PHP",color:"var(--php)",tag:"Le code côté serveur",lessons:[

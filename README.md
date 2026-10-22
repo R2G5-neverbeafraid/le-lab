@@ -1,6 +1,6 @@
 # Le Lab
 
-**Développé par 25 (TwentyFive) Labs.**
+**Développé par 25 Labs.**
 
 Un site gratuit pour apprendre à coder et comprendre le machine learning en partant des bases. Tout se passe dans le navigateur : une leçon courte, puis des exercices corrigés tout de suite.
 
@@ -49,10 +49,10 @@ Pour ajouter une leçon, il suffit de modifier le fichier du langage dans `js/co
 
 ## Lancer le site
 
-Un seul fichier, aucune installation. Ouvre `index.html` dans un navigateur, ou utilise la version en ligne (GitHub Pages). Une connexion internet est nécessaire pour charger les polices et les moteurs Python ([Skulpt](https://skulpt.org)) et SQL ([AlaSQL](https://github.com/AlaSQL/alasql)).
+Aucune installation. Ouvre `index.html` dans un navigateur, ou utilise la version en ligne (GitHub Pages). Une connexion internet est nécessaire pour charger les polices et les moteurs Python ([Skulpt](https://skulpt.org)) et SQL ([AlaSQL](https://github.com/AlaSQL/alasql)).
 
 La progression est enregistrée dans le navigateur de chaque visiteur (`localStorage`).
 
 ---
 
-© 2026 25 (TwentyFive) Labs, Kinshasa.
+© 2026 25 Labs, Kinshasa.

@@ -1,5 +1,5 @@
 /* Le Lab — aperçu CSS des cartes tuteurs
-   Développé par 25 (TwentyFive) Labs */
+   Développé par 25 Labs */
 "use strict";
 
 const CSS_HTML=`<div class="grille">${[["PK","Prisca K.","Python · L3","Algorithmique et premiers scripts."],["JM","Joël M.","CSS · L2","Flexbox, Grid et responsive."],["NB","Naomie B.","SQL · L3","Requêtes, jointures et modélisation."]].map(([a,n,m,b])=>`<article class="carte"><div class="rangee"><span class="avatar">${a}</span><div><h3 class="nom">${n}</h3><p class="matiere">${m}</p></div></div><p class="bio">${b}</p></article>`).join("")}</div>`;
